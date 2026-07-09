@@ -1,0 +1,229 @@
+
+/* ==========================================================
+   CYBRENSE WEBMAIL – PROFESSIONAL DARK THEME v4 (FIXED)
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global font */
+* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ============================================================
+   LOGIN PAGE
+   ============================================================ */
+body.task-login {
+    background: linear-gradient(135deg, #09090f 0%, #130a0d 60%, #0d0d18 100%) !important;
+    position: relative; overflow: hidden;
+}
+body.task-login::before {
+    content: ''; position: fixed; top: -200px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(230,43,74,0.12) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
+}
+body.task-login::after {
+    content: ''; position: fixed; bottom: -200px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(60,40,180,0.08) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
+}
+body.task-login #layout {
+    display: flex !important; align-items: center !important;
+    justify-content: center !important; min-height: 100vh !important;
+    position: relative !important; z-index: 1 !important;
+}
+body.task-login #layout-content {
+    background: transparent !important; border: none !important;
+    box-shadow: none !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important;
+    width: 100% !important; min-height: 100vh !important; padding: 40px 20px !important;
+}
+body.task-login #logo {
+    display: block !important; position: static !important; top: auto !important;
+    max-width: 190px !important; max-height: 70px !important;
+    width: auto !important; height: auto !important;
+    margin: 0 auto 28px auto !important; object-fit: contain !important;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+#login-form {
+    background: rgba(14, 14, 22, 0.90) !important;
+    backdrop-filter: blur(28px) !important; -webkit-backdrop-filter: blur(28px) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 18px !important;
+    padding: 36px 32px 32px !important;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(230,43,74,0.06) !important;
+    position: static !important; top: auto !important;
+    width: 360px !important; max-width: 95vw !important; z-index: 2 !important;
+}
+#login-form table, #login-form tbody { display: block !important; }
+#login-form tr { display: block !important; margin-bottom: 16px !important; }
+#login-form td { display: block !important; border: none !important; padding: 0 !important; }
+#login-form td.title label {
+    display: block !important; font-size: 11px !important; font-weight: 600 !important;
+    color: rgba(255,255,255,0.4) !important; text-transform: uppercase !important;
+    letter-spacing: 0.07em !important; margin-bottom: 7px !important;
+}
+#login-form input.form-control, #rcmloginuser, #rcmloginpwd {
+    background: rgba(255,255,255,0.05) !important;
+    background-color: rgba(255,255,255,0.05) !important;
+    border: 1.5px solid rgba(255,255,255,0.1) !important;
+    border-radius: 10px !important; color: #ffffff !important;
+    font-size: 14px !important; font-weight: 400 !important;
+    padding: 12px 15px !important; width: 100% !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+    outline: none !important; -webkit-appearance: none !important;
+}
+/* Kill browser autofill white background */
+#rcmloginuser:-webkit-autofill, #rcmloginpwd:-webkit-autofill,
+#login-form input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px #1a1a28 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1.5px solid rgba(255,255,255,0.1) !important; border-radius: 10px !important;
+}
+#login-form input.form-control:focus, #rcmloginuser:focus, #rcmloginpwd:focus {
+    border-color: #e62b4a !important;
+    box-shadow: 0 0 0 3px rgba(230,43,74,0.18) !important;
+    background: rgba(255,255,255,0.07) !important;
+}
+#login-form .formbuttons { margin-top: 24px !important; padding: 0 !important; }
+#rcmloginsubmit, #login-form button.button.mainaction {
+    background: linear-gradient(135deg, #e62b4a 0%, #c0142e 100%) !important;
+    border: none !important; border-radius: 10px !important; color: #fff !important;
+    font-size: 13px !important; font-weight: 700 !important;
+    letter-spacing: 0.06em !important; text-transform: uppercase !important;
+    padding: 14px !important; width: 100% !important; cursor: pointer !important;
+    box-shadow: 0 4px 18px rgba(230,43,74,0.38) !important;
+    transition: all 0.2s ease !important; display: block !important;
+}
+#rcmloginsubmit:hover { transform: translateY(-1px) !important; box-shadow: 0 7px 24px rgba(230,43,74,0.5) !important; }
+#rcmloginsubmit:before { display: none !important; }
+#login-footer {
+    text-align: center !important; margin-top: 22px !important;
+    padding-top: 18px !important; border-top: 1px solid rgba(255,255,255,0.06) !important;
+    color: rgba(255,255,255,0.3) !important; font-size: 12px !important;
+    background: none !important; flex: none !important;
+}
+#login-footer > div { background: none !important; margin: 0 !important; padding: 0 !important; }
+#login-footer a.support-link { color: #e62b4a !important; text-decoration: none !important; font-weight: 500 !important; }
+
+
+/* ============================================================
+   IN-APP – DARK THEME (width-safe: don't override #layout-menu width)
+   ============================================================ */
+
+body:not(.task-login) { background: #0e0e16 !important; color: #d4d4e0 !important; }
+
+/* Task nav — color overrides ONLY (no width!) */
+#layout-menu { background: #111118 !important; border-right: 1px solid rgba(255,255,255,0.07) !important; }
+#layout-menu .popover-header {
+    background: #111118 !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    height: 56px !important; display: flex !important;
+    align-items: center !important; justify-content: center !important;
+}
+#layout-menu .popover-header img, #layout-menu .popover-header #logo {
+    max-width: 36px !important; max-height: 36px !important;
+    width: 36px !important; height: 36px !important; object-fit: contain !important;
+}
+
+/* Task menu buttons — color only */
+@media screen and (min-width: 481px) {
+    #taskmenu a { color: rgba(255,255,255,0.45) !important; background: transparent !important; border-radius: 8px !important; }
+    #taskmenu a:hover { color: rgba(255,255,255,0.9) !important; background: rgba(255,255,255,0.07) !important; }
+    #taskmenu a.selected, #taskmenu a.active { color: #f07080 !important; background: rgba(230,43,74,0.15) !important; }
+    #taskmenu .special-buttons { background: #111118 !important; border-top: 1px solid rgba(255,255,255,0.06) !important; }
+    #taskmenu .action-buttons a { background: linear-gradient(135deg, #e62b4a, #c0142e) !important; color: #fff !important; border-radius: 8px !important; }
+    #taskmenu .action-buttons a:hover { filter: brightness(1.1) !important; background: linear-gradient(135deg, #e62b4a, #c0142e) !important; }
+    #taskmenu a.logout { color: rgba(230,43,74,0.75) !important; }
+    #taskmenu a.logout:hover { color: #e62b4a !important; background: rgba(230,43,74,0.1) !important; }
+}
+
+/* Hide the ugly default watermark/placeholder SVG in empty content pane */
+#messageframe .watermark,
+#watermark,
+.watermark,
+#messagecontent .watermark,
+#layout-content > .watermark,
+div.watermark {
+    display: none !important;
+}
+
+/* Sidebar */
+#layout-sidebar { background: #13131c !important; border-right: 1px solid rgba(255,255,255,0.05) !important; }
+#layout-sidebar .header {
+    background: #13131c !important; border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+    min-height: 56px !important; height: auto !important;
+    padding: 12px 14px !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; justify-content: center !important;
+}
+#layout-sidebar .header .username {
+    display: block !important; float: none !important; position: static !important;
+    font-size: 12px !important; font-weight: 500 !important;
+    color: rgba(255,255,255,0.5) !important;
+    white-space: nowrap !important; overflow: hidden !important;
+    text-overflow: ellipsis !important; max-width: 100% !important; margin: 0 !important;
+}
+/* Folder list */
+.folderlist li a, #mailboxlist li a {
+    color: rgba(255,255,255,0.6) !important; border-radius: 7px !important;
+    transition: background 0.12s, color 0.12s !important;
+}
+.folderlist li a:hover, #mailboxlist li a:hover { background: rgba(255,255,255,0.05) !important; color: rgba(255,255,255,0.9) !important; }
+.folderlist li.selected > a, #mailboxlist li.selected > a,
+.folderlist li.focused > a, #mailboxlist li.focused > a {
+    background: rgba(230,43,74,0.15) !important; color: #f07080 !important;
+}
+span.unreadcount, .unreadcount {
+    background: #e62b4a !important; color: #fff !important;
+    border-radius: 20px !important; padding: 0 5px !important;
+    font-size: 10px !important; font-weight: 700 !important;
+}
+
+/* Message list panel */
+#layout-list { background: #111118 !important; border-right: 1px solid rgba(255,255,255,0.05) !important; }
+#layout-list .header, #messagelist-header {
+    background: #111118 !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    color: rgba(255,255,255,0.5) !important;
+}
+.messagelist tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04) !important; transition: background 0.1s !important; }
+.messagelist tbody tr:hover { background: rgba(255,255,255,0.03) !important; }
+.messagelist tbody tr.selected { background: rgba(230,43,74,0.10) !important; }
+.messagelist td { color: rgba(255,255,255,0.45) !important; font-size: 12px !important; }
+.messagelist td.subject .subject { color: rgba(255,255,255,0.75) !important; font-size: 13px !important; }
+.messagelist tr.unread td.subject .subject { color: #ffffff !important; font-weight: 600 !important; }
+
+/* Main content pane */
+#layout-content:not(body.task-login #layout-content),
+#messagecontent, #messageframe { background: #0e0e16 !important; }
+
+/* Message header */
+#message-header { background: #13131c !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
+#message-header .subject { color: #fff !important; font-size: 17px !important; font-weight: 600 !important; }
+
+/* Toolbar */
+.toolbar { background: #111118 !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; }
+.toolbar a.button { color: rgba(255,255,255,0.5) !important; border-radius: 7px !important; transition: all 0.12s !important; }
+.toolbar a.button:hover { background: rgba(255,255,255,0.06) !important; color: rgba(255,255,255,0.9) !important; }
+
+/* Search */
+#quicksearchbox, input#quicksearchbox {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1.5px solid rgba(255,255,255,0.09) !important;
+    border-radius: 8px !important; color: #fff !important; font-size: 13px !important;
+}
+#quicksearchbox:focus { border-color: #e62b4a !important; outline: none !important; box-shadow: 0 0 0 2px rgba(230,43,74,0.15) !important; }
+
+/* Main action buttons */
+a.button.mainaction, button.mainaction, input.mainaction {
+    background: linear-gradient(135deg, #e62b4a, #c0142e) !important;
+    border: none !important; border-radius: 8px !important;
+    color: #fff !important; font-weight: 600 !important;
+    box-shadow: 0 2px 10px rgba(230,43,74,0.25) !important;
+}
+
+/* Thin custom scrollbars */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }

@@ -1,0 +1,18 @@
+# Runtime data
+db/
+scratch/
+*.db
+*.sqlite
+*.sqlite3
+
+# Local secrets/config
+config/config.inc.php
+config/config.docker.inc.php
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+Thumbs.db
+.DS_Store

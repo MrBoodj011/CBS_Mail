@@ -1,0 +1,447 @@
+/* Mobile mail polish: keep the inbox row in one stable card layout. */
+@media screen and (max-width: 720px) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-list,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: table-row !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-extra-cell,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-date-source-cell {
+    display: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 86px !important;
+    display: grid !important;
+    grid-template-columns: 40px 8px minmax(0, 1fr) 34px !important;
+    grid-template-rows: 21px 21px 22px !important;
+    align-items: center !important;
+    column-gap: 10px !important;
+    row-gap: 1px !important;
+    padding: 11px 12px !important;
+    overflow: hidden !important;
+    border-radius: 13px !important;
+    box-sizing: border-box !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-mail-avatar {
+    position: static !important;
+    grid-column: 1 !important;
+    grid-row: 1 / 4 !important;
+    align-self: center !important;
+    justify-self: center !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-row-status {
+    position: static !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: center !important;
+    width: 7px !important;
+    min-width: 7px !important;
+    max-width: 7px !important;
+    height: 7px !important;
+    min-height: 7px !important;
+    max-height: 7px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.fromto,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.sender {
+    position: static !important;
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.subject,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.msgbody {
+    position: static !important;
+    grid-column: 3 / 5 !important;
+    grid-row: 2 !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-assigned-labels,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-mail-tag {
+    position: static !important;
+    grid-column: 3 / 5 !important;
+    grid-row: 3 !important;
+    align-self: center !important;
+    justify-self: start !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    transform: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+    position: static !important;
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: end !important;
+    max-width: 34px !important;
+    overflow: hidden !important;
+    text-align: right !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced.flagged > td.cybrense-subject-cell:before,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced:has(span.flagged) > td.cybrense-subject-cell:before {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+    grid-template-columns: 38px 8px minmax(0, 1fr) 30px !important;
+    padding: 10px 10px !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+    display: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.subject,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.msgbody,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-assigned-labels,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-mail-tag {
+    grid-column: 3 / 5 !important;
+  }
+}
+
+/* The mail list also adapts when only the list pane is resized on desktop. */
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #layout-list,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist-content {
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #mailsearchform,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) .searchbar.menu {
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  overflow: hidden !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #mailsearchform input,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) .searchbar.menu input {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  text-overflow: ellipsis !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #mailsearchform .button,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) .searchbar.menu .button {
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  flex: 0 0 36px !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: table-row !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-extra-cell,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-date-source-cell {
+  display: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 86px !important;
+  display: grid !important;
+  grid-template-columns: 40px 8px minmax(0, 1fr) 36px !important;
+  grid-template-rows: 21px 21px 22px !important;
+  align-items: center !important;
+  column-gap: 10px !important;
+  row-gap: 1px !important;
+  padding: 11px 12px !important;
+  overflow: hidden !important;
+  border-radius: 13px !important;
+  box-sizing: border-box !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-mail-avatar {
+  position: static !important;
+  grid-column: 1 !important;
+  grid-row: 1 / 4 !important;
+  align-self: center !important;
+  justify-self: center !important;
+  width: 38px !important;
+  min-width: 38px !important;
+  max-width: 38px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-row-status {
+  position: static !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  justify-self: center !important;
+  width: 7px !important;
+  min-width: 7px !important;
+  max-width: 7px !important;
+  height: 7px !important;
+  min-height: 7px !important;
+  max-height: 7px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.fromto,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.sender {
+  position: static !important;
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.subject,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.msgbody {
+  position: static !important;
+  grid-column: 3 / 5 !important;
+  grid-row: 2 !important;
+  align-self: center !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-assigned-labels,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-mail-tag {
+  position: static !important;
+  grid-column: 3 / 5 !important;
+  grid-row: 3 !important;
+  align-self: center !important;
+  justify-self: start !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny) #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+  position: static !important;
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  justify-self: end !important;
+  max-width: 36px !important;
+  overflow: hidden !important;
+  text-align: right !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-list-nano #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+  grid-template-columns: 38px 8px minmax(0, 1fr) 28px !important;
+  padding: 10px !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-list-nano #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-list-nano #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+  display: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready:is(.cybrense-list-tight, .cybrense-list-tiny, .cybrense-list-nano) #layout-list .pagenav.menu.footer {
+  min-width: 0 !important;
+  grid-template-columns: 28px 28px minmax(0, 1fr) 44px 28px 28px !important;
+  gap: 4px !important;
+  padding: 0 8px !important;
+  overflow: hidden !important;
+}
+
+/* Keep message dates readable in every list width. */
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+  grid-template-columns: 40px 8px minmax(0, 1fr) minmax(72px, max-content) !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+  display: block !important;
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+  width: auto !important;
+  min-width: 64px !important;
+  max-width: 86px !important;
+  overflow: visible !important;
+  color: #40536d !important;
+  font-size: 11.5px !important;
+  font-weight: 800 !important;
+  line-height: 18px !important;
+  text-align: right !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  opacity: 1 !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.fromto,
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.sender {
+  padding-right: 4px !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.subject,
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.msgbody,
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-assigned-labels,
+html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > .cybrense-mail-tag {
+  grid-column: 3 / 5 !important;
+}
+
+@media screen and (max-width: 560px) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+    grid-template-columns: 38px 8px minmax(0, 1fr) minmax(64px, max-content) !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+    display: block !important;
+    min-width: 58px !important;
+    max-width: 76px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
+    grid-template-columns: 36px 7px minmax(0, 1fr) minmax(52px, max-content) !important;
+    column-gap: 7px !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
+    min-width: 52px !important;
+    max-width: 62px !important;
+    font-size: 10.5px !important;
+  }
+}
+
+/* PWA/mobile viewport: follow the real visible browser height. */
+@media screen and (max-width: 720px) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #layout,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-list,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content {
+    min-height: var(--cybrense-app-height, 100dvh) !important;
+    height: var(--cybrense-app-height, 100dvh) !important;
+    max-height: var(--cybrense-app-height, 100dvh) !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-mobile-menu-open #layout-menu,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-menu.cybrense-mobile-drawer-open,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-mobile-sidebar-open #layout-sidebar,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-sidebar.cybrense-mobile-drawer-open {
+    min-height: var(--cybrense-app-height, 100dvh) !important;
+    height: var(--cybrense-app-height, 100dvh) !important;
+    max-height: var(--cybrense-app-height, 100dvh) !important;
+  }
+}

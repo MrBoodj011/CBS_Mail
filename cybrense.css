@@ -1,0 +1,296 @@
+
+/* ==========================================================
+   CYBRENSE WEBMAIL – COMPLETE PROFESSIONAL DARK THEME v3
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ---- GLOBAL FONT ---- */
+* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+
+/* ============================================================
+   LOGIN PAGE
+   ============================================================ */
+
+/* Dark background on the full page */
+body.task-login {
+    background: linear-gradient(135deg, #09090f 0%, #130a0d 60%, #0d0d18 100%) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow decorations */
+body.task-login::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(230,43,74,0.13) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
+}
+body.task-login::after {
+    content: '';
+    position: fixed;
+    bottom: -200px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(60,40,180,0.09) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
+}
+
+/* Full layout wrapper */
+body.task-login #layout {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Content area — transparent, full width, flex centering */
+body.task-login #layout-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    padding: 40px 20px !important;
+}
+
+/* Logo — above the card, centered */
+body.task-login #logo {
+    display: block !important;
+    position: static !important;
+    top: auto !important;
+    max-width: 200px !important;
+    max-height: 75px !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 auto 32px auto !important;
+    object-fit: contain !important;
+    z-index: 2 !important;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+
+/* The ACTUAL login card — already 320px max-width */
+#login-form {
+    background: rgba(16, 16, 24, 0.88) !important;
+    backdrop-filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 18px !important;
+    padding: 36px 32px 32px 32px !important;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(230,43,74,0.07) !important;
+    position: static !important;
+    top: auto !important;
+    width: 360px !important;
+    max-width: 95vw !important;
+    z-index: 2 !important;
+}
+
+/* Table in the form — block layout */
+#login-form table,
+#login-form tbody { display: block !important; }
+#login-form tr { display: block !important; margin-bottom: 16px !important; }
+#login-form td { display: block !important; border: none !important; padding: 0 !important; }
+#login-form td.title label {
+    display: block !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: rgba(255,255,255,0.4) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+    margin-bottom: 7px !important;
+}
+
+/* Inputs */
+#login-form input.form-control,
+#rcmloginuser,
+#rcmloginpwd {
+    background: rgba(255,255,255,0.05) !important;
+    background-color: rgba(255,255,255,0.05) !important;
+    border: 1.5px solid rgba(255,255,255,0.1) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    padding: 12px 15px !important;
+    width: 100% !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+}
+/* Fix browser autofill white background */
+#rcmloginuser:-webkit-autofill,
+#rcmloginpwd:-webkit-autofill,
+#login-form input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px rgba(30,30,45,1) inset !important;
+    box-shadow: 0 0 0 100px rgba(30,30,45,1) inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1.5px solid rgba(255,255,255,0.1) !important;
+    border-radius: 10px !important;
+}
+#login-form input.form-control:focus,
+#rcmloginuser:focus,
+#rcmloginpwd:focus {
+    border-color: #e62b4a !important;
+    box-shadow: 0 0 0 3px rgba(230,43,74,0.20) !important;
+    background: rgba(255,255,255,0.07) !important;
+}
+#login-form input::placeholder { color: rgba(255,255,255,0.2) !important; }
+
+/* Submit button */
+#login-form .formbuttons { margin-top: 24px !important; padding: 0 !important; }
+#rcmloginsubmit,
+#login-form button.button.mainaction {
+    background: linear-gradient(135deg, #e62b4a 0%, #c0142e 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    padding: 14px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 18px rgba(230,43,74,0.38) !important;
+    transition: all 0.2s ease !important;
+}
+#rcmloginsubmit:hover,
+#login-form button.button.mainaction:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 7px 24px rgba(230,43,74,0.5) !important;
+}
+#rcmloginsubmit:before { display: none !important; }
+
+/* Footer */
+#login-footer {
+    text-align: center !important;
+    margin-top: 22px !important;
+    padding-top: 18px !important;
+    border-top: 1px solid rgba(255,255,255,0.06) !important;
+    color: rgba(255,255,255,0.3) !important;
+    font-size: 12px !important;
+    background: none !important;
+    flex: none !important;
+}
+#login-footer > div { background: none !important; margin: 0 !important; padding: 0 !important; }
+#login-footer a.support-link {
+    color: #e62b4a !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+#login-footer a.support-link:hover { text-decoration: underline !important; }
+
+
+/* ============================================================
+   IN-APP DARK THEME
+   ============================================================ */
+
+body:not(.task-login) { background: #0e0e16 !important; color: #d4d4e0 !important; }
+
+/* Task nav (left icon bar) */
+#layout-menu {
+    background: #121219 !important;
+    border-right: 1px solid rgba(255,255,255,0.06) !important;
+}
+#layout-menu .popover-header {
+    padding: 14px 0 10px 0 !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+}
+#layout-menu .popover-header #logo {
+    max-width: 38px !important; max-height: 38px !important;
+    width: 38px !important; height: 38px !important;
+    object-fit: contain !important; display: block !important; margin: 0 !important;
+}
+#taskmenu { display: flex !important; flex-direction: column !important; align-items: center !important; padding: 4px 0 !important; }
+#taskmenu a.button {
+    width: 42px !important; height: 42px !important; border-radius: 10px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    color: rgba(255,255,255,0.4) !important; margin: 3px auto !important;
+    transition: all 0.15s ease !important; background: transparent !important;
+    text-decoration: none !important;
+}
+#taskmenu a.button:hover { background: rgba(255,255,255,0.07) !important; color: rgba(255,255,255,0.85) !important; }
+#taskmenu a.button.selected, #taskmenu a.button.active { background: rgba(230,43,74,0.15) !important; color: #e62b4a !important; }
+#taskmenu a.button.compose {
+    background: linear-gradient(135deg, #e62b4a, #c0142e) !important;
+    color: #fff !important; box-shadow: 0 3px 12px rgba(230,43,74,0.35) !important; margin-bottom: 10px !important;
+}
+
+/* Sidebar folder list */
+#layout-sidebar { background: #14141e !important; border-right: 1px solid rgba(255,255,255,0.05) !important; }
+#layout-sidebar .header {
+    background: #14141e !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    padding: 14px 12px !important;
+    min-height: 56px !important;
+    height: auto !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; justify-content: center !important;
+}
+#layout-sidebar .header .username {
+    display: block !important; float: none !important; position: static !important;
+    font-size: 12px !important; font-weight: 500 !important;
+    color: rgba(255,255,255,0.5) !important;
+    white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
+    max-width: 185px !important; margin: 0 !important;
+}
+
+/* Folder list items */
+#mailboxlist li a {
+    color: rgba(255,255,255,0.6) !important; border-radius: 7px !important;
+    padding: 8px 12px !important; margin: 1px 5px !important; transition: all 0.12s !important;
+}
+#mailboxlist li a:hover { background: rgba(255,255,255,0.05) !important; color: rgba(255,255,255,0.9) !important; }
+#mailboxlist li.selected > a, #mailboxlist li.focused > a { background: rgba(230,43,74,0.14) !important; color: #f0718a !important; }
+.unreadcount { background: #e62b4a !important; color: #fff !important; border-radius: 20px !important; padding: 1px 5px !important; font-size: 10px !important; font-weight: 700 !important; }
+
+/* Message list panel */
+#layout-list { background: #121219 !important; border-right: 1px solid rgba(255,255,255,0.05) !important; }
+#messagelist-header, #layout-list .header { background: #121219 !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
+.messagelist tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04) !important; cursor: pointer !important; transition: background 0.1s !important; }
+.messagelist tbody tr:hover { background: rgba(255,255,255,0.03) !important; }
+.messagelist tbody tr.selected { background: rgba(230,43,74,0.10) !important; }
+.messagelist td.subject span.subject { color: rgba(255,255,255,0.75) !important; font-size: 13px !important; }
+.messagelist tr.unread td.subject span.subject { color: #ffffff !important; font-weight: 600 !important; }
+.messagelist td { color: rgba(255,255,255,0.45) !important; font-size: 12px !important; }
+
+/* Main content / message reading area */
+#layout-content:not(body.task-login #layout-content) { background: #0e0e16 !important; }
+
+/* Toolbar */
+.toolbar { background: #121219 !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; }
+.toolbar a.button { color: rgba(255,255,255,0.5) !important; border-radius: 7px !important; transition: all 0.12s !important; }
+.toolbar a.button:hover { background: rgba(255,255,255,0.06) !important; color: rgba(255,255,255,0.85) !important; }
+
+/* Search box */
+#quicksearchbox {
+    background: rgba(255,255,255,0.05) !important;
+    border: 1.5px solid rgba(255,255,255,0.08) !important;
+    border-radius: 8px !important; color: #fff !important;
+    font-size: 13px !important; transition: border-color 0.2s !important;
+}
+#quicksearchbox:focus { border-color: #e62b4a !important; box-shadow: 0 0 0 2px rgba(230,43,74,0.15) !important; outline: none !important; }
+
+/* Message header */
+#message-header { background: #14141e !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
+#message-header .subject { color: #fff !important; font-size: 17px !important; font-weight: 600 !important; }
+
+/* Action buttons */
+a.button.mainaction, button.mainaction {
+    background: linear-gradient(135deg, #e62b4a, #c0142e) !important;
+    border: none !important; border-radius: 8px !important; color: #fff !important;
+    font-weight: 600 !important; box-shadow: 0 2px 10px rgba(230,43,74,0.25) !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }

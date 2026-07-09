@@ -1,0 +1,25 @@
+services:
+  roundcube:
+    image: roundcube/roundcubemail:latest
+    container_name: roundcube
+    restart: always
+    ports:
+      - "127.0.0.1:8090:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./db:/var/www/html/db
+      - ./config/config.inc.php:/var/www/html/config/config.inc.php
+      - ./branding:/var/www/html/skins/elastic/branding
+      - ./branding/watermark.html:/var/www/html/skins/elastic/watermark.html
+      - ./config/elastic-meta.json:/var/www/html/skins/elastic/meta.json
+      - ./pwa/cybrense-manifest.json:/var/www/html/public_html/cybrense-manifest.json
+      - ./pwa/cybrense-sw.js:/var/www/html/public_html/cybrense-sw.js
+      - ./templates:/var/www/html/skins/elastic/templates
+      - ./plugins/cybrense_skin:/var/www/html/plugins/cybrense_skin
+    environment:
+      - ROUNDCUBEMAIL_DB_TYPE=sqlite
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.cybrense.com
+      - ROUNDCUBEMAIL_DEFAULT_PORT=993
+      - ROUNDCUBEMAIL_SMTP_SERVER=ssl://mail.cybrense.com
+      - ROUNDCUBEMAIL_SMTP_PORT=465
