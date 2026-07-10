@@ -6,6 +6,9 @@ scratch/
 *.sqlite3
 
 # Local secrets/config
+.env
+.env.local
+.env.*.local
 config/config.inc.php
 config/config.docker.inc.php
 

@@ -20,7 +20,7 @@ services:
       - ./plugins/cybrense_skin:/var/www/html/plugins/cybrense_skin
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.cybrense.com
-      - ROUNDCUBEMAIL_DEFAULT_PORT=993
-      - ROUNDCUBEMAIL_SMTP_SERVER=ssl://mail.cybrense.com
-      - ROUNDCUBEMAIL_SMTP_PORT=465
+      - ROUNDCUBEMAIL_DEFAULT_HOST=${ROUNDCUBEMAIL_DEFAULT_HOST:-ssl://imap.example.com}
+      - ROUNDCUBEMAIL_DEFAULT_PORT=${ROUNDCUBEMAIL_DEFAULT_PORT:-993}
+      - ROUNDCUBEMAIL_SMTP_SERVER=${ROUNDCUBEMAIL_SMTP_SERVER:-ssl://smtp.example.com}
+      - ROUNDCUBEMAIL_SMTP_PORT=${ROUNDCUBEMAIL_SMTP_PORT:-465}

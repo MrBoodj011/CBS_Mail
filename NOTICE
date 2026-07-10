@@ -1,0 +1,34 @@
+CBS Mail notices
+================
+
+CBS Mail is a custom Roundcube-based webmail UI overlay. It ships custom
+templates, styling, JavaScript, plugin code, PWA assets, and branding files that
+are intended to be mounted on top of a Roundcube installation.
+
+Roundcube
+---------
+
+This project is built on top of Roundcube Webmail. Roundcube is a separate
+upstream project and remains under its own license terms.
+
+Project: https://roundcube.net/
+License information: https://roundcube.net/license/
+
+Roundcube describes the project as GPL-3.0-or-later with exceptions for skins
+and plugins. Any copied or adapted Roundcube/Elastic files remain subject to
+their original upstream notices.
+
+Branding and trademarks
+-----------------------
+
+The Cybrense/CBS names, logos, icons, and visual brand assets in `branding/`
+are included so the distributed interface works as designed. They are not a
+grant of trademark rights. If you fork this project for another organization,
+replace the branding assets, product name, PWA metadata, and trusted sender
+defaults.
+
+Custom code
+-----------
+
+Unless a file says otherwise, custom source code and project documentation in
+this repository are released under GPL-3.0-or-later. See `LICENSE`.

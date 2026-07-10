@@ -1,11 +1,11 @@
 <?php
 
-/* Example Roundcube configuration for Cybrense Mail.
+/* Example Roundcube configuration for CBS Mail.
  * Copy this file to config.inc.php and set a unique des_key locally.
  */
 
-$config['imap_host'] = 'ssl://mail.cybrense.com:993';
-$config['smtp_host'] = 'ssl://mail.cybrense.com:465';
+$config['imap_host'] = getenv('ROUNDCUBEMAIL_IMAP_HOST') ?: 'ssl://imap.example.com:993';
+$config['smtp_host'] = getenv('ROUNDCUBEMAIL_SMTP_HOST') ?: 'ssl://smtp.example.com:465';
 $config['db_dsnw'] = 'sqlite:////var/roundcube/db/sqlite.db?mode=0646';
 
 $config['support_url'] = '';
@@ -37,7 +37,6 @@ $config['dont_override'] = array_unique(array_merge($config['dont_override'] ?? 
 $config['collected_senders'] = '2';
 
 $config['cybrense_remote_content_trusted_domains'] = [
-    'cybrense.com',
     'mattermost.com',
     'slack.com',
     'github.com',
@@ -52,7 +51,7 @@ $config['cybrense_remote_content_trusted_domains'] = [
 ];
 
 $config['cybrense_remote_content_trusted_senders'] = [
-    'noreply@cybrense.com',
+    // 'noreply@example.com',
 ];
 
 $config['request_path'] = '/';

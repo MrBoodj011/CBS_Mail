@@ -1,0 +1,16 @@
+.git
+.github
+.env
+.env.local
+.env.*.local
+db/
+scratch/
+config/config.inc.php
+config/config.docker.inc.php
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.tmp
+Thumbs.db
+.DS_Store
