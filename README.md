@@ -312,8 +312,11 @@ https://cybrense.com/
 - `SECURITY.md` - private security reporting and sensitive-data rules.
 - `SUPPORT.md` - support expectations and bug report guidance.
 - `CODE_OF_CONDUCT.md` - community behavior expectations.
+- `docs/CONFIGURATION.md` - config keys, env vars, labels, PWA, and remote-content settings.
+- `docs/TROUBLESHOOTING.md` - common setup, cache, PWA, labels, and mobile issues.
 - `docs/DEPLOYMENT.md` - generic production deployment checklist.
 - `docs/BRANDING.md` - branding assets and forking guidance.
+- `docs/MAINTENANCE.md` - CI, release, and repo hygiene workflow.
 - `docs/ROADMAP.md` - short-term and long-term project direction.
 
 ## Development Checks

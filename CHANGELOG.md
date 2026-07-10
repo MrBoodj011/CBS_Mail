@@ -3,7 +3,8 @@
 ## Unreleased
 
 - Added CI validation workflow.
-- Added Code of Conduct, Support, Deployment, Branding, and Roadmap docs.
+- Added Code of Conduct, Support, Configuration, Troubleshooting, Deployment, Branding, Maintenance, and Roadmap docs.
+- Added Dependabot for GitHub Actions and CODEOWNERS.
 - Added Git attributes and editor configuration for cleaner contributions.
 - Prepared the repository for open-source publication.
 - Added public setup documentation and contribution/security guidance.
