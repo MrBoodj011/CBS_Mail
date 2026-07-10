@@ -24,15 +24,20 @@ class cybrense_skin extends rcube_plugin
         try {
             $rcmail = rcmail::get_instance();
 
-            if (!$rcmail->output) {
+            if (!$rcmail->output || !method_exists($rcmail->output, 'add_header')) {
                 return;
             }
 
-            $manifest_url = './cybrense-manifest.json';
-            $worker_url = './cybrense-sw.js';
+            $host = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+            $proto = !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
+                ? $_SERVER['HTTP_X_FORWARDED_PROTO']
+                : (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http');
+            $proto = in_array($proto, ['http', 'https'], true) ? $proto : 'https';
+            $manifest_url = $host ? $proto . '://' . $host . '/cybrense-manifest.json' : '/cybrense-manifest.json';
+            $worker_url = '/cybrense-sw.js';
 
             $rcmail->output->set_env('cybrense_pwa_service_worker', $worker_url);
-            $rcmail->output->set_env('cybrense_pwa_scope', './');
+            $rcmail->output->set_env('cybrense_pwa_scope', '/');
             $rcmail->output->add_header(implode("\n", [
                 '<link rel="manifest" href="' . html::quote($manifest_url) . '">',
                 '<link rel="icon" type="image/png" sizes="256x256" href="static.php/skins/elastic/branding/favicon-cybrense.png">',
