@@ -319,6 +319,7 @@ Service worker behavior:
 Mounted paths in `docker-compose.yml`:
 
 ```yaml
+- ./pwa/cybrense-manifest.json:/var/www/html/skins/elastic/cybrense-manifest.json
 - ./pwa/cybrense-manifest.json:/var/www/html/public_html/cybrense-manifest.json
 - ./pwa/cybrense-sw.js:/var/www/html/public_html/cybrense-sw.js
 ```

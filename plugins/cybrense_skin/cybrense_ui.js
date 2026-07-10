@@ -1768,6 +1768,10 @@
       typeof window.rcmail.message_list.select === "function"
     ) {
       window.rcmail.message_list.select(uid);
+      if (window.rcmail.preview_timer) {
+        window.clearTimeout(window.rcmail.preview_timer);
+        window.rcmail.preview_timer = null;
+      }
     }
 
     if (typeof window.rcmail.show_message === "function") {
@@ -1792,25 +1796,36 @@
 
   function bindMobileMessageOpen() {
     var list = document.querySelector("#messagelist");
+    var pointerRow = null;
+    var pointerX = 0;
+    var pointerY = 0;
 
     if (!list || list.getAttribute("data-cybrense-mobile-open") === "true") {
       return;
     }
 
     list.setAttribute("data-cybrense-mobile-open", "true");
-    list.addEventListener("click", function (event) {
+    function shouldOpenMobileRow(event) {
       var row;
 
       if (!document.body.classList.contains("cybrense-ui-phone") && !document.body.classList.contains("cybrense-ui-narrow")) {
-        return;
+        return null;
       }
 
       row = event.target.closest("#messagelist tr");
       if (!row || !row.querySelector("td") || row.classList.contains("cybrense-label-hidden")) {
-        return;
+        return null;
       }
 
       if (isMobileRowOpenControl(event, row)) {
+        return null;
+      }
+
+      return row;
+    }
+
+    function openFromEvent(event, row) {
+      if (!row) {
         return;
       }
 
@@ -1823,6 +1838,29 @@
       window.setTimeout(function () {
         openMessageFromMobileRow(row);
       }, 20);
+    }
+
+    list.addEventListener("pointerdown", function (event) {
+      pointerRow = shouldOpenMobileRow(event);
+      pointerX = event.clientX || 0;
+      pointerY = event.clientY || 0;
+    }, true);
+
+    list.addEventListener("pointerup", function (event) {
+      var row = shouldOpenMobileRow(event);
+      var dx = Math.abs((event.clientX || 0) - pointerX);
+      var dy = Math.abs((event.clientY || 0) - pointerY);
+
+      if (!row || row !== pointerRow || dx > 12 || dy > 12) {
+        return;
+      }
+
+      pointerRow = null;
+      openFromEvent(event, row);
+    }, true);
+
+    list.addEventListener("click", function (event) {
+      openFromEvent(event, shouldOpenMobileRow(event));
     }, true);
   }
 
@@ -2106,6 +2144,10 @@
   var remoteObjectActionsBound = false;
   var REMOTE_TRUST_STORE_KEY = "cybrense.remote.trusted.v1";
 
+  function remoteTrustStoreKey() {
+    return REMOTE_TRUST_STORE_KEY + "." + labelAccountKey().replace(/[^a-z0-9@._+-]+/gi, "-");
+  }
+
   function remoteCommandTarget(contextWindow) {
     var win = contextWindow || window;
 
@@ -2155,8 +2197,21 @@
   }
 
   function readRemoteTrustStore() {
+    var storageKey = remoteTrustStoreKey();
+    var values;
+
     try {
-      return JSON.parse(window.localStorage.getItem(REMOTE_TRUST_STORE_KEY) || "[]");
+      values = JSON.parse(window.localStorage.getItem(storageKey) || "null");
+      if (Array.isArray(values)) {
+        return values;
+      }
+
+      values = JSON.parse(window.localStorage.getItem(REMOTE_TRUST_STORE_KEY) || "[]");
+      if (Array.isArray(values) && values.length) {
+        window.localStorage.setItem(storageKey, JSON.stringify(values));
+      }
+
+      return Array.isArray(values) ? values : [];
     } catch (error) {
       return [];
     }
@@ -2164,7 +2219,7 @@
 
   function writeRemoteTrustStore(values) {
     try {
-      window.localStorage.setItem(REMOTE_TRUST_STORE_KEY, JSON.stringify(unique(values)));
+      window.localStorage.setItem(remoteTrustStoreKey(), JSON.stringify(unique(values)));
     } catch (error) {
       // Local trust is a convenience cache; server-side prefs remain authoritative.
     }
@@ -2265,7 +2320,9 @@
     if (event) {
       event.preventDefault();
       event.stopPropagation();
-      event.stopImmediatePropagation();
+      if (typeof event.stopImmediatePropagation === "function") {
+        event.stopImmediatePropagation();
+      }
     }
 
     target = remoteCommandTarget(contextWindow || doc.defaultView || window);
@@ -2286,7 +2343,7 @@
     }
 
     if (target && typeof target.command === "function") {
-      target.command("load-remote", null, link, event || null, true);
+      target.command("load-remote", parseRemoteAlwaysArgument(link), link, event || null, true);
     }
 
     window.setTimeout(function () {
