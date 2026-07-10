@@ -14,6 +14,7 @@
 <p align="center">
   <a href="https://github.com/MrBoodj011/CBS_Mail/blob/main/LICENSE"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0--or--later-blue"></a>
   <a href="https://roundcube.net/"><img alt="Built on Roundcube" src="https://img.shields.io/badge/built%20on-Roundcube-0b72ff"></a>
+  <a href="https://cybrense.com/"><img alt="Cybrense website" src="https://img.shields.io/badge/website-cybrense.com-061d3a"></a>
   <img alt="Docker" src="https://img.shields.io/badge/docker-ready-2496ed">
   <img alt="PWA" src="https://img.shields.io/badge/PWA-enabled-1b7cff">
   <img alt="Mobile" src="https://img.shields.io/badge/mobile-ready-13b981">
@@ -27,6 +28,8 @@
   <a href="#quick-start">Quick Start</a>
   ·
   <a href="#architecture">Architecture</a>
+  ·
+  <a href="#brand">Brand</a>
   ·
   <a href="#open-source-and-credits">Credits</a>
 </p>
@@ -51,6 +54,21 @@ enhancement layer, not a mail server and not a from-scratch email client.
 ## Preview
 
 The repository includes the full UI overlay used by the app:
+
+<p align="center">
+  <img src="docs/assets/cbs-mail-desktop-preview.png" alt="CBS Mail desktop preview" width="100%">
+</p>
+
+<table>
+  <tr>
+    <td width="44%">
+      <img src="docs/assets/cbs-mail-mobile-preview.png" alt="CBS Mail mobile preview">
+    </td>
+    <td width="56%">
+      <img src="docs/assets/cbs-mail-labels-preview.png" alt="CBS Mail labels preview">
+    </td>
+  </tr>
+</table>
 
 | Area | What CBS Mail changes |
 | --- | --- |
@@ -285,6 +303,22 @@ Roundcube serves plugin assets through `static.php`:
 
 ```text
 /static.php/plugins/cybrense_skin/cybrense_ui.js
+```
+
+## Brand
+
+CBS Mail uses the Cybrense/CBS visual identity across the webmail shell:
+
+- Header and README artwork: `docs/assets/readme-header.png`
+- Desktop preview: `docs/assets/cbs-mail-desktop-preview.png`
+- Mobile preview: `docs/assets/cbs-mail-mobile-preview.png`
+- Labels preview: `docs/assets/cbs-mail-labels-preview.png`
+- Product logos, favicons, and PWA icons: `branding/`
+
+Official Cybrense website:
+
+```text
+https://cybrense.com/
 ```
 
 ## Development Checks
