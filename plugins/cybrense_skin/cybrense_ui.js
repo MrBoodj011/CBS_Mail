@@ -1747,8 +1747,6 @@
   function openMessageFromMobileRow(row) {
     var uid = rowUid(row);
     var mbox;
-    var listPane = document.querySelector("#layout-list");
-    var contentPane = document.querySelector("#layout-content");
 
     if (!uid || !window.rcmail) {
       return;
@@ -1765,18 +1763,31 @@
       return;
     }
 
+    if (
+      window.rcmail.message_list &&
+      typeof window.rcmail.message_list.select === "function"
+    ) {
+      window.rcmail.message_list.select(uid);
+    }
+
     if (typeof window.rcmail.show_message === "function") {
-      window.rcmail.show_message(uid, false, true);
+      window.rcmail.show_message(uid);
+      return;
     }
 
-    if (typeof window.rcmail.show_contentframe === "function") {
-      window.rcmail.show_contentframe(true);
+    window.location.href = "?_task=mail&_action=show&_uid=" + encodeURIComponent(uid);
+  }
+
+  function isMobileRowOpenControl(event, row) {
+    var target = event.target;
+
+    if (!target || !row) {
+      return true;
     }
 
-    if (listPane && contentPane) {
-      listPane.classList.remove("selected");
-      contentPane.classList.add("selected");
-    }
+    return !!target.closest(
+      "button, input, select, textarea, .listing-hover-menu, .cybrense-row-action-menu, .flagged, .unflagged, .threads, .selection, .select"
+    );
   }
 
   function bindMobileMessageOpen() {
@@ -1794,18 +1805,24 @@
         return;
       }
 
-      if (event.target.closest("a, button, input, select, textarea, .listing-hover-menu, .cybrense-row-action-menu, .flagged, .unflagged")) {
-        return;
-      }
-
       row = event.target.closest("#messagelist tr");
       if (!row || !row.querySelector("td") || row.classList.contains("cybrense-label-hidden")) {
         return;
       }
 
+      if (isMobileRowOpenControl(event, row)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === "function") {
+        event.stopImmediatePropagation();
+      }
+
       window.setTimeout(function () {
         openMessageFromMobileRow(row);
-      }, 80);
+      }, 20);
     }, true);
   }
 
