@@ -22,15 +22,15 @@
 
 <p align="center">
   <a href="#why-cbs-mail">Why</a>
-  ·
+  |
   <a href="#features">Features</a>
-  ·
+  |
   <a href="#quick-start">Quick Start</a>
-  ·
+  |
   <a href="#architecture">Architecture</a>
-  ·
+  |
   <a href="#brand">Brand</a>
-  ·
+  |
   <a href="#open-source-and-credits">Credits</a>
 </p>
 
@@ -51,24 +51,9 @@ Roundcube as the mail engine and adds a polished interface layer on top:
 CBS Mail is intentionally transparent: this is a Roundcube-based reskin and
 enhancement layer, not a mail server and not a from-scratch email client.
 
-## Preview
+## UI Coverage
 
 The repository includes the full UI overlay used by the app:
-
-<p align="center">
-  <img src="docs/assets/cbs-mail-desktop-preview.png" alt="CBS Mail desktop preview" width="100%">
-</p>
-
-<table>
-  <tr>
-    <td width="44%">
-      <img src="docs/assets/cbs-mail-mobile-preview.png" alt="CBS Mail mobile preview">
-    </td>
-    <td width="56%">
-      <img src="docs/assets/cbs-mail-labels-preview.png" alt="CBS Mail labels preview">
-    </td>
-  </tr>
-</table>
 
 | Area | What CBS Mail changes |
 | --- | --- |
@@ -310,9 +295,6 @@ Roundcube serves plugin assets through `static.php`:
 CBS Mail uses the Cybrense/CBS visual identity across the webmail shell:
 
 - Header and README artwork: `docs/assets/readme-header.png`
-- Desktop preview: `docs/assets/cbs-mail-desktop-preview.png`
-- Mobile preview: `docs/assets/cbs-mail-mobile-preview.png`
-- Labels preview: `docs/assets/cbs-mail-labels-preview.png`
 - Product logos, favicons, and PWA icons: `branding/`
 
 Official Cybrense website:
