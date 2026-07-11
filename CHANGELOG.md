@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Hardened one-tap mobile message opening and added a navigation fallback.
+- Fixed label persistence fallback, mailbox-scoped assignments, and stale label filters.
+- Fixed restoring hidden default labels and surfaced storage errors instead of showing false success.
 - Removed the redundant mail-list toolbar menu control.
 - Added persistent trusted-domain handling for remote-content warnings.
 - Replaced the default Roundcube About surface with a branded CBS Mail page.

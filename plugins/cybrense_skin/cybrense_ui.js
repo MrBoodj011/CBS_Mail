@@ -342,6 +342,7 @@
 
   var LABEL_STORE_KEY = "cybrense.labels.v1";
   var activeLabelFilter = "";
+  var labelContext = "";
   var defaultLabels = [
     { id: "cybrense-team", name: "Cybrense Team", color: "blue" },
     { id: "security", name: "Securite", color: "green" },
@@ -456,11 +457,21 @@
   }
 
   function readRawLabelStore(storageKey) {
+    var value = null;
+
     try {
       if (window.rcmail && typeof window.rcmail.local_storage_get_item === "function") {
-        return normalizeStoreValue(window.rcmail.local_storage_get_item(storageKey));
+        value = normalizeStoreValue(window.rcmail.local_storage_get_item(storageKey));
       }
+    } catch (error) {
+      value = null;
+    }
 
+    if (value) {
+      return value;
+    }
+
+    try {
       return normalizeStoreValue(window.localStorage.getItem(storageKey));
     } catch (error) {
       return null;
@@ -470,7 +481,9 @@
   function writeRawLabelStore(storageKey, store) {
     try {
       if (window.rcmail && typeof window.rcmail.local_storage_set_item === "function") {
-        return window.rcmail.local_storage_set_item(storageKey, store);
+        if (window.rcmail.local_storage_set_item(storageKey, store)) {
+          return true;
+        }
       }
 
       window.localStorage.setItem(storageKey, JSON.stringify(store));
@@ -541,6 +554,21 @@
     return writeRawLabelStore(labelStoreKey(), store);
   }
 
+  function syncLabelContext() {
+    var env = (window.rcmail && window.rcmail.env) || {};
+    var mailbox = String(env.mailbox || env.mbox || "");
+    var nextContext = labelStoreKey() + "|" + mailbox;
+
+    if (labelContext && labelContext !== nextContext) {
+      activeLabelFilter = "";
+      if (document.body) {
+        document.body.classList.remove("cybrense-label-filter-active");
+      }
+    }
+
+    labelContext = nextContext;
+  }
+
   function slugifyLabel(value) {
     var slug = String(value || "")
       .toLowerCase()
@@ -562,11 +590,24 @@
   }
 
   function messageMailbox(uid) {
+    var mailbox = "";
+
     if (window.rcmail && typeof window.rcmail.get_message_mailbox === "function") {
-      return window.rcmail.get_message_mailbox(uid) || "";
+      try {
+        mailbox = window.rcmail.get_message_mailbox(uid) || "";
+      } catch (error) {
+        mailbox = "";
+      }
+
+      if (mailbox) {
+        return String(mailbox);
+      }
     }
 
-    return (window.rcmail && window.rcmail.env && window.rcmail.env.mailbox) || "INBOX";
+    return String(
+      (window.rcmail && window.rcmail.env && (window.rcmail.env.mailbox || window.rcmail.env.mbox)) ||
+        "INBOX"
+    );
   }
 
   function messageKey(uid) {
@@ -593,6 +634,10 @@
 
       match = String(window.location.href).match(/[?&]_mbox=([^&]+)/);
       mailbox = match ? decodeURIComponent(match[1].replace(/\+/g, " ")) : mailbox;
+    }
+
+    if (!mailbox && uid) {
+      mailbox = messageMailbox(uid);
     }
 
     if (!uid || !document.querySelector("#message-header")) {
@@ -714,6 +759,7 @@
   function toggleLabelForSelection(labelId) {
     var label = labelById(labelId);
     var uids = selectedMessageUids();
+    syncLabelContext();
 
     if (!label) {
       return;
@@ -752,7 +798,10 @@
       }
     });
 
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+      return;
+    }
     applyMessageLabels();
     updateLabelCounts();
     showLabelNotice(
@@ -763,6 +812,7 @@
 
   function filterMessagesByLabel(labelId) {
     var label = labelById(labelId);
+    syncLabelContext();
 
     if (!label) {
       return;
@@ -801,6 +851,7 @@
     var key;
     var labels;
     var remove;
+    syncLabelContext();
 
     if (!info || !label) {
       return;
@@ -824,7 +875,10 @@
       delete store.messages[key];
     }
 
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+      return;
+    }
     renderMessageLabelPicker();
     applyMessageLabels();
     syncMessageListState();
@@ -851,6 +905,23 @@
     var id = base;
     var suffix = 2;
 
+    if (defaultLabels.some(function (label) {
+      return label.id === id && (store.hiddenLabels || []).indexOf(id) !== -1;
+    })) {
+      store.hiddenLabels = (store.hiddenLabels || []).filter(function (hiddenId) {
+        return hiddenId !== id;
+      });
+
+      if (!writeLabelStore(store)) {
+        showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+        return false;
+      }
+
+      refreshLabelUi();
+      showLabelNotice("Etiquette restauree: " + name, "confirmation");
+      return true;
+    }
+
     while (labelById(id, store)) {
       id = base + "-" + suffix;
       suffix++;
@@ -860,7 +931,10 @@
       return hiddenId !== id;
     });
     store.labels.push({ id: id, name: name, color: "blue" });
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+      return false;
+    }
 
     var current = document.querySelector(".cybrense-labels");
     if (current) {
@@ -2606,6 +2680,7 @@
   var mailEnhanceTimer;
 
   function runMailEnhancements() {
+    syncLabelContext();
     syncViewportClasses();
     setupResponsiveObserver();
     applyResizableLayout();
