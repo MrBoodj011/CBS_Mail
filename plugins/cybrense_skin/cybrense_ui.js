@@ -634,6 +634,11 @@
       return uid;
     }
 
+    uid = row.getAttribute("data-message-id");
+    if (uid) {
+      return uid;
+    }
+
     uid = String(row.id || "").match(/^rcmrow(.+)/);
     return uid ? uid[1] : "";
   }
@@ -1747,6 +1752,8 @@
   function openMessageFromMobileRow(row) {
     var uid = rowUid(row);
     var mbox;
+    var opened = false;
+    var url;
 
     if (!uid || !window.rcmail) {
       return;
@@ -1775,11 +1782,23 @@
     }
 
     if (typeof window.rcmail.show_message === "function") {
-      window.rcmail.show_message(uid);
+      try {
+        window.rcmail.show_message(uid);
+        opened = true;
+      } catch (error) {
+        opened = false;
+      }
+    }
+
+    if (opened) {
       return;
     }
 
-    window.location.href = "?_task=mail&_action=show&_uid=" + encodeURIComponent(uid);
+    url = "?_task=mail&_action=show&_uid=" + encodeURIComponent(uid);
+    if (mbox) {
+      url += "&_mbox=" + encodeURIComponent(mbox);
+    }
+    window.location.href = url;
   }
 
   function isMobileRowOpenControl(event, row) {
@@ -1799,6 +1818,8 @@
     var pointerRow = null;
     var pointerX = 0;
     var pointerY = 0;
+    var lastOpenUid = "";
+    var lastOpenAt = 0;
 
     if (!list || list.getAttribute("data-cybrense-mobile-open") === "true") {
       return;
@@ -1825,9 +1846,21 @@
     }
 
     function openFromEvent(event, row) {
+      var uid;
+      var now;
+
       if (!row) {
         return;
       }
+
+      uid = rowUid(row);
+      now = Date.now();
+      if (!uid || (uid === lastOpenUid && now - lastOpenAt < 350)) {
+        return;
+      }
+
+      lastOpenUid = uid;
+      lastOpenAt = now;
 
       event.preventDefault();
       event.stopPropagation();
@@ -2068,6 +2101,7 @@
 
       enhanceRemoteObjectsBanner(doc);
       bindRemoteObjectActions(doc);
+      bindRemoteFrameObserver(doc);
 
       var frameUrl = "";
       try {
@@ -2108,6 +2142,33 @@
       frame.addEventListener("load", paintFrame);
     }
     paintFrame();
+  }
+
+  function bindRemoteFrameObserver(doc) {
+    var root;
+
+    if (!doc || typeof MutationObserver !== "function") {
+      return;
+    }
+
+    root = doc.documentElement || doc.body;
+    if (!root || root.getAttribute("data-cybrense-remote-observer-bound") === "true") {
+      return;
+    }
+
+    root.setAttribute("data-cybrense-remote-observer-bound", "true");
+    new MutationObserver(function (mutations) {
+      var hasAddedNodes = mutations.some(function (mutation) {
+        return mutation.type === "childList" && mutation.addedNodes && mutation.addedNodes.length;
+      });
+
+      if (!hasAddedNodes) {
+        return;
+      }
+
+      enhanceRemoteObjectsBanner(doc);
+      bindRemoteObjectActions(doc);
+    }).observe(root, { childList: true, subtree: true });
   }
 
   function enhanceRemoteObjectsBanner(root) {
@@ -2196,6 +2257,26 @@
     return match ? match[0].toLowerCase() : "";
   }
 
+  function remoteDomainMatchesTrustedDomains(sender) {
+    var email = normalizeRemoteSender(sender);
+    var domain;
+    var domains;
+
+    if (!email || !window.rcmail || !window.rcmail.env) {
+      return false;
+    }
+
+    domain = email.split("@")[1] || "";
+    domains = Array.isArray(window.rcmail.env.cybrense_trusted_remote_domains)
+      ? window.rcmail.env.cybrense_trusted_remote_domains
+      : [];
+
+    return domains.some(function (trustedDomain) {
+      trustedDomain = String(trustedDomain || "").toLowerCase().replace(/^[@*.]+/, "");
+      return trustedDomain && (domain === trustedDomain || domain.slice(-(trustedDomain.length + 1)) === "." + trustedDomain);
+    });
+  }
+
   function readRemoteTrustStore() {
     var storageKey = remoteTrustStoreKey();
     var values;
@@ -2246,6 +2327,10 @@
 
     if (!email) {
       return false;
+    }
+
+    if (remoteDomainMatchesTrustedDomains(email)) {
+      return true;
     }
 
     trusted = readRemoteTrustStore().map(normalizeRemoteSender).filter(Boolean);

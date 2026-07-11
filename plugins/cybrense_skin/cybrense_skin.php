@@ -2,7 +2,7 @@
 
 class cybrense_skin extends rcube_plugin
 {
-    public $task = 'login|mail|addressbook|settings';
+    public $task = 'login|mail|addressbook|settings|utils';
 
     public function init()
     {
@@ -13,6 +13,7 @@ class cybrense_skin extends rcube_plugin
         $this->include_stylesheet('cybrense_compact.css');
         $this->include_stylesheet('cybrense_labels.css');
         $this->include_stylesheet('cybrense_login.css');
+        $this->include_stylesheet('cybrense_about.css');
         $this->include_script('cybrense_ui.js');
         $this->include_script('cybrense_pwa.js');
         $this->add_pwa_headers();
@@ -66,6 +67,13 @@ class cybrense_skin extends rcube_plugin
                     array_values(array_unique(array_map(
                         'strtolower',
                         (array) $rcmail->config->get('cybrense_trusted_remote_senders', [])
+                    )))
+                );
+                $rcmail->output->set_env(
+                    'cybrense_trusted_remote_domains',
+                    array_values(array_unique(array_map(
+                        'strtolower',
+                        (array) $rcmail->config->get('cybrense_remote_content_trusted_domains', [])
                     )))
                 );
             }

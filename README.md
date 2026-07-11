@@ -267,6 +267,7 @@ The plugin:
 - injects PWA metadata,
 - registers branded favicon/app icons,
 - syncs trusted remote senders to the frontend,
+- syncs trusted remote domains so configured company senders do not get a repeated warning,
 - hooks into Roundcube `message_check_safe`,
 - registers `plugin.cybrense_trust_sender`.
 
@@ -278,6 +279,7 @@ cybrense_mobile.css
 cybrense_compact.css
 cybrense_labels.css
 cybrense_login.css
+cybrense_about.css
 ```
 
 Loaded scripts:

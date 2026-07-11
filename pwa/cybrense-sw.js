@@ -1,4 +1,4 @@
-const CYBRENSE_SW_VERSION = "cybrense-mail-pwa-v1";
+const CYBRENSE_SW_VERSION = "cybrense-mail-pwa-v2";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();

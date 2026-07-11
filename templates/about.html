@@ -1,18 +1,47 @@
 <roundcube:include file="includes/layout.html" />
+<roundcube:if condition="!env:framed && !env:extwin" />
+	<roundcube:include file="includes/menu.html" />
+<roundcube:endif />
 
 <h1 class="voice"><roundcube:label name="about" /></h1>
 
-<div class="frame-content">
-	<roundcube:object name="aboutcontent" />
-	<h2 class="sysname">Roundcube Webmail <roundcube:object name="version" /></h2>
-	<p class="copyright"><roundcube:object name="copyright" /></p>
-	<p class="license"><roundcube:object name="license" /></p>
-	<div class="readtext">
-        <h3><roundcube:label name="skin" /></h3>
-        <roundcube:object name="skininfo" />
-		<h3><roundcube:label name="installedplugins" /></h3>
-		<roundcube:object name="pluginlist" id="pluginlist" class="records-table" />
-	</div>
-</div>
+<main class="cybrense-about-page" role="main">
+	<section class="cybrense-about-hero" aria-labelledby="cybrense-about-title">
+		<div class="cybrense-about-logo-wrap">
+			<roundcube:object name="logo" id="cybrense-about-logo" alt="Cybrense logo" />
+		</div>
+		<div>
+			<p class="cybrense-about-eyebrow">CYBRENSE / CBS MAIL</p>
+			<h2 id="cybrense-about-title">Secure webmail, made clearer.</h2>
+			<p class="cybrense-about-lead">A branded Roundcube experience for focused, secure communication across desktop and mobile.</p>
+		</div>
+	</section>
+
+	<section class="cybrense-about-grid" aria-label="CBS Mail information">
+		<article class="cybrense-about-card">
+			<span class="cybrense-about-card-icon" aria-hidden="true">&#10003;</span>
+			<h3>Cybrense interface</h3>
+			<p>Responsive navigation, readable message cards, labels, PWA support, and a consistent CBS visual system.</p>
+		</article>
+		<article class="cybrense-about-card">
+			<span class="cybrense-about-card-icon" aria-hidden="true">&#128274;</span>
+			<h3>Built on Roundcube</h3>
+			<p>Roundcube remains the open-source IMAP webmail engine. CBS Mail is an interface and enhancement layer.</p>
+		</article>
+		<article class="cybrense-about-card">
+			<span class="cybrense-about-card-icon" aria-hidden="true">&#9881;</span>
+			<h3>Open source project</h3>
+			<p>Version <roundcube:object name="version" /> with the GPL-licensed Roundcube foundation and documented project assets.</p>
+		</article>
+	</section>
+
+	<footer class="cybrense-about-footer">
+		<span>Cybrense Mail</span>
+		<span aria-hidden="true">&#8226;</span>
+		<span>Roundcube Webmail <roundcube:object name="version" /></span>
+		<span aria-hidden="true">&#8226;</span>
+		<span><roundcube:object name="copyright" /></span>
+	</footer>
+</main>
 
 <roundcube:include file="includes/footer.html" />

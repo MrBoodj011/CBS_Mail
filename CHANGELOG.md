@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-- No unreleased changes.
+- Hardened one-tap mobile message opening and added a navigation fallback.
+- Removed the redundant mail-list toolbar menu control.
+- Added persistent trusted-domain handling for remote-content warnings.
+- Replaced the default Roundcube About surface with a branded CBS Mail page.
 
 ## 1.0.1
 

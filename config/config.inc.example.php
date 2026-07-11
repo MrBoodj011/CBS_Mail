@@ -37,6 +37,7 @@ $config['dont_override'] = array_unique(array_merge($config['dont_override'] ?? 
 $config['collected_senders'] = '2';
 
 $config['cybrense_remote_content_trusted_domains'] = [
+    'cybrense.com',
     'mattermost.com',
     'slack.com',
     'github.com',
