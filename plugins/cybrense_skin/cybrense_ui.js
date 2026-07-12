@@ -1706,16 +1706,36 @@
   }
 
   function applyRowLabelFilter(row, store) {
-    if (!activeLabelFilter) {
-      row.classList.remove("cybrense-label-hidden");
+    var uid = rowUid(row);
+    var labels = uid ? normalizeLabelList(store.messages[messageKey(uid)]) : [];
+    var hidden = !!activeLabelFilter && labels.indexOf(activeLabelFilter) === -1;
+
+    if (row.classList.contains("cybrense-label-hidden") !== hidden) {
+      row.classList.toggle("cybrense-label-hidden", hidden);
+    }
+
+    if (hidden) {
+      if (!row.hidden) {
+        row.hidden = true;
+      }
+      if (row.getAttribute("aria-hidden") !== "true") {
+        row.setAttribute("aria-hidden", "true");
+      }
+      if (row.style.getPropertyValue("display") !== "none" || row.style.getPropertyPriority("display") !== "important") {
+        row.style.setProperty("display", "none", "important");
+      }
+      row.classList.remove("cybrense-row-action-active");
       return;
     }
 
-    var uid = rowUid(row);
-    var labels = uid ? normalizeLabelList(store.messages[messageKey(uid)]) : [];
-    row.classList.toggle("cybrense-label-hidden", labels.indexOf(activeLabelFilter) === -1);
-    if (row.classList.contains("cybrense-label-hidden")) {
-      row.classList.remove("cybrense-row-action-active");
+    if (row.hidden) {
+      row.hidden = false;
+    }
+    if (row.getAttribute("aria-hidden") === "true") {
+      row.removeAttribute("aria-hidden");
+    }
+    if (row.style.getPropertyValue("display") === "none") {
+      row.style.removeProperty("display");
     }
   }
 

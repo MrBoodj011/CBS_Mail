@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Made message labels deterministic: one tap/click now adds or removes exactly one label.
+- Fixed label filters so non-matching virtualized message rows are actually removed from view.
 - Fixed Docker/config environment mismatches and persisted SQLite under the mounted `./db` directory.
 - Kept label and trusted-sender migrations isolated to the active account, including message iframes.
 - Added repository invariant checks, least-privilege CI permissions, and a hardened Nginx example.

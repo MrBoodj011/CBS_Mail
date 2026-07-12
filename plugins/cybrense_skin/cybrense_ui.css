@@ -2035,6 +2035,13 @@ html:not(.iframe) #messagelist tr.cybrense-label-hidden {
   display: none !important;
 }
 
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-label-filter-active #messagelist tr.cybrense-label-hidden,
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-label-filter-active #messagelist tr.cybrense-row-enhanced.cybrense-label-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 html:not(.iframe) body.task-mail #messagelist tr.cybrense-row-enhanced td.cybrense-subject-cell {
   position: relative;
   padding-left: 62px !important;
