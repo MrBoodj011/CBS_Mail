@@ -7,6 +7,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Validate project
@@ -31,6 +34,9 @@ jobs:
         run: |
           node --check plugins/cybrense_skin/cybrense_ui.js
           node --check plugins/cybrense_skin/cybrense_pwa.js
+
+      - name: Verify repository invariants
+        run: node scripts/verify-project.mjs
 
       - name: Check PHP syntax
         run: php -l plugins/cybrense_skin/cybrense_skin.php

@@ -2,7 +2,20 @@
 
 ## Unreleased
 
-- No unreleased changes.
+- Fixed Docker/config environment mismatches and persisted SQLite under the mounted `./db` directory.
+- Kept label and trusted-sender migrations isolated to the active account, including message iframes.
+- Added repository invariant checks, least-privilege CI permissions, and a hardened Nginx example.
+- Added scheduled and pull-request CodeQL analysis for the JavaScript layer.
+- Hardened label rendering and notifications against DOM injection and pinned the Roundcube image digest.
+- Added SameSite cookie guidance and documented the privacy risk of broad trusted domains.
+- Improved mobile drawer toggles, keyboard focus states, and touch target sizing.
+- Fixed mobile access to label deletion controls and hardened mobile message mailbox routing.
+- Hardened one-tap mobile message opening and added a navigation fallback.
+- Fixed label persistence fallback, mailbox-scoped assignments, and stale label filters.
+- Fixed restoring hidden default labels and surfaced storage errors instead of showing false success.
+- Removed the redundant mail-list toolbar menu control.
+- Added persistent trusted-domain handling for remote-content warnings.
+- Replaced the default Roundcube About surface with a branded CBS Mail page.
 
 ## 1.0.1
 

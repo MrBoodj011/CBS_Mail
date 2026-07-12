@@ -342,6 +342,7 @@
 
   var LABEL_STORE_KEY = "cybrense.labels.v1";
   var activeLabelFilter = "";
+  var labelContext = "";
   var defaultLabels = [
     { id: "cybrense-team", name: "Cybrense Team", color: "blue" },
     { id: "security", name: "Securite", color: "green" },
@@ -379,6 +380,7 @@
 
   function labelAccountKey() {
     var env = (window.rcmail && window.rcmail.env) || {};
+    var parentEnv = {};
     var candidates = [
       env.username,
       env.user_name,
@@ -400,6 +402,29 @@
     var email = "";
     var i;
     var node;
+    var documents = [document];
+
+    try {
+      if (window.parent && window.parent !== window) {
+        if (window.parent.rcmail && window.parent.rcmail.env) {
+          parentEnv = window.parent.rcmail.env;
+          candidates = candidates.concat([
+            parentEnv.username,
+            parentEnv.user_name,
+            parentEnv.email,
+            parentEnv.mail_user,
+            parentEnv.login_username,
+            parentEnv.identity
+          ]);
+        }
+
+        if (window.parent.document && window.parent.document !== document) {
+          documents.push(window.parent.document);
+        }
+      }
+    } catch (error) {
+      parentEnv = {};
+    }
 
     if (env.user && typeof env.user === "object") {
       candidates.push(env.user.email, env.user.username, env.user.name);
@@ -411,8 +436,28 @@
       candidates.push(env.current_user.email, env.current_user.username, env.current_user.name);
     }
 
+    if (parentEnv.user && typeof parentEnv.user === "object") {
+      candidates.push(parentEnv.user.email, parentEnv.user.username, parentEnv.user.name);
+    } else {
+      candidates.push(parentEnv.user);
+    }
+
+    if (parentEnv.current_user && typeof parentEnv.current_user === "object") {
+      candidates.push(parentEnv.current_user.email, parentEnv.current_user.username, parentEnv.current_user.name);
+    }
+
     if (Array.isArray(env.identities)) {
       env.identities.forEach(function (identity) {
+        if (identity && typeof identity === "object") {
+          candidates.push(identity.email, identity.name);
+        } else {
+          candidates.push(identity);
+        }
+      });
+    }
+
+    if (Array.isArray(parentEnv.identities)) {
+      parentEnv.identities.forEach(function (identity) {
         if (identity && typeof identity === "object") {
           candidates.push(identity.email, identity.name);
         } else {
@@ -428,15 +473,19 @@
       }
     }
 
-    for (i = 0; i < selectors.length; i++) {
-      node = document.querySelector(selectors[i]);
-      email = node ? extractEmail(node.textContent) : "";
-      if (email) {
-        return email;
+    for (var documentIndex = 0; documentIndex < documents.length; documentIndex++) {
+      for (i = 0; i < selectors.length; i++) {
+        node = documents[documentIndex].querySelector(selectors[i]);
+        email = node ? extractEmail(node.textContent) : "";
+        if (email) {
+          return email;
+        }
       }
     }
 
-    return env.user_id ? "user-" + String(env.user_id) : "default";
+    return env.user_id || parentEnv.user_id
+      ? "user-" + String(env.user_id || parentEnv.user_id)
+      : "default";
   }
 
   function labelStoreKey() {
@@ -456,11 +505,21 @@
   }
 
   function readRawLabelStore(storageKey) {
+    var value = null;
+
     try {
       if (window.rcmail && typeof window.rcmail.local_storage_get_item === "function") {
-        return normalizeStoreValue(window.rcmail.local_storage_get_item(storageKey));
+        value = normalizeStoreValue(window.rcmail.local_storage_get_item(storageKey));
       }
+    } catch (error) {
+      value = null;
+    }
 
+    if (value) {
+      return value;
+    }
+
+    try {
       return normalizeStoreValue(window.localStorage.getItem(storageKey));
     } catch (error) {
       return null;
@@ -470,7 +529,9 @@
   function writeRawLabelStore(storageKey, store) {
     try {
       if (window.rcmail && typeof window.rcmail.local_storage_set_item === "function") {
-        return window.rcmail.local_storage_set_item(storageKey, store);
+        if (window.rcmail.local_storage_set_item(storageKey, store)) {
+          return true;
+        }
       }
 
       window.localStorage.setItem(storageKey, JSON.stringify(store));
@@ -480,14 +541,30 @@
     }
   }
 
+  function removeRawLabelStore(storageKey) {
+    try {
+      if (window.rcmail && typeof window.rcmail.local_storage_remove_item === "function") {
+        window.rcmail.local_storage_remove_item(storageKey);
+      }
+    } catch (error) {
+      // Continue with the browser storage fallback.
+    }
+
+    try {
+      window.localStorage.removeItem(storageKey);
+    } catch (error) {
+      // Storage can be unavailable in private or restricted browser contexts.
+    }
+  }
+
   function readLabelStore() {
     var storageKey = labelStoreKey();
     var store = readRawLabelStore(storageKey);
 
     if (!store) {
       store = readRawLabelStore(LABEL_STORE_KEY);
-      if (store) {
-        writeRawLabelStore(storageKey, store);
+      if (store && writeRawLabelStore(storageKey, store)) {
+        removeRawLabelStore(LABEL_STORE_KEY);
       }
     }
 
@@ -541,6 +618,21 @@
     return writeRawLabelStore(labelStoreKey(), store);
   }
 
+  function syncLabelContext() {
+    var env = (window.rcmail && window.rcmail.env) || {};
+    var mailbox = String(env.mailbox || env.mbox || "");
+    var nextContext = labelStoreKey() + "|" + mailbox;
+
+    if (labelContext && labelContext !== nextContext) {
+      activeLabelFilter = "";
+      if (document.body) {
+        document.body.classList.remove("cybrense-label-filter-active");
+      }
+    }
+
+    labelContext = nextContext;
+  }
+
   function slugifyLabel(value) {
     var slug = String(value || "")
       .toLowerCase()
@@ -562,11 +654,24 @@
   }
 
   function messageMailbox(uid) {
+    var mailbox = "";
+
     if (window.rcmail && typeof window.rcmail.get_message_mailbox === "function") {
-      return window.rcmail.get_message_mailbox(uid) || "";
+      try {
+        mailbox = window.rcmail.get_message_mailbox(uid) || "";
+      } catch (error) {
+        mailbox = "";
+      }
+
+      if (mailbox) {
+        return String(mailbox);
+      }
     }
 
-    return (window.rcmail && window.rcmail.env && window.rcmail.env.mailbox) || "INBOX";
+    return String(
+      (window.rcmail && window.rcmail.env && (window.rcmail.env.mailbox || window.rcmail.env.mbox)) ||
+        "INBOX"
+    );
   }
 
   function messageKey(uid) {
@@ -593,6 +698,10 @@
 
       match = String(window.location.href).match(/[?&]_mbox=([^&]+)/);
       mailbox = match ? decodeURIComponent(match[1].replace(/\+/g, " ")) : mailbox;
+    }
+
+    if (!mailbox && uid) {
+      mailbox = messageMailbox(uid);
     }
 
     if (!uid || !document.querySelector("#message-header")) {
@@ -630,6 +739,11 @@
     }
 
     uid = row.getAttribute("data-uid");
+    if (uid) {
+      return uid;
+    }
+
+    uid = row.getAttribute("data-message-id");
     if (uid) {
       return uid;
     }
@@ -681,6 +795,16 @@
   }
 
   function showLabelNotice(message, type) {
+    message = String(message || "").replace(/[&<>\"']/g, function (character) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[character];
+    });
+
     if (window.rcmail && typeof window.rcmail.display_message === "function") {
       window.rcmail.display_message(message, type || "confirmation");
       return;
@@ -709,6 +833,7 @@
   function toggleLabelForSelection(labelId) {
     var label = labelById(labelId);
     var uids = selectedMessageUids();
+    syncLabelContext();
 
     if (!label) {
       return;
@@ -747,7 +872,10 @@
       }
     });
 
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+      return;
+    }
     applyMessageLabels();
     updateLabelCounts();
     showLabelNotice(
@@ -758,6 +886,7 @@
 
   function filterMessagesByLabel(labelId) {
     var label = labelById(labelId);
+    syncLabelContext();
 
     if (!label) {
       return;
@@ -796,6 +925,7 @@
     var key;
     var labels;
     var remove;
+    syncLabelContext();
 
     if (!info || !label) {
       return;
@@ -819,7 +949,10 @@
       delete store.messages[key];
     }
 
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+      return;
+    }
     renderMessageLabelPicker();
     applyMessageLabels();
     syncMessageListState();
@@ -836,7 +969,10 @@
   }
 
   function saveCustomLabel(name) {
-    name = String(name || "").trim();
+    name = String(name || "")
+      .replace(/[\u0000-\u001f\u007f]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
     if (!name) {
       return false;
     }
@@ -845,6 +981,23 @@
     var base = slugifyLabel(name);
     var id = base;
     var suffix = 2;
+
+    if (defaultLabels.some(function (label) {
+      return label.id === id && (store.hiddenLabels || []).indexOf(id) !== -1;
+    })) {
+      store.hiddenLabels = (store.hiddenLabels || []).filter(function (hiddenId) {
+        return hiddenId !== id;
+      });
+
+      if (!writeLabelStore(store)) {
+        showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+        return false;
+      }
+
+      refreshLabelUi();
+      showLabelNotice("Etiquette restauree: " + name, "confirmation");
+      return true;
+    }
 
     while (labelById(id, store)) {
       id = base + "-" + suffix;
@@ -855,7 +1008,10 @@
       return hiddenId !== id;
     });
     store.labels.push({ id: id, name: name, color: "blue" });
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
+      return false;
+    }
 
     var current = document.querySelector(".cybrense-labels");
     if (current) {
@@ -1219,31 +1375,53 @@
     if (sidebar) {
       sidebar.classList.remove("cybrense-mobile-drawer-open");
     }
+
+    document.querySelectorAll(
+      "a.task-menu-button[href='#menu'], a.toolbar-menu-button[href='#menu'], a.button[href='#menu'], " +
+        "a.back-sidebar-button[href='#sidebar'], a.button[href='#sidebar']"
+    ).forEach(function (button) {
+      button.setAttribute("aria-expanded", "false");
+    });
   }
 
   function openMobileDrawer(kind) {
     var menu = document.querySelector("#layout-menu");
     var sidebar = document.querySelector("#layout-sidebar");
+    var target = kind === "folders" ? sidebar : menu;
+    var wasOpen;
 
     if (!isCompactAppLayout()) {
       return false;
     }
 
+    if (!target) {
+      return false;
+    }
+
+    wasOpen = target.classList.contains("cybrense-mobile-drawer-open");
     closeMobileDrawers();
-    if (kind === "folders") {
-      if (!sidebar) {
-        return false;
-      }
-      sidebar.classList.add("cybrense-mobile-drawer-open");
-      document.body.classList.add("cybrense-mobile-sidebar-open");
+    if (wasOpen) {
       return true;
     }
 
-    if (!menu) {
-      return false;
+    if (kind === "folders") {
+      sidebar.classList.add("cybrense-mobile-drawer-open");
+      document.body.classList.add("cybrense-mobile-sidebar-open");
+      document.querySelectorAll(
+        "a.back-sidebar-button[href='#sidebar'], a.button[href='#sidebar']"
+      ).forEach(function (button) {
+        button.setAttribute("aria-expanded", "true");
+      });
+      return true;
     }
+
     menu.classList.add("cybrense-mobile-drawer-open");
     document.body.classList.add("cybrense-mobile-menu-open");
+    document.querySelectorAll(
+      "a.task-menu-button[href='#menu'], a.toolbar-menu-button[href='#menu'], a.button[href='#menu']"
+    ).forEach(function (button) {
+      button.setAttribute("aria-expanded", "true");
+    });
     return true;
   }
 
@@ -1747,6 +1925,8 @@
   function openMessageFromMobileRow(row) {
     var uid = rowUid(row);
     var mbox;
+    var opened = false;
+    var url;
 
     if (!uid || !window.rcmail) {
       return;
@@ -1757,7 +1937,7 @@
       window.rcmail.preview_timer = null;
     }
 
-    mbox = typeof window.rcmail.get_message_mailbox === "function" ? window.rcmail.get_message_mailbox(uid) : "";
+    mbox = messageMailbox(uid);
     if (mbox && window.rcmail.env && mbox === window.rcmail.env.drafts_mailbox && typeof window.rcmail.open_compose_step === "function") {
       window.rcmail.open_compose_step({ _draft_uid: uid, _mbox: mbox });
       return;
@@ -1775,11 +1955,23 @@
     }
 
     if (typeof window.rcmail.show_message === "function") {
-      window.rcmail.show_message(uid);
+      try {
+        window.rcmail.show_message(uid);
+        opened = true;
+      } catch (error) {
+        opened = false;
+      }
+    }
+
+    if (opened) {
       return;
     }
 
-    window.location.href = "?_task=mail&_action=show&_uid=" + encodeURIComponent(uid);
+    url = "?_task=mail&_action=show&_uid=" + encodeURIComponent(uid);
+    if (mbox) {
+      url += "&_mbox=" + encodeURIComponent(mbox);
+    }
+    window.location.href = url;
   }
 
   function isMobileRowOpenControl(event, row) {
@@ -1799,6 +1991,8 @@
     var pointerRow = null;
     var pointerX = 0;
     var pointerY = 0;
+    var lastOpenUid = "";
+    var lastOpenAt = 0;
 
     if (!list || list.getAttribute("data-cybrense-mobile-open") === "true") {
       return;
@@ -1825,9 +2019,21 @@
     }
 
     function openFromEvent(event, row) {
+      var uid;
+      var now;
+
       if (!row) {
         return;
       }
+
+      uid = rowUid(row);
+      now = Date.now();
+      if (!uid || (uid === lastOpenUid && now - lastOpenAt < 350)) {
+        return;
+      }
+
+      lastOpenUid = uid;
+      lastOpenAt = now;
 
       event.preventDefault();
       event.stopPropagation();
@@ -2068,6 +2274,7 @@
 
       enhanceRemoteObjectsBanner(doc);
       bindRemoteObjectActions(doc);
+      bindRemoteFrameObserver(doc);
 
       var frameUrl = "";
       try {
@@ -2108,6 +2315,33 @@
       frame.addEventListener("load", paintFrame);
     }
     paintFrame();
+  }
+
+  function bindRemoteFrameObserver(doc) {
+    var root;
+
+    if (!doc || typeof MutationObserver !== "function") {
+      return;
+    }
+
+    root = doc.documentElement || doc.body;
+    if (!root || root.getAttribute("data-cybrense-remote-observer-bound") === "true") {
+      return;
+    }
+
+    root.setAttribute("data-cybrense-remote-observer-bound", "true");
+    new MutationObserver(function (mutations) {
+      var hasAddedNodes = mutations.some(function (mutation) {
+        return mutation.type === "childList" && mutation.addedNodes && mutation.addedNodes.length;
+      });
+
+      if (!hasAddedNodes) {
+        return;
+      }
+
+      enhanceRemoteObjectsBanner(doc);
+      bindRemoteObjectActions(doc);
+    }).observe(root, { childList: true, subtree: true });
   }
 
   function enhanceRemoteObjectsBanner(root) {
@@ -2196,6 +2430,26 @@
     return match ? match[0].toLowerCase() : "";
   }
 
+  function remoteDomainMatchesTrustedDomains(sender) {
+    var email = normalizeRemoteSender(sender);
+    var domain;
+    var domains;
+
+    if (!email || !window.rcmail || !window.rcmail.env) {
+      return false;
+    }
+
+    domain = email.split("@")[1] || "";
+    domains = Array.isArray(window.rcmail.env.cybrense_trusted_remote_domains)
+      ? window.rcmail.env.cybrense_trusted_remote_domains
+      : [];
+
+    return domains.some(function (trustedDomain) {
+      trustedDomain = String(trustedDomain || "").toLowerCase().replace(/^[@*.]+/, "");
+      return trustedDomain && (domain === trustedDomain || domain.slice(-(trustedDomain.length + 1)) === "." + trustedDomain);
+    });
+  }
+
   function readRemoteTrustStore() {
     var storageKey = remoteTrustStoreKey();
     var values;
@@ -2209,6 +2463,7 @@
       values = JSON.parse(window.localStorage.getItem(REMOTE_TRUST_STORE_KEY) || "[]");
       if (Array.isArray(values) && values.length) {
         window.localStorage.setItem(storageKey, JSON.stringify(values));
+        window.localStorage.removeItem(REMOTE_TRUST_STORE_KEY);
       }
 
       return Array.isArray(values) ? values : [];
@@ -2246,6 +2501,10 @@
 
     if (!email) {
       return false;
+    }
+
+    if (remoteDomainMatchesTrustedDomains(email)) {
+      return true;
     }
 
     trusted = readRemoteTrustStore().map(normalizeRemoteSender).filter(Boolean);
@@ -2508,19 +2767,24 @@
       content.appendChild(empty);
     }
 
-    empty.innerHTML = [
-      '<div class="cybrense-filter-empty-icon"></div>',
-      "<strong>Aucun email avec cette etiquette</strong>",
-      "<span>",
-      activeLabel ? activeLabel.name : "Etiquette",
-      "</span>"
-    ].join("");
+    empty.textContent = "";
+    var icon = document.createElement("div");
+    var title = document.createElement("strong");
+    var labelName = document.createElement("span");
+
+    icon.className = "cybrense-filter-empty-icon";
+    title.textContent = "Aucun email avec cette etiquette";
+    labelName.textContent = activeLabel ? activeLabel.name : "Etiquette";
+    empty.appendChild(icon);
+    empty.appendChild(title);
+    empty.appendChild(labelName);
   }
 
   var mailObserver;
   var mailEnhanceTimer;
 
   function runMailEnhancements() {
+    syncLabelContext();
     syncViewportClasses();
     setupResponsiveObserver();
     applyResizableLayout();

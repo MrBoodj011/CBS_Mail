@@ -38,6 +38,7 @@ ROUNDCUBEMAIL_DEFAULT_HOST=ssl://imap.example.com
 ROUNDCUBEMAIL_DEFAULT_PORT=993
 ROUNDCUBEMAIL_SMTP_SERVER=ssl://smtp.example.com
 ROUNDCUBEMAIL_SMTP_PORT=465
+ROUNDCUBEMAIL_TRUSTED_HOST=mail.example.com
 ```
 
 These values are used by `docker-compose.yml`.
@@ -48,12 +49,29 @@ These values are used by `docker-compose.yml`.
 `config/config.inc.php` and change:
 
 ```php
-$config['imap_host'] = getenv('ROUNDCUBEMAIL_IMAP_HOST') ?: 'ssl://imap.example.com:993';
-$config['smtp_host'] = getenv('ROUNDCUBEMAIL_SMTP_HOST') ?: 'ssl://smtp.example.com:465';
+$config['imap_host'] = 'ssl://imap.example.com:993';
+$config['smtp_host'] = 'ssl://smtp.example.com:465';
 $config['des_key'] = 'CHANGE_ME_24_CHAR_SECRET';
 ```
 
 `des_key` must be unique per deployment and 24 characters long.
+
+The public config accepts the official Docker variables
+(`ROUNDCUBEMAIL_DEFAULT_HOST`, `ROUNDCUBEMAIL_DEFAULT_PORT`,
+`ROUNDCUBEMAIL_SMTP_SERVER`, and `ROUNDCUBEMAIL_SMTP_PORT`). Optional direct
+`ROUNDCUBEMAIL_IMAP_HOST` / `ROUNDCUBEMAIL_SMTP_HOST` values are useful only
+outside the official Docker entrypoint. SQLite is stored under
+`/var/roundcube/db`, which is the official image path and the persisted `./db`
+mount.
+
+Keep HTTPS enabled and use `Lax` session cookies for defense-in-depth against
+cross-site request contexts:
+
+```php
+$config['force_https'] = true;
+$config['use_https'] = true;
+$config['session_samesite'] = 'Lax';
+```
 
 ## Plugins
 

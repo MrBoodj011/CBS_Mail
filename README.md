@@ -113,6 +113,10 @@ cybrense.labels.v1.<account-email>
 Roundcube blocks remote resources for privacy. CBS Mail keeps that model and
 adds a branded trust flow for known senders and trusted domains.
 
+Trusted domains are an explicit deployment choice, not proof that an email
+sender was authenticated. Keep the list narrow because a spoofed sender can
+otherwise cause remote images to load and expose tracking information.
+
 Trusted sender data is account-specific. Default trusted senders/domains can be
 configured in `config/config.inc.php`.
 
@@ -198,7 +202,11 @@ ROUNDCUBEMAIL_DEFAULT_HOST=ssl://imap.example.com
 ROUNDCUBEMAIL_DEFAULT_PORT=993
 ROUNDCUBEMAIL_SMTP_SERVER=ssl://smtp.example.com
 ROUNDCUBEMAIL_SMTP_PORT=465
+ROUNDCUBEMAIL_TRUSTED_HOST=mail.example.com
 ```
+
+SQLite data is persisted through the `./db:/var/roundcube/db` mount used by the
+official Roundcube image.
 
 ## Architecture
 
@@ -267,6 +275,7 @@ The plugin:
 - injects PWA metadata,
 - registers branded favicon/app icons,
 - syncs trusted remote senders to the frontend,
+- syncs trusted remote domains so configured company senders do not get a repeated warning,
 - hooks into Roundcube `message_check_safe`,
 - registers `plugin.cybrense_trust_sender`.
 
@@ -278,6 +287,7 @@ cybrense_mobile.css
 cybrense_compact.css
 cybrense_labels.css
 cybrense_login.css
+cybrense_about.css
 ```
 
 Loaded scripts:

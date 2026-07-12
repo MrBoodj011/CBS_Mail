@@ -1,0 +1,140 @@
+/* Branded About surface. Keep it independent from Roundcube's readtext layout. */
+.cybrense-about-page {
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: clamp(24px, 5vw, 64px);
+  background: #f7faff;
+  color: #12213a;
+}
+
+.cybrense-about-hero {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: center;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid #dbe7f5;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(26, 67, 112, 0.1);
+}
+
+.cybrense-about-logo-wrap {
+  display: grid;
+  min-height: 120px;
+  place-items: center;
+  padding: 20px;
+  border-radius: 18px;
+  background: #061d3a;
+}
+
+.cybrense-about-logo-wrap #cybrense-about-logo,
+.cybrense-about-logo-wrap img {
+  display: block;
+  width: min(100%, 180px);
+  height: auto;
+}
+
+.cybrense-about-eyebrow {
+  margin: 0 0 10px;
+  color: #1670f5;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.cybrense-about-hero h2 {
+  margin: 0;
+  color: #10213b;
+  font-size: clamp(24px, 4vw, 38px);
+  line-height: 1.1;
+}
+
+.cybrense-about-lead {
+  max-width: 620px;
+  margin: 14px 0 0;
+  color: #5a6c83;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.cybrense-about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 980px;
+  margin: 18px auto 0;
+}
+
+.cybrense-about-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #dbe7f5;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.cybrense-about-card-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #eaf3ff;
+  color: #1670f5;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.cybrense-about-card h3 {
+  margin: 16px 0 8px;
+  color: #10213b;
+  font-size: 16px;
+}
+
+.cybrense-about-card p {
+  margin: 0;
+  color: #61738a;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cybrense-about-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 980px;
+  margin: 22px auto 0;
+  color: #7a8ba0;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media screen and (max-width: 720px) {
+  .cybrense-about-page {
+    padding: 16px;
+  }
+
+  .cybrense-about-hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 22px;
+    border-radius: 18px;
+  }
+
+  .cybrense-about-logo-wrap {
+    min-height: 90px;
+  }
+
+  .cybrense-about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cybrense-about-card {
+    padding: 18px;
+  }
+}

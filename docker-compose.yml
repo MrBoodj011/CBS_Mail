@@ -1,6 +1,7 @@
 services:
   roundcube:
-    image: roundcube/roundcubemail:latest
+    # Pin the upstream image so an unreviewed latest-image change cannot enter production.
+    image: roundcube/roundcubemail@sha256:dc3d04b46feb148507c52db9b536c4f5a980e2d4f339a8f1a880225f1c9c0a62
     container_name: roundcube
     restart: always
     ports:
@@ -8,7 +9,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./db:/var/www/html/db
+      - ./db:/var/roundcube/db
       - ./config/config.inc.php:/var/www/html/config/config.inc.php
       - ./branding:/var/www/html/skins/elastic/branding
       - ./branding/watermark.html:/var/www/html/skins/elastic/watermark.html
@@ -24,3 +25,4 @@ services:
       - ROUNDCUBEMAIL_DEFAULT_PORT=${ROUNDCUBEMAIL_DEFAULT_PORT:-993}
       - ROUNDCUBEMAIL_SMTP_SERVER=${ROUNDCUBEMAIL_SMTP_SERVER:-ssl://smtp.example.com}
       - ROUNDCUBEMAIL_SMTP_PORT=${ROUNDCUBEMAIL_SMTP_PORT:-465}
+      - ROUNDCUBEMAIL_TRUSTED_HOST=${ROUNDCUBEMAIL_TRUSTED_HOST:-}

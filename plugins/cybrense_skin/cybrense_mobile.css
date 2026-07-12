@@ -16,6 +16,8 @@
     width: 100% !important;
     min-width: 0 !important;
     display: table-row !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
   }
 
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-extra-cell,

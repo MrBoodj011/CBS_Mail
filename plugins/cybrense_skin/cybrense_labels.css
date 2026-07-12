@@ -1366,3 +1366,19 @@ html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content >
     flex-basis: 34px !important;
   }
 }
+
+/* Final touch target sizes for label assignment controls. */
+@media screen and (max-width: 720px) {
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready .cybrense-label-assign-button,
+  html.iframe body.task-mail.action-show .cybrense-label-assign-button,
+  html.iframe body.action-show .cybrense-label-assign-button {
+    min-height: 38px !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready .cybrense-message-label-chip,
+  html.iframe body.task-mail.action-show .cybrense-message-label-chip,
+  html.iframe body.action-show .cybrense-message-label-chip {
+    min-height: 36px !important;
+    height: 36px !important;
+  }
+}

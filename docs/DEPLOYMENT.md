@@ -24,6 +24,7 @@ Roundcube Docker container with CBS Mail mounts
 - Generate a unique 24-character Roundcube `des_key`.
 - Keep `config/config.inc.php` out of Git.
 - Keep `.env` out of Git.
+- Set `ROUNDCUBEMAIL_TRUSTED_HOST` to the public webmail hostname.
 - Use a real IMAP/SMTP server with TLS.
 - Restrict the container port to localhost when using a reverse proxy.
 - Back up Roundcube database/storage if using local SQLite.
@@ -40,6 +41,11 @@ X-Forwarded-Proto
 X-Forwarded-Host
 X-Real-IP
 ```
+
+Use the hardened example in `deploy/nginx-devmail.conf.example` as a starting
+point. It adds HSTS, content-type sniffing protection, a strict referrer policy,
+permissions restrictions, and a conservative CSP without blocking Roundcube's
+message and editor frames.
 
 ## PWA Notes
 

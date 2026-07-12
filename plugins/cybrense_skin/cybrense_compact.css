@@ -551,3 +551,54 @@ html.iframe body.action-show .remote-objects-message.cybrense-remote-banner a.cy
     flex: 1 1 100% !important;
   }
 }
+
+/* Touch controls: keep every action reachable without hover. */
+html:not(.iframe) body.cybrense-ui-ready button:focus-visible,
+html:not(.iframe) body.cybrense-ui-ready a:focus-visible {
+  outline: 3px solid rgba(9, 105, 255, 0.34) !important;
+  outline-offset: 2px !important;
+}
+
+@media (hover: none), (pointer: coarse) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready .cybrense-label-inline-delete {
+    opacity: 1 !important;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .button,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.button,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #mailsearchform .button,
+  html:not(.iframe) body.task-mail.cybrense-ui-ready .searchbar.menu .button {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    flex: 0 0 40px !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready .cybrense-label-item {
+    min-height: 40px !important;
+  }
+
+  html:not(.iframe) body.task-mail.cybrense-ui-ready .cybrense-label-inline-delete {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a,
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .button,
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .dropbutton > a {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    flex-basis: 40px !important;
+  }
+}
