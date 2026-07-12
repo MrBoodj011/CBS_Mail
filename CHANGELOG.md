@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fixed Docker/config environment mismatches and persisted SQLite under the mounted `./db` directory.
+- Kept label and trusted-sender migrations isolated to the active account, including message iframes.
+- Added repository invariant checks, least-privilege CI permissions, and a hardened Nginx example.
 - Hardened label rendering and notifications against DOM injection and pinned the Roundcube image digest.
 - Added SameSite cookie guidance and documented the privacy risk of broad trusted domains.
 - Improved mobile drawer toggles, keyboard focus states, and touch target sizing.

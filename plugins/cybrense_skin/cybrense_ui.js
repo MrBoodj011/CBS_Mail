@@ -380,6 +380,7 @@
 
   function labelAccountKey() {
     var env = (window.rcmail && window.rcmail.env) || {};
+    var parentEnv = {};
     var candidates = [
       env.username,
       env.user_name,
@@ -401,6 +402,29 @@
     var email = "";
     var i;
     var node;
+    var documents = [document];
+
+    try {
+      if (window.parent && window.parent !== window) {
+        if (window.parent.rcmail && window.parent.rcmail.env) {
+          parentEnv = window.parent.rcmail.env;
+          candidates = candidates.concat([
+            parentEnv.username,
+            parentEnv.user_name,
+            parentEnv.email,
+            parentEnv.mail_user,
+            parentEnv.login_username,
+            parentEnv.identity
+          ]);
+        }
+
+        if (window.parent.document && window.parent.document !== document) {
+          documents.push(window.parent.document);
+        }
+      }
+    } catch (error) {
+      parentEnv = {};
+    }
 
     if (env.user && typeof env.user === "object") {
       candidates.push(env.user.email, env.user.username, env.user.name);
@@ -412,8 +436,28 @@
       candidates.push(env.current_user.email, env.current_user.username, env.current_user.name);
     }
 
+    if (parentEnv.user && typeof parentEnv.user === "object") {
+      candidates.push(parentEnv.user.email, parentEnv.user.username, parentEnv.user.name);
+    } else {
+      candidates.push(parentEnv.user);
+    }
+
+    if (parentEnv.current_user && typeof parentEnv.current_user === "object") {
+      candidates.push(parentEnv.current_user.email, parentEnv.current_user.username, parentEnv.current_user.name);
+    }
+
     if (Array.isArray(env.identities)) {
       env.identities.forEach(function (identity) {
+        if (identity && typeof identity === "object") {
+          candidates.push(identity.email, identity.name);
+        } else {
+          candidates.push(identity);
+        }
+      });
+    }
+
+    if (Array.isArray(parentEnv.identities)) {
+      parentEnv.identities.forEach(function (identity) {
         if (identity && typeof identity === "object") {
           candidates.push(identity.email, identity.name);
         } else {
@@ -429,15 +473,19 @@
       }
     }
 
-    for (i = 0; i < selectors.length; i++) {
-      node = document.querySelector(selectors[i]);
-      email = node ? extractEmail(node.textContent) : "";
-      if (email) {
-        return email;
+    for (var documentIndex = 0; documentIndex < documents.length; documentIndex++) {
+      for (i = 0; i < selectors.length; i++) {
+        node = documents[documentIndex].querySelector(selectors[i]);
+        email = node ? extractEmail(node.textContent) : "";
+        if (email) {
+          return email;
+        }
       }
     }
 
-    return env.user_id ? "user-" + String(env.user_id) : "default";
+    return env.user_id || parentEnv.user_id
+      ? "user-" + String(env.user_id || parentEnv.user_id)
+      : "default";
   }
 
   function labelStoreKey() {
@@ -493,14 +541,30 @@
     }
   }
 
+  function removeRawLabelStore(storageKey) {
+    try {
+      if (window.rcmail && typeof window.rcmail.local_storage_remove_item === "function") {
+        window.rcmail.local_storage_remove_item(storageKey);
+      }
+    } catch (error) {
+      // Continue with the browser storage fallback.
+    }
+
+    try {
+      window.localStorage.removeItem(storageKey);
+    } catch (error) {
+      // Storage can be unavailable in private or restricted browser contexts.
+    }
+  }
+
   function readLabelStore() {
     var storageKey = labelStoreKey();
     var store = readRawLabelStore(storageKey);
 
     if (!store) {
       store = readRawLabelStore(LABEL_STORE_KEY);
-      if (store) {
-        writeRawLabelStore(storageKey, store);
+      if (store && writeRawLabelStore(storageKey, store)) {
+        removeRawLabelStore(LABEL_STORE_KEY);
       }
     }
 
@@ -2399,6 +2463,7 @@
       values = JSON.parse(window.localStorage.getItem(REMOTE_TRUST_STORE_KEY) || "[]");
       if (Array.isArray(values) && values.length) {
         window.localStorage.setItem(storageKey, JSON.stringify(values));
+        window.localStorage.removeItem(REMOTE_TRUST_STORE_KEY);
       }
 
       return Array.isArray(values) ? values : [];

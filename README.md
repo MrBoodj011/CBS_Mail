@@ -202,7 +202,11 @@ ROUNDCUBEMAIL_DEFAULT_HOST=ssl://imap.example.com
 ROUNDCUBEMAIL_DEFAULT_PORT=993
 ROUNDCUBEMAIL_SMTP_SERVER=ssl://smtp.example.com
 ROUNDCUBEMAIL_SMTP_PORT=465
+ROUNDCUBEMAIL_TRUSTED_HOST=mail.example.com
 ```
+
+SQLite data is persisted through the `./db:/var/roundcube/db` mount used by the
+official Roundcube image.
 
 ## Architecture
 
