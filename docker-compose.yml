@@ -1,6 +1,7 @@
 services:
   roundcube:
-    image: roundcube/roundcubemail:latest
+    # Pin the upstream image so an unreviewed latest-image change cannot enter production.
+    image: roundcube/roundcubemail@sha256:dc3d04b46feb148507c52db9b536c4f5a980e2d4f339a8f1a880225f1c9c0a62
     container_name: roundcube
     restart: always
     ports:

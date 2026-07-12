@@ -895,7 +895,10 @@
   }
 
   function saveCustomLabel(name) {
-    name = String(name || "").trim();
+    name = String(name || "")
+      .replace(/[\u0000-\u001f\u007f]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
     if (!name) {
       return false;
     }
@@ -2689,13 +2692,17 @@
       content.appendChild(empty);
     }
 
-    empty.innerHTML = [
-      '<div class="cybrense-filter-empty-icon"></div>',
-      "<strong>Aucun email avec cette etiquette</strong>",
-      "<span>",
-      activeLabel ? activeLabel.name : "Etiquette",
-      "</span>"
-    ].join("");
+    empty.textContent = "";
+    var icon = document.createElement("div");
+    var title = document.createElement("strong");
+    var labelName = document.createElement("span");
+
+    icon.className = "cybrense-filter-empty-icon";
+    title.textContent = "Aucun email avec cette etiquette";
+    labelName.textContent = activeLabel ? activeLabel.name : "Etiquette";
+    empty.appendChild(icon);
+    empty.appendChild(title);
+    empty.appendChild(labelName);
   }
 
   var mailObserver;

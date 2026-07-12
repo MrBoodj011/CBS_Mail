@@ -55,6 +55,15 @@ $config['des_key'] = 'CHANGE_ME_24_CHAR_SECRET';
 
 `des_key` must be unique per deployment and 24 characters long.
 
+Keep HTTPS enabled and use `Lax` session cookies for defense-in-depth against
+cross-site request contexts:
+
+```php
+$config['force_https'] = true;
+$config['use_https'] = true;
+$config['session_samesite'] = 'Lax';
+```
+
 ## Plugins
 
 CBS Mail expects the custom plugin to be enabled:

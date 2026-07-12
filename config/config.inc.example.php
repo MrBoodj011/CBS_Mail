@@ -23,6 +23,7 @@ $config['skin_logo'] = [
 $config['temp_dir'] = '/tmp/roundcube-temp';
 $config['force_https'] = true;
 $config['use_https'] = true;
+$config['session_samesite'] = 'Lax';
 
 // Generate a unique 24-character key for each deployment.
 $config['des_key'] = 'CHANGE_ME_24_CHAR_SECRET';

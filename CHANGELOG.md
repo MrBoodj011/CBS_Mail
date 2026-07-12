@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Hardened label rendering against DOM injection and pinned the Roundcube image digest.
+- Added SameSite cookie guidance and documented the privacy risk of broad trusted domains.
 - Improved mobile drawer toggles, keyboard focus states, and touch target sizing.
 - Fixed mobile access to label deletion controls and hardened mobile message mailbox routing.
 - Hardened one-tap mobile message opening and added a navigation fallback.

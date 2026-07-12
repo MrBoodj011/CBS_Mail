@@ -113,6 +113,10 @@ cybrense.labels.v1.<account-email>
 Roundcube blocks remote resources for privacy. CBS Mail keeps that model and
 adds a branded trust flow for known senders and trusted domains.
 
+Trusted domains are an explicit deployment choice, not proof that an email
+sender was authenticated. Keep the list narrow because a spoofed sender can
+otherwise cause remote images to load and expose tracking information.
+
 Trusted sender data is account-specific. Default trusted senders/domains can be
 configured in `config/config.inc.php`.
 
