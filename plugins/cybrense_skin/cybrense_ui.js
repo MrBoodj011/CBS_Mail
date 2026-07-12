@@ -343,6 +343,9 @@
   var LABEL_STORE_KEY = "cybrense.labels.v1";
   var activeLabelFilter = "";
   var labelContext = "";
+  var labelStoreCache = null;
+  var labelStoreSyncTimer = null;
+  var labelStoreMigrationQueued = false;
   var defaultLabels = [
     { id: "cybrense-team", name: "Cybrense Team", color: "blue" },
     { id: "security", name: "Securite", color: "green" },
@@ -504,6 +507,53 @@
     return value && typeof value === "object" ? value : null;
   }
 
+  function cloneStoreValue(value) {
+    try {
+      return JSON.parse(JSON.stringify(value));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function storeUpdatedAt(store) {
+    var value = store && Number(store.updatedAt);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
+  function readServerLabelStore() {
+    var env = (window.rcmail && window.rcmail.env) || {};
+    return normalizeStoreValue(env.cybrense_label_store_v2);
+  }
+
+  function scheduleLabelServerSave(store) {
+    var snapshot = cloneStoreValue(store);
+
+    if (!snapshot) {
+      return;
+    }
+
+    window.clearTimeout(labelStoreSyncTimer);
+    labelStoreSyncTimer = window.setTimeout(function () {
+      var target = window.rcmail;
+
+      try {
+        if ((!target || typeof target.http_post !== "function") && window.parent && window.parent !== window) {
+          target = window.parent.rcmail;
+        }
+      } catch (error) {
+        target = window.rcmail;
+      }
+
+      if (!target || typeof target.http_post !== "function") {
+        return;
+      }
+
+      target.http_post("plugin.cybrense_labels_save", {
+        _store: JSON.stringify(snapshot)
+      });
+    }, 180);
+  }
+
   function readRawLabelStore(storageKey) {
     var value = null;
 
@@ -559,13 +609,37 @@
 
   function readLabelStore() {
     var storageKey = labelStoreKey();
-    var store = readRawLabelStore(storageKey);
+    var localStore;
+    var serverStore;
+    var store;
+    var shouldSyncServer = false;
 
-    if (!store) {
-      store = readRawLabelStore(LABEL_STORE_KEY);
-      if (store && writeRawLabelStore(storageKey, store)) {
+    if (labelStoreCache) {
+      return labelStoreCache;
+    }
+
+    localStore = readRawLabelStore(storageKey);
+    serverStore = readServerLabelStore();
+
+    if (!localStore) {
+      localStore = readRawLabelStore(LABEL_STORE_KEY);
+      if (localStore && writeRawLabelStore(storageKey, localStore)) {
         removeRawLabelStore(LABEL_STORE_KEY);
       }
+    }
+
+    if (serverStore && localStore) {
+      if (storeUpdatedAt(localStore) > storeUpdatedAt(serverStore)) {
+        store = localStore;
+        shouldSyncServer = true;
+      } else {
+        store = serverStore;
+      }
+    } else if (serverStore) {
+      store = serverStore;
+    } else if (localStore) {
+      store = localStore;
+      shouldSyncServer = true;
     }
 
     if (!store || typeof store !== "object") {
@@ -593,6 +667,8 @@
     store.labels = merged;
     store.hiddenLabels = hiddenLabels;
     store.messages = store.messages && typeof store.messages === "object" ? store.messages : {};
+    store.version = 2;
+    store.updatedAt = storeUpdatedAt(store);
     var validLabelIds = {};
 
     store.labels.forEach(function (label) {
@@ -611,11 +687,36 @@
       }
     });
 
-    return store;
+    labelStoreCache = store;
+    writeRawLabelStore(storageKey, store);
+
+    if (shouldSyncServer && !labelStoreMigrationQueued) {
+      labelStoreMigrationQueued = true;
+      if (!store.updatedAt) {
+        store.updatedAt = Date.now();
+        writeRawLabelStore(storageKey, store);
+      }
+      scheduleLabelServerSave(store);
+    }
+
+    return labelStoreCache;
   }
 
   function writeLabelStore(store) {
-    return writeRawLabelStore(labelStoreKey(), store);
+    store.version = 2;
+    store.updatedAt = Date.now();
+    labelStoreCache = store;
+
+    if (!writeRawLabelStore(labelStoreKey(), store)) {
+      return false;
+    }
+
+    if (window.rcmail && window.rcmail.env) {
+      window.rcmail.env.cybrense_label_store_v2 = cloneStoreValue(store);
+    }
+
+    scheduleLabelServerSave(store);
+    return true;
   }
 
   function syncLabelContext() {
@@ -878,6 +979,7 @@
     }
     applyMessageLabels();
     updateLabelCounts();
+    notifyLabelChange();
     showLabelNotice(
       (remove ? "Etiquette retiree: " : "Etiquette ajoutee: ") + label.name,
       remove ? "notice" : "confirmation"
@@ -928,7 +1030,7 @@
     syncLabelContext();
 
     if (!info || !label) {
-      return;
+      return false;
     }
 
     key = messageKeyFor(info.uid, info.mailbox);
@@ -951,9 +1053,8 @@
 
     if (!writeLabelStore(store)) {
       showLabelNotice("Impossible d'enregistrer cette etiquette", "error");
-      return;
+      return false;
     }
-    renderMessageLabelPicker();
     applyMessageLabels();
     syncMessageListState();
     updateLabelCounts();
@@ -962,6 +1063,11 @@
       (remove ? "Etiquette retiree: " : "Etiquette ajoutee: ") + label.name,
       remove ? "notice" : "confirmation"
     );
+    return {
+      active: !remove,
+      count: labels.length,
+      label: label
+    };
   }
 
   function createCustomLabel() {
@@ -995,6 +1101,7 @@
       }
 
       refreshLabelUi();
+      notifyLabelChange();
       showLabelNotice("Etiquette restauree: " + name, "confirmation");
       return true;
     }
@@ -1020,6 +1127,7 @@
 
     bindLabelControls();
     updateLabelCounts();
+    notifyLabelChange();
     showLabelNotice("Etiquette ajoutee: " + name, "confirmation");
     return true;
   }
@@ -1068,7 +1176,10 @@
       activeLabelFilter = "";
     }
 
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible de supprimer cette etiquette", "error");
+      return false;
+    }
     refreshLabelUi();
     notifyLabelChange();
     showLabelNotice("Etiquette supprimee: " + label.name, "notice");
@@ -1702,16 +1813,36 @@
   }
 
   function applyRowLabelFilter(row, store) {
-    if (!activeLabelFilter) {
-      row.classList.remove("cybrense-label-hidden");
+    var uid = rowUid(row);
+    var labels = uid ? normalizeLabelList(store.messages[messageKey(uid)]) : [];
+    var hidden = !!activeLabelFilter && labels.indexOf(activeLabelFilter) === -1;
+
+    if (row.classList.contains("cybrense-label-hidden") !== hidden) {
+      row.classList.toggle("cybrense-label-hidden", hidden);
+    }
+
+    if (hidden) {
+      if (!row.hidden) {
+        row.hidden = true;
+      }
+      if (row.getAttribute("aria-hidden") !== "true") {
+        row.setAttribute("aria-hidden", "true");
+      }
+      if (row.style.getPropertyValue("display") !== "none" || row.style.getPropertyPriority("display") !== "important") {
+        row.style.setProperty("display", "none", "important");
+      }
+      row.classList.remove("cybrense-row-action-active");
       return;
     }
 
-    var uid = rowUid(row);
-    var labels = uid ? normalizeLabelList(store.messages[messageKey(uid)]) : [];
-    row.classList.toggle("cybrense-label-hidden", labels.indexOf(activeLabelFilter) === -1);
-    if (row.classList.contains("cybrense-label-hidden")) {
-      row.classList.remove("cybrense-row-action-active");
+    if (row.hidden) {
+      row.hidden = false;
+    }
+    if (row.getAttribute("aria-hidden") === "true") {
+      row.removeAttribute("aria-hidden");
+    }
+    if (row.style.getPropertyValue("display") === "none") {
+      row.style.removeProperty("display");
     }
   }
 
@@ -2650,6 +2781,10 @@
     var activeLabels;
     var list;
     var assignButton;
+    var messageKeyValue;
+    var pickerSignature;
+    var statusText;
+    var statusTitle = "Cliquez directement sur une etiquette pour l'ajouter ou la retirer";
 
     if (!info || !anchor) {
       if (existing) {
@@ -2659,7 +2794,16 @@
     }
 
     store = readLabelStore();
-    activeLabels = normalizeLabelList(store.messages[messageKeyFor(info.uid, info.mailbox)]);
+    messageKeyValue = messageKeyFor(info.uid, info.mailbox);
+    activeLabels = normalizeLabelList(store.messages[messageKeyValue]);
+    pickerSignature = store.labels.map(function (label) {
+      return [
+        label.id,
+        label.name,
+        label.color,
+        activeLabels.indexOf(label.id) !== -1 ? "1" : "0"
+      ].join(":");
+    }).join("|");
 
     if (!existing) {
       existing = document.createElement("div");
@@ -2667,49 +2811,101 @@
       existing.innerHTML = [
         '<div class="cybrense-message-labels-top">',
         '<div class="cybrense-message-labels-title">Etiquettes</div>',
-        '<button type="button" class="cybrense-label-assign-button" aria-expanded="true">Assigner</button>',
+        '<span class="cybrense-label-assign-button is-status" role="status">Etiquettes (0)</span>',
         '</div>',
         '<div class="cybrense-message-labels-list"></div>'
       ].join("");
 
-      existing.addEventListener("click", function (event) {
-        var toggle = event.target.closest(".cybrense-label-assign-button");
-        var button = event.target.closest(".cybrense-message-label-chip");
+      var lastPointerLabel = "";
+      var lastPointerAt = 0;
 
-        if (toggle) {
-          event.preventDefault();
-          existing.classList.add("is-open");
-          toggle.setAttribute("aria-expanded", "true");
-          return;
-        }
+      function handleMessageLabelToggle(event) {
+        var button = event.target.closest(".cybrense-message-label-chip");
+        var labelId;
+        var now;
+        var result;
 
         if (!button) {
           return;
         }
 
-        toggleLabelForMessage(currentMessageInfo(), button.getAttribute("data-label-id"));
-        existing.classList.add("is-open");
+        if (button.getAttribute("data-label-pending") === "true") {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
+        labelId = button.getAttribute("data-label-id");
+        now = Date.now();
+
+        if (event.type === "click" && labelId === lastPointerLabel && now - lastPointerAt < 700) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
+        if (event.type === "pointerup") {
+          if (typeof event.button === "number" && event.button !== 0) {
+            return;
+          }
+          lastPointerLabel = labelId;
+          lastPointerAt = now;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        button.setAttribute("data-label-pending", "true");
+        result = toggleLabelForMessage(currentMessageInfo(), labelId);
+        if (!result) {
+          button.removeAttribute("data-label-pending");
+          return;
+        }
+
+        button.classList.toggle("active", result.active);
+        button.setAttribute("aria-pressed", result.active ? "true" : "false");
+        button.setAttribute("aria-label", (result.active ? "Retirer " : "Ajouter ") + result.label.name);
+        button.setAttribute("data-label-state", result.active ? "assigned" : "available");
+        button.title = result.active ? "Retirer " + result.label.name : "Ajouter " + result.label.name;
+        button.removeAttribute("data-label-pending");
+
         assignButton = existing.querySelector(".cybrense-label-assign-button");
         if (assignButton) {
-          assignButton.setAttribute("aria-expanded", "true");
+          assignButton.textContent = "Etiquettes (" + result.count + ")";
         }
-      });
+
+        existing.classList.add("is-open");
+        window.setTimeout(renderMessageLabelPicker, 0);
+      }
+
+      existing.addEventListener("pointerup", handleMessageLabelToggle, true);
+      existing.addEventListener("click", handleMessageLabelToggle, true);
 
       anchor.insertAdjacentElement("afterend", existing);
     }
 
-    existing.setAttribute("data-message-key", messageKeyFor(info.uid, info.mailbox));
+    if (existing.getAttribute("data-message-key") !== messageKeyValue) {
+      existing.setAttribute("data-message-key", messageKeyValue);
+    }
     existing.classList.add("is-open");
     assignButton = existing.querySelector(".cybrense-label-assign-button");
     if (assignButton) {
       assignButton.classList.add("is-status");
-      assignButton.setAttribute("aria-expanded", "true");
-      assignButton.setAttribute("aria-disabled", "true");
-      assignButton.textContent = "Etiquettes (" + activeLabels.length + ")";
-      assignButton.title = "Cliquez directement sur une etiquette pour l'ajouter ou la retirer";
+      statusText = "Etiquettes (" + activeLabels.length + ")";
+      if (assignButton.textContent !== statusText) {
+        assignButton.textContent = statusText;
+      }
+      if (assignButton.title !== statusTitle) {
+        assignButton.title = statusTitle;
+      }
     }
 
     list = existing.querySelector(".cybrense-message-labels-list");
+    if (existing.getAttribute("data-label-signature") === pickerSignature) {
+      return;
+    }
+
+    existing.setAttribute("data-label-signature", pickerSignature);
     list.innerHTML = "";
 
     store.labels.forEach(function (label) {
@@ -2845,7 +3041,10 @@
     window.rcmail.addEventListener("responseafterlist", scheduleMailEnhancements);
   }
 
-  window.addEventListener("cybrense-labels-updated", scheduleMailEnhancements);
+  window.addEventListener("cybrense-labels-updated", function () {
+    labelStoreCache = null;
+    scheduleMailEnhancements();
+  });
   window.addEventListener("resize", scheduleMailEnhancements);
   window.addEventListener("storage", function (event) {
     if (
@@ -2855,6 +3054,7 @@
       event.key === labelStoreKey() ||
       String(event.key || "").indexOf(LABEL_STORE_KEY + ".") !== -1
     ) {
+      labelStoreCache = null;
       scheduleMailEnhancements();
     }
   });

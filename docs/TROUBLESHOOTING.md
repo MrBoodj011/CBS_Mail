@@ -63,12 +63,14 @@ The service worker is network-first, but browsers can still keep old state.
 
 ## Labels Disappeared
 
-Labels are browser-side metadata in `localStorage`. They can disappear if:
+Labels are synchronized through Roundcube user preferences and cached in
+`localStorage`. If labels do not appear on another device:
 
-- browser storage is cleared,
-- the account changes,
-- the site origin changes,
-- private/incognito mode is used.
+- confirm both devices use the same Roundcube account,
+- confirm the `cybrense_skin` plugin is enabled,
+- inspect the `plugin.cybrense_labels_save` request for an error response,
+- verify the Roundcube database is writable and persistent,
+- reload once to import legacy browser-only labels.
 
 ## Remote Content Warning Keeps Appearing
 

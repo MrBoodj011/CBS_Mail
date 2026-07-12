@@ -8,7 +8,7 @@
 
 <p align="center">
   A modern, mobile-ready Roundcube webmail experience with a custom Cybrense/CBS
-  UI skin, plugin layer, PWA support, and browser-side label management.
+  UI skin, plugin layer, PWA support, and synchronized per-user label management.
 </p>
 
 <p align="center">
@@ -79,7 +79,7 @@ The repository includes the full UI overlay used by the app:
 
 ### Labels / Etiquettes
 
-- Browser-side labels per account.
+- Labels stored in Roundcube user preferences and synchronized across browsers.
 - One-click assign/remove behavior.
 - Multiple labels on one email.
 - Sidebar label filtering and counts.
@@ -95,7 +95,8 @@ Facturation
 Archive
 ```
 
-Storage key format:
+The browser keeps an account-scoped cache for fast rendering and automatically
+migrates existing v1 data to the signed-in Roundcube user preference:
 
 ```text
 cybrense.labels.v1.<account-email>
@@ -125,8 +126,8 @@ configured in `config/config.inc.php`.
 - Not a mail server.
 - Not a replacement for IMAP or SMTP.
 - Not a fork of Roundcube core.
-- Not server-side IMAP labels. Labels are frontend metadata stored in the
-  browser.
+- Not server-side IMAP keywords. Labels are CBS Mail metadata stored in
+  Roundcube user preferences, so other mail clients do not see them.
 
 ## Quick Start
 
@@ -277,11 +278,14 @@ The plugin:
 - syncs trusted remote senders to the frontend,
 - syncs trusted remote domains so configured company senders do not get a repeated warning,
 - hooks into Roundcube `message_check_safe`,
-- registers `plugin.cybrense_trust_sender`.
+- registers `plugin.cybrense_trust_sender`,
+- registers the authenticated `plugin.cybrense_labels_save` action,
+- validates and stores labels in Roundcube user preferences.
 
 Loaded styles:
 
 ```text
+cybrense_tokens.css
 cybrense_ui.css
 cybrense_mobile.css
 cybrense_compact.css
@@ -331,6 +335,12 @@ https://cybrense.com/
 
 ## Development Checks
 
+Install development dependencies:
+
+```bash
+npm ci
+```
+
 JavaScript:
 
 ```bash
@@ -342,12 +352,24 @@ Docker Compose:
 
 ```bash
 docker compose config --quiet
+docker compose -f tests/docker-compose.e2e.yml config --quiet
 ```
 
 PHP, after the container is running:
 
 ```bash
 docker exec roundcube php -l /var/www/html/plugins/cybrense_skin/cybrense_skin.php
+docker exec roundcube php -l /var/www/html/plugins/cybrense_skin/cybrense_label_store.php
+```
+
+Security, CSS quality, and real desktop/mobile browser tests:
+
+```bash
+npm run check:security
+npm run check:css
+docker compose -f tests/docker-compose.e2e.yml up -d
+npm run test:e2e
+docker compose -f tests/docker-compose.e2e.yml down -v
 ```
 
 CSS brace sanity check:

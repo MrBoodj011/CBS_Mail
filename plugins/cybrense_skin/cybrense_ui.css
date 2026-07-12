@@ -1,232 +1,7 @@
 /* Cybrense Mail - Roundcube Elastic visual override */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
-:root {
-  --cbs-frame: #03152d;
-  --cbs-menu: #04162e;
-  --cbs-menu-2: #061f42;
-  --cbs-panel: #f8fbff;
-  --cbs-surface: #ffffff;
-  --cbs-soft: #f2f6fb;
-  --cbs-border: #e4ebf5;
-  --cbs-border-strong: #d2deee;
-  --cbs-text: #12213a;
-  --cbs-muted: #68758a;
-  --cbs-faint: #9aa8ba;
-  --cbs-blue: #0969ff;
-  --cbs-blue-2: #0b58d4;
-  --cbs-green: #14b875;
-  --cbs-red: #e54d5a;
-  --cbs-purple: #8f49e8;
-  --cbs-yellow: #ffb743;
-  --cbs-radius: 14px;
-  --cbs-radius-sm: 10px;
-  --cbs-shadow: 0 18px 50px rgba(24, 42, 74, 0.12);
-  --cbs-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
 /* Final message-view toolbar: match the clean standalone list toolbar. */
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header {
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 14px !important;
-  padding: 0 18px !important;
-  overflow: visible !important;
-  background: #ffffff !important;
-  border-bottom: 1px solid #dce7f3 !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > ul#toolbar-menu,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar.menu,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #mailtoolbar {
-  position: static !important;
-  inset: auto !important;
-  height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  display: inline-flex !important;
-  flex: 0 1 auto !important;
-  flex-flow: row nowrap !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 13px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu > li,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar > li {
-  width: 36px !important;
-  min-width: 36px !important;
-  max-width: 36px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  display: inline-flex !important;
-  flex: 0 0 36px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  list-style: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > a:not(.toolbar-menu-button):not(.select):not(.selection):not(.threads):not(.options),
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .button:not(.toolbar-menu-button):not(.select):not(.selection):not(.threads):not(.options),
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #mailtoolbar > a {
-  width: 36px !important;
-  min-width: 36px !important;
-  max-width: 36px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  display: inline-flex !important;
-  flex: 0 0 36px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border: 0 !important;
-  border-radius: 11px !important;
-  background: transparent !important;
-  color: #425a78 !important;
-  box-shadow: none !important;
-  font-size: 0 !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  text-indent: 0 !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .dropbutton,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu .dropbutton,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar .dropbutton,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #mailtoolbar > .dropbutton {
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  display: inline-flex !important;
-  flex: 0 0 auto !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .dropbutton > a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu .dropbutton > a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar .dropbutton > a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #mailtoolbar > .dropbutton > a {
-  width: 36px !important;
-  min-width: 36px !important;
-  max-width: 36px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  flex: 0 0 36px !important;
-  border: 0 !important;
-  border-radius: 11px !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.dropdown {
-  width: 14px !important;
-  min-width: 14px !important;
-  max-width: 14px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  flex: 0 0 14px !important;
-  margin: 0 0 0 -8px !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  color: #50647f !important;
-  opacity: 0.9 !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a:before {
-  position: static !important;
-  width: 21px !important;
-  min-width: 21px !important;
-  height: 21px !important;
-  min-height: 21px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  float: none !important;
-  color: currentColor !important;
-  font-size: 18px !important;
-  line-height: 21px !important;
-  text-align: center !important;
-  text-indent: 0 !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a .inner,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a > span {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.disabled,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .disabled {
-  color: #a8b4c3 !important;
-  opacity: 0.42 !important;
-  pointer-events: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a:hover:not(.disabled),
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .dropbutton:hover > a:not(.disabled) {
-  background: #edf5ff !important;
-  color: #0969ff !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.more,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.toolbar-menu-button,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #toolbar-menu > li:last-child > a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .toolbar > li:last-child > a,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #mailtoolbar > a.more {
-  background: #edf5ff !important;
-  color: #0969ff !important;
-  border-radius: 11px !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > a.back-list-button {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 11px !important;
-  box-shadow: none !important;
-}
 
 @media screen and (max-width: 720px) {
   html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header {
@@ -325,87 +100,6 @@ html:not(.iframe) body.task-login.cybrense-ui-ready #layout-content {
   box-shadow: none !important;
 }
 
-html:not(.iframe) body.task-login #logo {
-  width: min(250px, 72vw) !important;
-  min-width: 0 !important;
-  max-width: min(250px, 72vw) !important;
-  height: auto !important;
-  max-height: 76px !important;
-  display: block !important;
-  object-fit: contain !important;
-  margin: 0 auto 4px !important;
-  opacity: 1 !important;
-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.24)) !important;
-}
-
-html:not(.iframe) body.task-login #login-form {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 430px !important;
-  margin: 0 !important;
-  padding: 30px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(217, 230, 248, 0.86) !important;
-  border-radius: 18px !important;
-  background: rgba(255, 255, 255, 0.98) !important;
-  box-shadow: 0 28px 78px rgba(0, 10, 26, 0.34) !important;
-}
-
-html:not(.iframe) body.task-login #login-form table,
-html:not(.iframe) body.task-login #login-form tbody,
-html:not(.iframe) body.task-login #login-form tr,
-html:not(.iframe) body.task-login #login-form td {
-  width: 100% !important;
-  min-width: 0 !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-}
-
-html:not(.iframe) body.task-login #login-form td.title {
-  height: auto !important;
-  min-height: 0 !important;
-  padding: 0 0 7px !important;
-  color: #51627a !important;
-  font-size: 13px !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
-  text-align: left !important;
-}
-
-html:not(.iframe) body.task-login #login-form td.title:before,
-html:not(.iframe) body.task-login #login-form td.title:after,
-html:not(.iframe) body.task-login #login-form td.input:before,
-html:not(.iframe) body.task-login #login-form td.input:after,
-html:not(.iframe) body.task-login #login-form td.title label:before,
-html:not(.iframe) body.task-login #login-form td.title label:after {
-  display: none !important;
-  content: none !important;
-}
-
-html:not(.iframe) body.task-login #login-form td.title label {
-  position: static !important;
-  width: auto !important;
-  height: auto !important;
-  display: block !important;
-  clip: auto !important;
-  clip-path: none !important;
-  overflow: visible !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  color: #51627a !important;
-  font-size: 13px !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
-}
-
-html:not(.iframe) body.task-login #login-form td.input {
-  position: relative !important;
-  padding: 0 0 16px !important;
-}
-
 html:not(.iframe) body.task-login #login-form .input-group-prepend,
 html:not(.iframe) body.task-login #login-form .input-group-append,
 html:not(.iframe) body.task-login #login-form .input-group-text {
@@ -440,60 +134,6 @@ html:not(.iframe) body.task-login #login-form input[type="password"] {
   font-weight: 650 !important;
   line-height: 48px !important;
   box-shadow: none !important;
-}
-
-html:not(.iframe) body.task-login #login-form .form-control:focus,
-html:not(.iframe) body.task-login #login-form input[type="text"]:focus,
-html:not(.iframe) body.task-login #login-form input[type="password"]:focus {
-  border-color: #5ea4ff !important;
-  background: #ffffff !important;
-  box-shadow: 0 0 0 4px rgba(9, 105, 255, 0.12) !important;
-}
-
-html:not(.iframe) body.task-login #login-form p.formbuttons {
-  width: 100% !important;
-  margin: 4px 0 0 !important;
-  padding: 0 !important;
-}
-
-html:not(.iframe) body.task-login #rcmloginsubmit {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 50px !important;
-  min-height: 50px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 18px !important;
-  border: 0 !important;
-  border-radius: 13px !important;
-  background: linear-gradient(180deg, #1678ff 0%, #0969ff 100%) !important;
-  color: #ffffff !important;
-  font-size: 14px !important;
-  font-weight: 900 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-  box-shadow: 0 16px 32px rgba(9, 105, 255, 0.28) !important;
-}
-
-html:not(.iframe) body.task-login #login-footer {
-  margin: 18px 0 0 !important;
-  padding: 0 !important;
-  color: #66758a !important;
-  font-size: 12px !important;
-  font-weight: 650 !important;
-  line-height: 1.4 !important;
-  text-align: center !important;
-}
-
-html:not(.iframe) body.task-login #messagestack {
-  position: fixed !important;
-  right: 18px !important;
-  bottom: 18px !important;
-  left: auto !important;
-  z-index: 20 !important;
-  max-width: min(360px, calc(100vw - 36px)) !important;
 }
 
 @media screen and (max-width: 560px) {
@@ -793,48 +433,6 @@ html:not(.iframe) body.task-login #messagestack {
 }
 
 /* Final sidebar footer: pin Deconnexion to the bottom of the dark menu. */
-html:not(.iframe) body.cybrense-ui-ready #layout-menu {
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu {
-  height: 100% !important;
-  min-height: 0 !important;
-  padding-bottom: 88px !important;
-  overflow: hidden !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons {
-  position: absolute !important;
-  left: 16px !important;
-  right: 16px !important;
-  bottom: 18px !important;
-  z-index: 4 !important;
-  width: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a:not(.logout),
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.about,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.help,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.theme,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.support {
-  display: none !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a.logout {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-}
 
 @media screen and (max-width: 980px) {
   html:not(.iframe) body.cybrense-ui-ready #taskmenu {
@@ -849,48 +447,6 @@ html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a.logout {
 }
 
 /* Final sidebar footer: pin Deconnexion to the bottom of the dark menu. */
-html:not(.iframe) body.cybrense-ui-ready #layout-menu {
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu {
-  height: 100% !important;
-  min-height: 0 !important;
-  padding-bottom: 88px !important;
-  overflow: hidden !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons {
-  position: absolute !important;
-  left: 16px !important;
-  right: 16px !important;
-  bottom: 18px !important;
-  z-index: 4 !important;
-  width: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a:not(.logout),
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.about,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.help,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.theme,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.support {
-  display: none !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a.logout {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-}
 
 @media screen and (max-width: 980px) {
   html:not(.iframe) body.cybrense-ui-ready #taskmenu {
@@ -2033,6 +1589,13 @@ html:not(.iframe) #messagelist tr.unread td {
 
 html:not(.iframe) #messagelist tr.cybrense-label-hidden {
   display: none !important;
+}
+
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-label-filter-active #messagelist tr.cybrense-label-hidden,
+html:not(.iframe) body.task-mail.cybrense-ui-ready.cybrense-label-filter-active #messagelist tr.cybrense-row-enhanced.cybrense-label-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 html:not(.iframe) body.task-mail #messagelist tr.cybrense-row-enhanced td.cybrense-subject-cell {
@@ -4464,49 +4027,16 @@ html:not(.iframe) body.task-mail.cybrense-ui-tight #layout-list {
   max-width: 360px !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-narrow #layout-menu,
-html:not(.iframe) body.task-mail.cybrense-ui-phone #layout-menu {
-  flex: 0 0 78px !important;
-  width: 78px !important;
-  min-width: 78px !important;
-  max-width: 78px !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-narrow #layout-menu .popover-header,
 html:not(.iframe) body.task-mail.cybrense-ui-phone #layout-menu .popover-header {
   justify-content: center !important;
   padding: 10px 8px !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-narrow #layout-menu #logo,
-html:not(.iframe) body.task-mail.cybrense-ui-phone #layout-menu #logo {
-  width: 52px !important;
-  max-width: 52px !important;
-  object-fit: cover !important;
-  object-position: left center !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-narrow #taskmenu,
-html:not(.iframe) body.task-mail.cybrense-ui-phone #taskmenu {
-  padding-left: 9px !important;
-  padding-right: 9px !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-narrow #taskmenu a,
-html:not(.iframe) body.task-mail.cybrense-ui-phone #taskmenu a {
-  justify-content: center !important;
-  padding: 0 !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-narrow #taskmenu a .inner,
 html:not(.iframe) body.task-mail.cybrense-ui-narrow #taskmenu .cybrense-sidebar-extras,
 html:not(.iframe) body.task-mail.cybrense-ui-phone #taskmenu a .inner,
 html:not(.iframe) body.task-mail.cybrense-ui-phone #taskmenu .cybrense-sidebar-extras {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-narrow #layout-sidebar,
-html:not(.iframe) body.task-mail.cybrense-ui-phone #layout-sidebar {
   display: none !important;
 }
 
@@ -5550,12 +5080,6 @@ html:not(.iframe) body.task-settings #layout-list .pagenav a.disabled {
   opacity: 1 !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-list .pagenav a .inner,
-html:not(.iframe) body.task-addressbook #layout-list .pagenav a .inner,
-html:not(.iframe) body.task-settings #layout-list .pagenav a .inner {
-  display: none !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-list .pagenav a:before,
 html:not(.iframe) body.task-addressbook #layout-list .pagenav a:before,
 html:not(.iframe) body.task-settings #layout-list .pagenav a:before {
@@ -5998,10 +5522,6 @@ html:not(.iframe) body.task-mail.cybrense-content-tight #layout-content > .heade
 
 html:not(.iframe) body.task-mail.cybrense-content-tight #mailtoolbar > .dropbutton,
 html:not(.iframe) body.task-mail.cybrense-content-tight #mailtoolbar > a.markmessage {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-content-tiny #layout-content > .header:after {
   display: none !important;
 }
 
@@ -6570,15 +6090,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar > .dropbutton > 
   border-radius: 10px !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a > span,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a > span,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a > span {
-  display: none !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a:before,
 html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a:before,
 html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a:before {
@@ -6773,85 +6284,6 @@ html:not(.iframe) body.task-mail.cybrense-content-nano #mailtoolbar > a.next {
 }
 
 /* Absolute final UI guards. Keep this as the last block. */
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header {
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
-  display: flex !important;
-  flex-flow: row nowrap !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 8px !important;
-  padding: 0 14px !important;
-  overflow: hidden !important;
-  background: #fff !important;
-  border-bottom: 1px solid #e3ebf6 !important;
-  white-space: nowrap !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .toolbar.menu,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .toolbar.menu,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .cybrense-list-toolbar-hidden,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.select,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.threads,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.options,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutton:has(a.select),
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutton:has(a.threads),
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutton:has(a.options) {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .button,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .toolbar:not(.menu) a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .dropbutton > a {
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  flex: 0 0 34px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border: 0 !important;
-  border-radius: 10px !important;
-  background: transparent !important;
-  color: #50617c !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .txt,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a > span {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content:not(.cybrense-has-messages) .listing-hover-menu,
-html:not(.iframe) body.task-mail.cybrense-label-filter-active #messagelist tr.cybrense-label-hidden .listing-hover-menu,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist .listing-hover-menu.cybrense-row-action-menu-hidden,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-label-hidden .listing-hover-menu {
-  display: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #layout-sidebar .quota-widget,
-html:not(.iframe) body.cybrense-ui-ready #layout-sidebar .quota-widget.cybrense-hidden-quota,
-html:not(.iframe) body.cybrense-ui-ready #layout-sidebar .cybrense-storage-action {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-}
 
 /* Real final fix: center the message action icons inside the top bar. */
 html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header {
@@ -6868,11 +6300,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header {
   overflow: hidden !important;
   line-height: 1 !important;
   white-space: nowrap !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header:after {
-  content: none !important;
-  display: none !important;
 }
 
 html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header > .toolbar,
@@ -6900,74 +6327,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar {
   overflow: hidden !important;
   transform: none !important;
   line-height: 1 !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a.button,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header .dropbutton,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header .dropbutton > a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar > a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar > .dropbutton,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar > .dropbutton > a {
-  position: static !important;
-  inset: auto !important;
-  top: auto !important;
-  bottom: auto !important;
-  width: 36px !important;
-  min-width: 36px !important;
-  max-width: 36px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  flex: 0 0 36px !important;
-  display: inline-grid !important;
-  place-items: center !important;
-  align-items: center !important;
-  align-self: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  transform: none !important;
-  border-radius: 10px !important;
-  line-height: 0 !important;
-  vertical-align: middle !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a:before,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a.button:before,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header .dropbutton > a:before,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a:before,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar > .dropbutton > a:before {
-  position: static !important;
-  inset: auto !important;
-  top: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  left: auto !important;
-  width: 18px !important;
-  min-width: 18px !important;
-  height: 18px !important;
-  min-height: 18px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  float: none !important;
-  transform: none !important;
-  color: currentColor !important;
-  font-size: 15px !important;
-  line-height: 18px !important;
-  text-align: center !important;
-  vertical-align: middle !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a > span,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a > span {
-  display: none !important;
 }
 
 /* Final toolbar vertical alignment. */
@@ -7084,11 +6443,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   overflow: hidden !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header:after {
-  content: none !important;
-  display: none !important;
 }
 
 html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header > a,
@@ -7228,73 +6582,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready .cybrense-label-inline-delete
 }
 
 /* Audit hardening: final rules that must win over older Roundcube and earlier overrides. */
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header {
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
-  display: flex !important;
-  flex-flow: row nowrap !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 8px !important;
-  padding: 0 14px !important;
-  overflow: hidden !important;
-  background: #fff !important;
-  border-bottom: 1px solid #e3ebf6 !important;
-  white-space: nowrap !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .toolbar.menu,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .toolbar.menu,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .cybrense-list-toolbar-hidden,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.select,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.threads,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a.options,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutton:has(a.select),
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutton:has(a.threads),
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutton:has(a.options) {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .button,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .toolbar:not(.menu) a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .dropbutton > a {
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  flex: 0 0 34px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border: 0 !important;
-  border-radius: 10px !important;
-  background: transparent !important;
-  color: #50617c !important;
-  box-shadow: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .txt,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a > span {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content:not(.cybrense-has-messages) .listing-hover-menu,
-html:not(.iframe) body.task-mail.cybrense-label-filter-active #messagelist tr.cybrense-label-hidden .listing-hover-menu,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist .listing-hover-menu.cybrense-row-action-menu-hidden,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-label-hidden .listing-hover-menu {
-  display: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
-}
 
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-label-hidden {
   pointer-events: none !important;
@@ -7307,18 +6594,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready .cybrense-filter-empty {
   bottom: auto !important;
   transform: translate(-50%, -50%) !important;
   z-index: 5 !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #layout-sidebar .quota-widget,
-html:not(.iframe) body.cybrense-ui-ready #layout-sidebar .quota-widget.cybrense-hidden-quota,
-html:not(.iframe) body.cybrense-ui-ready #layout-sidebar .cybrense-storage-action {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
 }
 
 /* Clear label assignment control in the message view. */
@@ -7470,30 +6745,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .dropbutt
   display: none !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .button,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .toolbar:not(.menu) a,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .dropbutton > a {
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  flex: 0 0 34px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border: 0 !important;
-  border-radius: 10px !important;
-  background: transparent !important;
-  color: #50617c !important;
-  box-shadow: none !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > a:hover,
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .button:hover,
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .toolbar:not(.menu) a:hover,
@@ -7515,12 +6766,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header > .dropbu
   float: none !important;
   font-size: 15px !important;
   line-height: 1 !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .txt,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a > span {
-  display: none !important;
 }
 
 @media (max-width: 720px) {
@@ -7824,12 +7069,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content .listing
   background: transparent !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content .listing-hover-menu .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content .listing-hover-menu .txt,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content .listing-hover-menu span {
-  display: none !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content > .listing-hover-menu {
   display: none !important;
 }
@@ -7980,13 +7219,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar > .dropbutton > 
   float: none !important;
   font-size: 14px !important;
   line-height: 1 !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a > span,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a > span {
-  display: none !important;
 }
 
 html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar .spacer,
@@ -8255,9 +7487,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a > span {
 }
 
 /* Compose page polish: make compose look like the Cybrense app, not raw Roundcube. */
-html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #layout {
-  background: #f7faff !important;
-}
 
 html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #layout-content {
   min-width: 0 !important;
@@ -8632,15 +7861,6 @@ html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-optio
   gap: 14px !important;
   margin: 0 !important;
   padding: 0 !important;
-}
-
-html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options .form-group.row {
-  min-height: 42px !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  align-items: center !important;
-  gap: 12px !important;
-  margin: 0 !important;
 }
 
 html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options .col-form-label,
@@ -9025,11 +8245,6 @@ html:not(.iframe) body.cybrense-ui-ready #taskmenu a.compose {
   box-shadow: 0 14px 28px rgba(9, 105, 255, 0.34) !important;
 }
 
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.compose .inner {
-  flex: 0 1 auto !important;
-  text-align: center !important;
-}
-
 html:not(.iframe) body.cybrense-ui-ready #taskmenu a.selected,
 html:not(.iframe) body.cybrense-ui-ready #taskmenu a:hover {
   border-color: rgba(94, 164, 255, 0.28) !important;
@@ -9061,14 +8276,6 @@ html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons {
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a:not(.logout),
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.about,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.help,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.theme,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.support {
-  display: none !important;
 }
 
 html:not(.iframe) body.cybrense-ui-ready #taskmenu a.logout {
@@ -9239,13 +8446,6 @@ html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header {
   white-space: nowrap !important;
 }
 
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header:after,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header:after,
-html:not(.iframe) body.task-mail.cybrense-ui-ready .header:after {
-  content: none !important;
-  display: none !important;
-}
-
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .toolbar.menu,
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .cybrense-list-toolbar-hidden,
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header .cybrense-duplicate-more-hidden,
@@ -9332,17 +8532,6 @@ html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #messagetoolba
   line-height: 20px !important;
   text-align: center !important;
   transform: none !important;
-}
-
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-header a > span,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-content > .header a > span,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a .inner,
-html:not(.iframe) body.task-mail.cybrense-ui-ready #mailtoolbar a > span,
-html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #messagetoolbar a .inner,
-html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #messagetoolbar a > span {
-  display: none !important;
 }
 
 html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist-content {
@@ -10032,13 +9221,6 @@ html:not(.iframe) body.cybrense-ui-ready .dropdown-menu li {
   list-style: none !important;
 }
 
-html:not(.iframe) body.cybrense-ui-ready .popupmenu a:hover,
-html:not(.iframe) body.cybrense-ui-ready .popover a:hover,
-html:not(.iframe) body.cybrense-ui-ready .dropdown-menu a:hover {
-  background: #edf5ff !important;
-  color: #0969ff !important;
-}
-
 @media screen and (max-width: 1080px) {
   html:not(.iframe) body.task-mail.cybrense-ui-ready #layout-list .pagenav.menu.footer {
     grid-template-columns: 28px 28px minmax(0, 1fr) 44px 28px 28px !important;
@@ -10408,14 +9590,6 @@ html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons {
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-}
-
-html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a:not(.logout),
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.about,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.help,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.theme,
-html:not(.iframe) body.cybrense-ui-ready #taskmenu a.support {
-  display: none !important;
 }
 
 html:not(.iframe) body.cybrense-ui-ready #taskmenu a.logout {

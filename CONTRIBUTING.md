@@ -38,6 +38,10 @@ Run these before opening a pull request:
 ```powershell
 node --check plugins\cybrense_skin\cybrense_ui.js
 node --check plugins\cybrense_skin\cybrense_pwa.js
+php tests\label_store_test.php
+npm ci
+npm run check:security
+npm run check:css
 docker compose config --quiet
 ```
 

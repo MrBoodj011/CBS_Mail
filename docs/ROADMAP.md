@@ -14,12 +14,12 @@ where CBS Mail can grow without promising dates.
 
 - Optional screenshot-based UI regression workflow.
 - More configurable branding for forks.
-- Better import/export for browser-side labels.
+- Optional label import/export and IMAP keyword integration.
 - Clearer migration notes for existing Roundcube installs.
 
 ## Long Term
 
-- Explore server-side label storage integrations.
+- Explore optional IMAP keyword storage for interoperability with other clients.
 - Explore theme presets for organizations that want to fork the UI.
 - Add a documented plugin configuration reference.
 

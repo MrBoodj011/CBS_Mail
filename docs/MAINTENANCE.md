@@ -7,6 +7,9 @@ Run these before pushing changes:
 ```bash
 node --check plugins/cybrense_skin/cybrense_ui.js
 node --check plugins/cybrense_skin/cybrense_pwa.js
+npm ci
+npm run check:security
+npm run check:css
 docker compose config --quiet
 ```
 
@@ -24,6 +27,9 @@ GitHub Actions runs:
 - PHP syntax check.
 - CSS brace balance check.
 - Docker Compose config validation.
+- Server-side label normalization tests.
+- Dependency vulnerability audit and CSS regression budgets.
+- Real Roundcube desktop/mobile tests backed by a disposable IMAP/SMTP server.
 
 Dependabot checks weekly for GitHub Actions updates.
 

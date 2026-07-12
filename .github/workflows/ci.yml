@@ -30,6 +30,12 @@ jobs:
           php-version: "8.2"
           coverage: none
 
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Audit Node.js dependencies
+        run: npm run check:security
+
       - name: Check JavaScript syntax
         run: |
           node --check plugins/cybrense_skin/cybrense_ui.js
@@ -39,7 +45,12 @@ jobs:
         run: node scripts/verify-project.mjs
 
       - name: Check PHP syntax
-        run: php -l plugins/cybrense_skin/cybrense_skin.php
+        run: |
+          php -l plugins/cybrense_skin/cybrense_skin.php
+          php -l plugins/cybrense_skin/cybrense_label_store.php
+
+      - name: Test server-backed labels
+        run: php tests/label_store_test.php
 
       - name: Check CSS brace balance
         run: |
@@ -66,5 +77,103 @@ jobs:
           }
           NODE
 
+      - name: Enforce CSS quality budgets
+        run: npm run check:css
+
       - name: Validate Docker Compose config
-        run: docker compose config --quiet
+        run: |
+          docker compose config --quiet
+          docker compose -f tests/docker-compose.e2e.yml config --quiet
+
+  browser-tests:
+    name: Desktop and mobile browser tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install browser test dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Start test mail stack
+        run: docker compose -f tests/docker-compose.e2e.yml up -d
+
+      - name: Wait for Roundcube
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8091/ >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker compose -f tests/docker-compose.e2e.yml logs
+          exit 1
+
+      - name: Seed the inbox
+        run: |
+          python3 - <<'PY'
+          import smtplib
+          import time
+          from email.message import EmailMessage
+
+          message = EmailMessage()
+          message["From"] = "sender@example.test"
+          message["To"] = "test@example.test"
+          message["Subject"] = "CBS Mail label regression"
+          message.set_content("This message exercises the responsive mail and label workflow.")
+
+          for attempt in range(30):
+              try:
+                  with smtplib.SMTP("127.0.0.1", 3025) as smtp:
+                      smtp.send_message(message)
+                  break
+              except OSError:
+                  if attempt == 29:
+                      raise
+                  time.sleep(1)
+          PY
+
+      - name: Verify IMAP credentials
+        run: |
+          python3 - <<'PY'
+          import imaplib
+          import os
+
+          for username in ("test@example.test", "test"):
+              try:
+                  client = imaplib.IMAP4("127.0.0.1", 3143)
+                  client.login(username, "test")
+                  client.logout()
+                  with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env:
+                      env.write(f"CBS_E2E_USERNAME={username}\n")
+                  print(f"Authenticated GreenMail IMAP user: {username}")
+                  break
+              except imaplib.IMAP4.error:
+                  continue
+          else:
+              raise RuntimeError("No configured GreenMail identity could authenticate over IMAP")
+          PY
+
+      - name: Run Playwright
+        run: npm run test:e2e
+
+      - name: Show container logs on failure
+        if: failure()
+        run: |
+          docker compose -f tests/docker-compose.e2e.yml logs
+          docker compose -f tests/docker-compose.e2e.yml exec -T roundcube-e2e sh -lc \
+            'find /var/www/html/logs -maxdepth 1 -type f -print -exec tail -200 {} \;' || true
+
+      - name: Stop test mail stack
+        if: always()
+        run: docker compose -f tests/docker-compose.e2e.yml down -v
