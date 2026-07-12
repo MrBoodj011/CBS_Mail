@@ -85,9 +85,13 @@ the public web root.
 
 ## Health Check
 
-Docker checks the local Roundcube login endpoint every 30 seconds. For an
+Docker checks for the actual Roundcube login form every 30 seconds instead of
+accepting any HTTP 200 response. For an
 external smoke test, run:
 
 ```bash
 ./deploy/check-health.sh https://mail.example.com
 ```
+
+The external check also validates the expected manifest and offline-page
+content, so branded error pages cannot produce a false healthy result.
