@@ -65,6 +65,14 @@ $config['product_name'] = 'Cybrense Mail';
 $config['language'] = 'fr_FR';
 $config['dark_mode_support'] = false;
 
+// Check for new mail once per minute. The official newmail_notifier plugin
+// exposes browser notification controls under Settings > Preferences > Mailbox.
+$config['refresh_interval'] = 60;
+$config['newmail_notifier_basic'] = true;
+$config['newmail_notifier_desktop'] = false;
+$config['newmail_notifier_sound'] = false;
+$config['newmail_notifier_desktop_timeout'] = 10;
+
 // Allow remote resources for trusted senders/domains only.
 $config['show_images'] = 3;
 $config['dont_override'] = array_unique(array_merge($config['dont_override'] ?? [], ['show_images']));
@@ -91,7 +99,22 @@ $config['cybrense_remote_content_trusted_senders'] = [
 
 $config['request_path'] = '/';
 
-$config['plugins'] = ['archive', 'zipdownload', 'password', 'filesystem_attachments', 'cybrense_skin'];
+$config['plugins'] = [
+    'archive',
+    'zipdownload',
+    'password',
+    'filesystem_attachments',
+    'newmail_notifier',
+    'cybrense_skin',
+];
+
+// Optional server-side filters and vacation responses. This only enables the
+// Roundcube UI when a real ManageSieve service has been configured.
+if (filter_var(getenv('CYBRENSE_ENABLE_MANAGESIEVE'), FILTER_VALIDATE_BOOLEAN)) {
+    $config['plugins'][] = 'managesieve';
+    $config['managesieve_host'] = getenv('CYBRENSE_MANAGESIEVE_HOST') ?: 'localhost';
+    $config['managesieve_port'] = (int) (getenv('CYBRENSE_MANAGESIEVE_PORT') ?: 4190);
+}
 
 if (file_exists(__DIR__ . '/config.docker.inc.php')) {
     include(__DIR__ . '/config.docker.inc.php');

@@ -18,7 +18,7 @@ async function expectNoPageOverflow(page) {
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
 }
 
-test("mail shell stays inside the viewport", async ({ page }) => {
+test("mail shell stays inside the viewport", async ({ page }, testInfo) => {
   await login(page);
   await expectNoPageOverflow(page);
 
@@ -30,6 +30,43 @@ test("mail shell stays inside the viewport", async ({ page }) => {
     }).length
   );
   expect(visiblePanes).toBeGreaterThan(0);
+
+  if (testInfo.project.name.startsWith("mobile")) {
+    await expect(page.locator("body")).not.toHaveClass(/cybrense-mobile-(menu|sidebar)-open/);
+    const menuRight = await page.locator("#layout-menu").evaluate((node) => node.getBoundingClientRect().right);
+    expect(menuRight).toBeLessThanOrEqual(0);
+  }
+});
+
+test("PWA metadata and safe offline fallback are available", async ({ request }) => {
+  const manifestResponse = await request.get("/cybrense-manifest.json");
+  expect(manifestResponse.ok()).toBeTruthy();
+  const manifest = await manifestResponse.json();
+  expect(manifest.name).toBe("Cybrense Mail");
+  expect(manifest.display).toBe("standalone");
+
+  const offlineResponse = await request.get("/offline.html");
+  expect(offlineResponse.ok()).toBeTruthy();
+  const offline = await offlineResponse.text();
+  expect(offline).toContain("Aucun contenu de vos courriels n'est conserve hors ligne");
+
+  const workerResponse = await request.get("/cybrense-sw.js");
+  expect(workerResponse.ok()).toBeTruthy();
+  const worker = await workerResponse.text();
+  expect(worker).toContain("never written to Cache Storage");
+  expect(worker).not.toMatch(/cache\.put\s*\(\s*event\.request/);
+});
+
+test("browser notifications are configurable in Roundcube settings", async ({ page }) => {
+  await login(page);
+  await page.goto("/?_task=settings&_action=preferences");
+  await expect(page.locator("body.task-settings")).toBeVisible();
+  await page.locator("#rcmrowmailbox").click();
+
+  const preferences = page.frameLocator("#preferences-frame");
+  await expect(preferences.locator("#_newmail_notifier_desktop")).toBeAttached();
+  await expect(preferences.locator("#_newmail_notifier_sound")).toBeAttached();
+  await expectNoPageOverflow(page);
 });
 
 test("one label click persists without browser storage", async ({ page }, testInfo) => {

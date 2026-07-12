@@ -107,7 +107,17 @@ cybrense.labels.v1.<account-email>
 - Static web app manifest.
 - App icons and Apple touch icon.
 - Lightweight service worker.
-- Network-first behavior to avoid stale UI cache.
+- Installable desktop and mobile web app.
+- Safe offline fallback without caching authenticated mail or message bodies.
+
+### Notifications And Server Features
+
+- Official Roundcube browser notifications, configurable per account under
+  `Settings > Preferences > Mailbox`.
+- One-minute new-mail refresh by default.
+- Optional ManageSieve integration for server-side filters and vacation
+  responses when the configured mail platform supports it.
+- Container health checks and a protected backup workflow.
 
 ### Privacy And Remote Content
 
@@ -165,10 +175,10 @@ Set a unique 24-character Roundcube DES key:
 $config['des_key'] = 'CHANGE_ME_24_CHAR_SECRET';
 ```
 
-Start:
+Build and start:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 Open:
@@ -209,9 +219,18 @@ ROUNDCUBEMAIL_TRUSTED_HOST=mail.example.com
 SQLite data is persisted through the `./db:/var/roundcube/db` mount used by the
 official Roundcube image.
 
+The CBS Mail overlay is baked into a local `cbs-mail:local` image. Only runtime
+state and private configuration are mounted, which prevents partial UI updates
+and avoids upstream entrypoint warnings from file-level UI mounts.
+
+The currently pinned upstream image contains Roundcube 1.7.1. Dependabot checks
+the Docker base weekly; digest updates still pass the full desktop/mobile suite
+before they can be merged.
+
 ## Architecture
 
-CBS Mail mounts custom files into the official Roundcube container.
+CBS Mail builds a small overlay image on top of a digest-pinned official
+Roundcube image.
 
 ```mermaid
 flowchart LR
@@ -239,7 +258,8 @@ Main paths:
 |-- plugins/cybrense_skin/    # Plugin, CSS, JS, PWA loader
 |-- pwa/                      # Manifest and service worker
 |-- templates/                # Customized Roundcube Elastic templates
-|-- docker-compose.yml        # Local Roundcube container
+|-- Dockerfile                # Reproducible Roundcube overlay image
+|-- docker-compose.yml        # Local/production container definition
 |-- .env.example              # Safe local environment template
 |-- CONTRIBUTING.md
 |-- SECURITY.md
@@ -247,19 +267,11 @@ Main paths:
 `-- LICENSE
 ```
 
-Docker mounts:
+Runtime mounts:
 
 ```yaml
-- ./db:/var/www/html/db
+- ./db:/var/roundcube/db
 - ./config/config.inc.php:/var/www/html/config/config.inc.php
-- ./branding:/var/www/html/skins/elastic/branding
-- ./branding/watermark.html:/var/www/html/skins/elastic/watermark.html
-- ./config/elastic-meta.json:/var/www/html/skins/elastic/meta.json
-- ./pwa/cybrense-manifest.json:/var/www/html/skins/elastic/cybrense-manifest.json
-- ./pwa/cybrense-manifest.json:/var/www/html/public_html/cybrense-manifest.json
-- ./pwa/cybrense-sw.js:/var/www/html/public_html/cybrense-sw.js
-- ./templates:/var/www/html/skins/elastic/templates
-- ./plugins/cybrense_skin:/var/www/html/plugins/cybrense_skin
 ```
 
 ## Custom Plugin
@@ -331,6 +343,7 @@ https://cybrense.com/
 - `docs/DEPLOYMENT.md` - generic production deployment checklist.
 - `docs/BRANDING.md` - branding assets and forking guidance.
 - `docs/MAINTENANCE.md` - CI, release, and repo hygiene workflow.
+- `docs/MAIL_SERVER_ADMIN.md` - mailbox administration and ManageSieve boundaries.
 - `docs/ROADMAP.md` - short-term and long-term project direction.
 
 ## Development Checks
@@ -407,8 +420,8 @@ If the browser keeps showing old UI after CSS/JS changes:
 2. For installed PWA mode, close and reopen the app.
 3. If needed, unregister the service worker in browser devtools.
 
-The service worker is deliberately network-first, so it should not aggressively
-cache old interface files.
+The service worker is deliberately network-first. It caches only static PWA
+fallback assets and never stores authenticated mail content.
 
 ## Open Source And Credits
 

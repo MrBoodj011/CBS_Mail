@@ -39,6 +39,9 @@ ROUNDCUBEMAIL_DEFAULT_PORT=993
 ROUNDCUBEMAIL_SMTP_SERVER=ssl://smtp.example.com
 ROUNDCUBEMAIL_SMTP_PORT=465
 ROUNDCUBEMAIL_TRUSTED_HOST=mail.example.com
+CYBRENSE_ENABLE_MANAGESIEVE=false
+CYBRENSE_MANAGESIEVE_HOST=mail.example.com
+CYBRENSE_MANAGESIEVE_PORT=4190
 ```
 
 These values are used by `docker-compose.yml`.
@@ -78,11 +81,26 @@ $config['session_samesite'] = 'Lax';
 CBS Mail expects the custom plugin to be enabled:
 
 ```php
-$config['plugins'] = ['archive', 'zipdownload', 'password', 'filesystem_attachments', 'cybrense_skin'];
+$config['plugins'] = ['archive', 'zipdownload', 'password', 'filesystem_attachments', 'newmail_notifier', 'cybrense_skin'];
 ```
 
 Adjust the plugin list for your own Roundcube installation if some default
 plugins are unavailable.
+
+## Browser Notifications
+
+CBS Mail uses Roundcube's maintained `newmail_notifier` plugin. Basic new-mail
+indication is enabled by default. Desktop and sound notifications are opt-in per
+account under `Settings > Preferences > Mailbox`; the browser must also grant
+notification permission to the site. Production notification permission
+requires HTTPS.
+
+## ManageSieve
+
+Set `CYBRENSE_ENABLE_MANAGESIEVE=true` only when the mail server exposes a
+working ManageSieve endpoint. This adds server-side filters and vacation
+responses to Roundcube. It does not implement those features inside CBS Mail.
+See [Mail Server And Administration](MAIL_SERVER_ADMIN.md).
 
 ## Remote Content
 
@@ -125,11 +143,14 @@ browser but not to unrelated IMAP clients.
 
 ## PWA
 
-PWA files are mounted by Docker:
+PWA files are baked into the CBS Mail image and served at:
 
 ```text
 /cybrense-manifest.json
 /cybrense-sw.js
+/offline.html
 ```
 
-The service worker is network-first to avoid stale UI files.
+The service worker is network-first. It caches only the offline page, manifest,
+logo, and app icons. Authenticated Roundcube pages, API responses, attachments,
+and message bodies are never written to Cache Storage.

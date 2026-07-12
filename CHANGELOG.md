@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added official Roundcube browser notifications with per-account settings.
+- Added an opt-in ManageSieve integration path for filters and vacation replies.
+- Added a privacy-safe offline PWA fallback that never caches mail content.
+- Added a reproducible CBS Mail Docker image instead of fragile UI bind mounts.
+- Added container health checks, external smoke checks, and protected backups.
+- Added mail-server/admin integration guidance and expanded PWA security tests.
+- Fixed empty-account label persistence when PHP serializes the message map as an empty JSON array.
+- Added weekly Docker base-image update checks and documented Roundcube 1.7.1 compatibility.
 - Moved labels to validated, per-user Roundcube preferences with automatic migration from browser storage.
 - Added stale-write protection so concurrent Roundcube frames cannot overwrite a newer label click.
 - Added disposable IMAP/SMTP-backed Playwright tests for desktop, mobile, message opening, and label persistence.

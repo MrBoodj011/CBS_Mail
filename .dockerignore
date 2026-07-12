@@ -5,6 +5,10 @@
 .env.*.local
 db/
 scratch/
+backups/
+node_modules/
+playwright-report/
+test-results/
 config/config.inc.php
 config/config.docker.inc.php
 *.db
