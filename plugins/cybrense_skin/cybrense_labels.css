@@ -528,14 +528,6 @@ html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content >
   transform: none !important;
 }
 
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu::-webkit-scrollbar,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > ul#toolbar-menu::-webkit-scrollbar,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar::-webkit-scrollbar,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar.menu::-webkit-scrollbar,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #mailtoolbar::-webkit-scrollbar {
-  display: none !important;
-}
-
 html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > #toolbar-menu > li,
 html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .toolbar > li,
 html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header > .dropbutton,
@@ -637,27 +629,6 @@ html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content >
   max-height: 12px !important;
   font-size: 10px !important;
   line-height: 12px !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a .inner,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a > span,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .button .inner,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .button > span {
-  display: none !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a:hover:not(.disabled),
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .button:hover:not(.disabled),
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header .dropbutton:hover > a:not(.disabled) {
-  background: #edf5ff !important;
-  color: #0969ff !important;
-}
-
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.more,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.toolbar-menu-button,
-html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.options {
-  background: #edf5ff !important;
-  color: #0969ff !important;
 }
 
 html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header a.disabled,

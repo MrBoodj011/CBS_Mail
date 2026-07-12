@@ -343,6 +343,9 @@
   var LABEL_STORE_KEY = "cybrense.labels.v1";
   var activeLabelFilter = "";
   var labelContext = "";
+  var labelStoreCache = null;
+  var labelStoreSyncTimer = null;
+  var labelStoreMigrationQueued = false;
   var defaultLabels = [
     { id: "cybrense-team", name: "Cybrense Team", color: "blue" },
     { id: "security", name: "Securite", color: "green" },
@@ -504,6 +507,53 @@
     return value && typeof value === "object" ? value : null;
   }
 
+  function cloneStoreValue(value) {
+    try {
+      return JSON.parse(JSON.stringify(value));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function storeUpdatedAt(store) {
+    var value = store && Number(store.updatedAt);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
+  function readServerLabelStore() {
+    var env = (window.rcmail && window.rcmail.env) || {};
+    return normalizeStoreValue(env.cybrense_label_store_v2);
+  }
+
+  function scheduleLabelServerSave(store) {
+    var snapshot = cloneStoreValue(store);
+
+    if (!snapshot) {
+      return;
+    }
+
+    window.clearTimeout(labelStoreSyncTimer);
+    labelStoreSyncTimer = window.setTimeout(function () {
+      var target = window.rcmail;
+
+      try {
+        if ((!target || typeof target.http_post !== "function") && window.parent && window.parent !== window) {
+          target = window.parent.rcmail;
+        }
+      } catch (error) {
+        target = window.rcmail;
+      }
+
+      if (!target || typeof target.http_post !== "function") {
+        return;
+      }
+
+      target.http_post("plugin.cybrense_labels_save", {
+        _store: JSON.stringify(snapshot)
+      });
+    }, 180);
+  }
+
   function readRawLabelStore(storageKey) {
     var value = null;
 
@@ -559,13 +609,37 @@
 
   function readLabelStore() {
     var storageKey = labelStoreKey();
-    var store = readRawLabelStore(storageKey);
+    var localStore;
+    var serverStore;
+    var store;
+    var shouldSyncServer = false;
 
-    if (!store) {
-      store = readRawLabelStore(LABEL_STORE_KEY);
-      if (store && writeRawLabelStore(storageKey, store)) {
+    if (labelStoreCache) {
+      return labelStoreCache;
+    }
+
+    localStore = readRawLabelStore(storageKey);
+    serverStore = readServerLabelStore();
+
+    if (!localStore) {
+      localStore = readRawLabelStore(LABEL_STORE_KEY);
+      if (localStore && writeRawLabelStore(storageKey, localStore)) {
         removeRawLabelStore(LABEL_STORE_KEY);
       }
+    }
+
+    if (serverStore && localStore) {
+      if (storeUpdatedAt(localStore) > storeUpdatedAt(serverStore)) {
+        store = localStore;
+        shouldSyncServer = true;
+      } else {
+        store = serverStore;
+      }
+    } else if (serverStore) {
+      store = serverStore;
+    } else if (localStore) {
+      store = localStore;
+      shouldSyncServer = true;
     }
 
     if (!store || typeof store !== "object") {
@@ -593,6 +667,8 @@
     store.labels = merged;
     store.hiddenLabels = hiddenLabels;
     store.messages = store.messages && typeof store.messages === "object" ? store.messages : {};
+    store.version = 2;
+    store.updatedAt = storeUpdatedAt(store);
     var validLabelIds = {};
 
     store.labels.forEach(function (label) {
@@ -611,11 +687,36 @@
       }
     });
 
-    return store;
+    labelStoreCache = store;
+    writeRawLabelStore(storageKey, store);
+
+    if (shouldSyncServer && !labelStoreMigrationQueued) {
+      labelStoreMigrationQueued = true;
+      if (!store.updatedAt) {
+        store.updatedAt = Date.now();
+        writeRawLabelStore(storageKey, store);
+      }
+      scheduleLabelServerSave(store);
+    }
+
+    return labelStoreCache;
   }
 
   function writeLabelStore(store) {
-    return writeRawLabelStore(labelStoreKey(), store);
+    store.version = 2;
+    store.updatedAt = Date.now();
+    labelStoreCache = store;
+
+    if (!writeRawLabelStore(labelStoreKey(), store)) {
+      return false;
+    }
+
+    if (window.rcmail && window.rcmail.env) {
+      window.rcmail.env.cybrense_label_store_v2 = cloneStoreValue(store);
+    }
+
+    scheduleLabelServerSave(store);
+    return true;
   }
 
   function syncLabelContext() {
@@ -878,6 +979,7 @@
     }
     applyMessageLabels();
     updateLabelCounts();
+    notifyLabelChange();
     showLabelNotice(
       (remove ? "Etiquette retiree: " : "Etiquette ajoutee: ") + label.name,
       remove ? "notice" : "confirmation"
@@ -999,6 +1101,7 @@
       }
 
       refreshLabelUi();
+      notifyLabelChange();
       showLabelNotice("Etiquette restauree: " + name, "confirmation");
       return true;
     }
@@ -1024,6 +1127,7 @@
 
     bindLabelControls();
     updateLabelCounts();
+    notifyLabelChange();
     showLabelNotice("Etiquette ajoutee: " + name, "confirmation");
     return true;
   }
@@ -1072,7 +1176,10 @@
       activeLabelFilter = "";
     }
 
-    writeLabelStore(store);
+    if (!writeLabelStore(store)) {
+      showLabelNotice("Impossible de supprimer cette etiquette", "error");
+      return false;
+    }
     refreshLabelUi();
     notifyLabelChange();
     showLabelNotice("Etiquette supprimee: " + label.name, "notice");
@@ -2934,7 +3041,10 @@
     window.rcmail.addEventListener("responseafterlist", scheduleMailEnhancements);
   }
 
-  window.addEventListener("cybrense-labels-updated", scheduleMailEnhancements);
+  window.addEventListener("cybrense-labels-updated", function () {
+    labelStoreCache = null;
+    scheduleMailEnhancements();
+  });
   window.addEventListener("resize", scheduleMailEnhancements);
   window.addEventListener("storage", function (event) {
     if (
@@ -2944,6 +3054,7 @@
       event.key === labelStoreKey() ||
       String(event.key || "").indexOf(LABEL_STORE_KEY + ".") !== -1
     ) {
+      labelStoreCache = null;
       scheduleMailEnhancements();
     }
   });

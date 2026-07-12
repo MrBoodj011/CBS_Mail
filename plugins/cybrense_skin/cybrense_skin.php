@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/cybrense_label_store.php';
+
 class cybrense_skin extends rcube_plugin
 {
     public $task = 'login|mail|addressbook|settings|utils';
@@ -8,6 +10,8 @@ class cybrense_skin extends rcube_plugin
     {
         $this->add_hook('message_check_safe', [$this, 'message_check_safe']);
         $this->register_action('plugin.cybrense_trust_sender', [$this, 'trust_sender']);
+        $this->register_action('plugin.cybrense_labels_save', [$this, 'save_labels']);
+        $this->include_stylesheet('cybrense_tokens.css');
         $this->include_stylesheet('cybrense_ui.css');
         $this->include_stylesheet('cybrense_mobile.css');
         $this->include_stylesheet('cybrense_compact.css');
@@ -18,6 +22,67 @@ class cybrense_skin extends rcube_plugin
         $this->include_script('cybrense_pwa.js');
         $this->add_pwa_headers();
         $this->sync_trusted_remote_senders_env();
+        $this->sync_labels_env();
+    }
+
+    private function sync_labels_env()
+    {
+        try {
+            $rcmail = rcmail::get_instance();
+            if (!$rcmail->output) {
+                return;
+            }
+
+            $store = cybrense_label_store::normalize(
+                $rcmail->config->get('cybrense_label_store_v2', null)
+            );
+            $rcmail->output->set_env('cybrense_label_store_v2', $store);
+        } catch (Exception $error) {
+            // Browser storage remains available when user preferences cannot be read.
+        }
+    }
+
+    public function save_labels()
+    {
+        $rcmail = rcmail::get_instance();
+        $raw_store = rcube_utils::get_input_string('_store', rcube_utils::INPUT_POST, true);
+
+        if (!$rcmail->user || strlen($raw_store) > 524288) {
+            $rcmail->output->command('display_message', 'Impossible d enregistrer les etiquettes', 'error');
+            $rcmail->output->send();
+            return;
+        }
+
+        $store = cybrense_label_store::normalize($raw_store);
+        if ($store === null) {
+            $rcmail->output->command('display_message', 'Impossible d enregistrer les etiquettes', 'error');
+            $rcmail->output->send();
+            return;
+        }
+
+        $current_store = cybrense_label_store::normalize(
+            $rcmail->config->get('cybrense_label_store_v2', null)
+        );
+
+        // Two Roundcube frames can save close together. Never let an older response
+        // overwrite a newer click that has already reached the server.
+        if (
+            $current_store !== null
+            && $current_store['updatedAt'] > $store['updatedAt']
+        ) {
+            $rcmail->output->set_env('cybrense_label_store_v2', $current_store);
+            $rcmail->output->send();
+            return;
+        }
+
+        if (!$rcmail->user->save_prefs(['cybrense_label_store_v2' => $store])) {
+            $rcmail->output->command('display_message', 'Impossible d enregistrer les etiquettes', 'error');
+            $rcmail->output->send();
+            return;
+        }
+
+        $rcmail->output->set_env('cybrense_label_store_v2', $store);
+        $rcmail->output->send();
     }
 
     private function add_pwa_headers()

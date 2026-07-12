@@ -1,0 +1,30 @@
+/* Shared design primitives. Component files should consume these values. */
+:root {
+  --cbs-frame: #03152d;
+  --cbs-menu: #04162e;
+  --cbs-menu-2: #061f42;
+  --cbs-panel: #f8fbff;
+  --cbs-surface: #ffffff;
+  --cbs-soft: #f2f6fb;
+  --cbs-border: #e4ebf5;
+  --cbs-border-strong: #d2deee;
+  --cbs-text: #12213a;
+  --cbs-muted: #68758a;
+  --cbs-faint: #9aa8ba;
+  --cbs-blue: #0969ff;
+  --cbs-blue-2: #0b58d4;
+  --cbs-green: #14b875;
+  --cbs-red: #e54d5a;
+  --cbs-purple: #8f49e8;
+  --cbs-yellow: #ffb743;
+  --cbs-radius: 14px;
+  --cbs-radius-sm: 10px;
+  --cbs-control-size: 40px;
+  --cbs-touch-target: 44px;
+  --cbs-toolbar-height: 56px;
+  --cbs-sidebar-width: 220px;
+  --cbs-folder-width: 280px;
+  --cbs-list-width: 380px;
+  --cbs-shadow: 0 18px 50px rgba(24, 42, 74, 0.12);
+  --cbs-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

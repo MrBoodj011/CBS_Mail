@@ -1,0 +1,16 @@
+{
+  "name": "cbs-mail-ui",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "check:security": "npm audit --audit-level=moderate",
+    "check:css": "node scripts/check-css-quality.mjs",
+    "css:dedupe": "node scripts/dedupe-css.mjs plugins/cybrense_skin/cybrense_ui.css plugins/cybrense_skin/cybrense_labels.css plugins/cybrense_skin/cybrense_mobile.css plugins/cybrense_skin/cybrense_compact.css plugins/cybrense_skin/cybrense_login.css",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "postcss": "^8.5.17"
+  }
+}

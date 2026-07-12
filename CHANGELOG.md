@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Moved labels to validated, per-user Roundcube preferences with automatic migration from browser storage.
+- Added stale-write protection so concurrent Roundcube frames cannot overwrite a newer label click.
+- Added disposable IMAP/SMTP-backed Playwright tests for desktop, mobile, message opening, and label persistence.
+- Added dependency auditing, shared design tokens, CSS quality budgets, and removed exact duplicate override blocks.
 - Made message labels deterministic: one tap/click now adds or removes exactly one label.
 - Fixed label filters so non-matching virtualized message rows are actually removed from view.
 - Fixed Docker/config environment mismatches and persisted SQLite under the mounted `./db` directory.

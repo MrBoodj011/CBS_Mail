@@ -47,10 +47,22 @@ for (const file of [
   "pwa/cybrense-manifest.json",
   "pwa/cybrense-sw.js",
   "plugins/cybrense_skin/cybrense_skin.php",
+  "plugins/cybrense_skin/cybrense_label_store.php",
+  "plugins/cybrense_skin/cybrense_tokens.css",
   "plugins/cybrense_skin/cybrense_ui.js"
 ]) {
   requireFile(file);
 }
+
+requireFile("tests/label_store_test.php");
+requireFile("tests/e2e/mail.spec.js");
+requireFile("tests/docker-compose.e2e.yml");
+requireFile("tests/fixtures/config.inc.php");
+requireFile("package.json");
+requireFile("package-lock.json");
+requireFile("playwright.config.js");
+requireFile("scripts/dedupe-css.mjs");
+requireFile("scripts/check-css-quality.mjs");
 
 for (const template of ["mail", "message", "compose", "addressbook", "settings", "login"]) {
   requireFile(`templates/${template}.html`);

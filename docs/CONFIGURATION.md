@@ -109,7 +109,9 @@ Roundcube user preferences.
 
 ## Labels / Etiquettes
 
-The custom label system is frontend metadata stored in browser `localStorage`.
+The custom label system is stored per signed-in account in Roundcube user
+preferences. A browser cache keeps interactions immediate and supports automatic
+migration from the original browser-only implementation.
 
 Storage format:
 
@@ -117,8 +119,9 @@ Storage format:
 cybrense.labels.v1.<account-email>
 ```
 
-This keeps labels separate per account. Clearing browser storage removes custom
-frontend labels.
+Clearing browser storage no longer removes synchronized labels. Labels are CBS
+Mail metadata, not IMAP keywords, so they are available to CBS Mail on another
+browser but not to unrelated IMAP clients.
 
 ## PWA
 
