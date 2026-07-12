@@ -2,9 +2,7 @@ const { test, expect } = require("@playwright/test");
 
 async function login(page) {
   await page.goto("/");
-  // GreenMail uses the local part as the IMAP login by default while the
-  // mailbox address remains test@example.test.
-  await page.locator('input[name="_user"]').fill("test");
+  await page.locator('input[name="_user"]').fill("test@example.test");
   await page.locator('input[name="_pass"]').fill("test");
   await page.locator('button[type="submit"], input[type="submit"]').click();
   await expect(page.locator("body.task-mail")).toBeVisible();
