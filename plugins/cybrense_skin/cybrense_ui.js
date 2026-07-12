@@ -731,6 +731,16 @@
   }
 
   function showLabelNotice(message, type) {
+    message = String(message || "").replace(/[&<>\"']/g, function (character) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[character];
+    });
+
     if (window.rcmail && typeof window.rcmail.display_message === "function") {
       window.rcmail.display_message(message, type || "confirmation");
       return;
