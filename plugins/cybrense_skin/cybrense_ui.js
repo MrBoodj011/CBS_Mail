@@ -666,7 +666,11 @@
 
     store.labels = merged;
     store.hiddenLabels = hiddenLabels;
-    store.messages = store.messages && typeof store.messages === "object" ? store.messages : {};
+    // PHP serializes an empty associative array as []. Never keep that array:
+    // stringifying custom message-key properties on an Array drops them.
+    store.messages = store.messages && typeof store.messages === "object" && !Array.isArray(store.messages)
+      ? store.messages
+      : {};
     store.version = 2;
     store.updatedAt = storeUpdatedAt(store);
     var validLabelIds = {};

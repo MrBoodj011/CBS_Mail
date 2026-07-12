@@ -11,7 +11,7 @@ docker compose config --quiet
 Then start:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 docker compose ps
 ```
 
@@ -97,12 +97,12 @@ Then close/reopen the PWA or hard refresh the browser.
 
 ## UI Looks Unstyled
 
-Confirm these mounts exist in Docker:
+Confirm the custom image was built and the runtime mounts exist:
 
 ```text
-./templates:/var/www/html/skins/elastic/templates
-./plugins/cybrense_skin:/var/www/html/plugins/cybrense_skin
-./branding:/var/www/html/skins/elastic/branding
+cbs-mail:local
+./db:/var/roundcube/db
+./config/config.inc.php:/var/www/html/config/config.inc.php
 ```
 
 Also confirm the plugin is enabled:

@@ -11,12 +11,15 @@ npm ci
 npm run check:security
 npm run check:css
 docker compose config --quiet
+sh -n deploy/backup.sh
+sh -n deploy/check-health.sh
 ```
 
 With the container running:
 
 ```bash
 docker exec roundcube php -l /var/www/html/plugins/cybrense_skin/cybrense_skin.php
+./deploy/check-health.sh http://127.0.0.1:8090
 ```
 
 ## CI

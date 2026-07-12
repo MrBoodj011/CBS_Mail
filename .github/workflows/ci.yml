@@ -40,6 +40,12 @@ jobs:
         run: |
           node --check plugins/cybrense_skin/cybrense_ui.js
           node --check plugins/cybrense_skin/cybrense_pwa.js
+          node --check pwa/cybrense-sw.js
+
+      - name: Check maintenance scripts
+        run: |
+          sh -n deploy/backup.sh
+          sh -n deploy/check-health.sh
 
       - name: Verify repository invariants
         run: node scripts/verify-project.mjs

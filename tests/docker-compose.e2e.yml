@@ -12,7 +12,10 @@ services:
       - "127.0.0.1:3143:3143"
 
   roundcube-e2e:
-    image: roundcube/roundcubemail@sha256:dc3d04b46feb148507c52db9b536c4f5a980e2d4f339a8f1a880225f1c9c0a62
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: cbs-mail:e2e
     depends_on:
       - greenmail
     ports:
@@ -25,13 +28,6 @@ services:
     volumes:
       - roundcube-e2e-db:/var/roundcube/db
       - ./fixtures/config.inc.php:/var/www/html/config/config.inc.php
-      - ../branding:/var/www/html/skins/elastic/branding
-      - ../branding/watermark.html:/var/www/html/skins/elastic/watermark.html
-      - ../config/elastic-meta.json:/var/www/html/skins/elastic/meta.json
-      - ../pwa/cybrense-manifest.json:/var/www/html/public_html/cybrense-manifest.json
-      - ../pwa/cybrense-sw.js:/var/www/html/public_html/cybrense-sw.js
-      - ../templates:/var/www/html/skins/elastic/templates
-      - ../plugins/cybrense_skin:/var/www/html/plugins/cybrense_skin
 
 volumes:
   roundcube-e2e-db:

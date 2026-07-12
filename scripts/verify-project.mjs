@@ -18,12 +18,30 @@ function requireFile(file) {
 }
 
 const compose = read("docker-compose.yml");
-if (/roundcube\/roundcubemail:latest/.test(compose)) {
-  failures.push("docker-compose.yml: Roundcube image must be pinned by digest");
+const dockerfile = read("Dockerfile");
+const serviceWorker = read("pwa/cybrense-sw.js");
+if (!/FROM roundcube\/roundcubemail@sha256:[a-f0-9]{64}/.test(dockerfile)) {
+  failures.push("Dockerfile: Roundcube base image must be pinned by digest");
+}
+
+if (/roundcube\/roundcubemail:latest/.test(compose + dockerfile)) {
+  failures.push("Docker configuration must not use an unpinned latest image");
 }
 
 requireText("docker-compose.yml", "./db:/var/roundcube/db", "SQLite persistence mount is missing");
 requireText("config/config.inc.example.php", "/var/roundcube/db/sqlite.db", "SQLite path does not match the Docker mount");
+requireText("config/config.inc.example.php", "newmail_notifier", "official browser notifications are not enabled");
+requireText("docker-compose.yml", "healthcheck:", "container healthcheck is missing");
+
+if (!serviceWorker.includes('event.request.mode === "navigate"')) {
+  failures.push("pwa/cybrense-sw.js: navigation fallback is missing");
+}
+if (!serviceWorker.includes("never written to Cache Storage")) {
+  failures.push("pwa/cybrense-sw.js: private-cache safety invariant is undocumented");
+}
+if (/cache\.put\s*\(\s*event\.request/.test(serviceWorker)) {
+  failures.push("pwa/cybrense-sw.js: authenticated requests must never be cached");
+}
 
 for (const name of [
   "ROUNDCUBEMAIL_DEFAULT_HOST",
@@ -46,6 +64,11 @@ for (const file of [
   "branding/pwa-icon-512.png",
   "pwa/cybrense-manifest.json",
   "pwa/cybrense-sw.js",
+  "pwa/offline.html",
+  "Dockerfile",
+  "deploy/backup.sh",
+  "deploy/check-health.sh",
+  "docs/MAIL_SERVER_ADMIN.md",
   "plugins/cybrense_skin/cybrense_skin.php",
   "plugins/cybrense_skin/cybrense_label_store.php",
   "plugins/cybrense_skin/cybrense_tokens.css",
