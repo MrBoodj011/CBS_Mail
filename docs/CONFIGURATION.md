@@ -39,12 +39,18 @@ ROUNDCUBEMAIL_DEFAULT_PORT=993
 ROUNDCUBEMAIL_SMTP_SERVER=ssl://smtp.example.com
 ROUNDCUBEMAIL_SMTP_PORT=465
 ROUNDCUBEMAIL_TRUSTED_HOST=mail.example.com
+CBS_MAIL_HTTP_PORT=8090
+CBS_MAIL_CONTAINER_NAME=roundcube
 CYBRENSE_ENABLE_MANAGESIEVE=false
 CYBRENSE_MANAGESIEVE_HOST=mail.example.com
 CYBRENSE_MANAGESIEVE_PORT=4190
 ```
 
 These values are used by `docker-compose.yml`.
+
+`CBS_MAIL_HTTP_PORT` changes only the localhost port exposed to a reverse
+proxy. `CBS_MAIL_CONTAINER_NAME` lets an existing deployment retain a stable
+operational name during upgrades.
 
 ## Roundcube Config
 

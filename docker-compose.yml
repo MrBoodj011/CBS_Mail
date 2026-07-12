@@ -5,10 +5,10 @@ services:
       context: .
       dockerfile: Dockerfile
     image: cbs-mail:local
-    container_name: roundcube
+    container_name: ${CBS_MAIL_CONTAINER_NAME:-roundcube}
     restart: always
     ports:
-      - "127.0.0.1:8090:80"
+      - "127.0.0.1:${CBS_MAIL_HTTP_PORT:-8090}:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

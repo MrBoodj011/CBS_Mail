@@ -32,6 +32,8 @@ requireText("docker-compose.yml", "./db:/var/roundcube/db", "SQLite persistence 
 requireText("config/config.inc.example.php", "/var/roundcube/db/sqlite.db", "SQLite path does not match the Docker mount");
 requireText("config/config.inc.example.php", "newmail_notifier", "official browser notifications are not enabled");
 requireText("docker-compose.yml", "healthcheck:", "container healthcheck is missing");
+requireText("docker-compose.yml", "CBS_MAIL_HTTP_PORT", "host port must be configurable");
+requireText("docker-compose.yml", "CBS_MAIL_CONTAINER_NAME", "container name must be configurable");
 
 if (!serviceWorker.includes('event.request.mode === "navigate"')) {
   failures.push("pwa/cybrense-sw.js: navigation fallback is missing");
