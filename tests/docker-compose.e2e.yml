@@ -9,6 +9,7 @@ services:
         -Dgreenmail.users.login=email
     ports:
       - "127.0.0.1:3025:3025"
+      - "127.0.0.1:3143:3143"
 
   roundcube-e2e:
     image: roundcube/roundcubemail@sha256:dc3d04b46feb148507c52db9b536c4f5a980e2d4f339a8f1a880225f1c9c0a62

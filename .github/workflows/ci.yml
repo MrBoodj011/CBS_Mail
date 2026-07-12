@@ -143,6 +143,27 @@ jobs:
                   time.sleep(1)
           PY
 
+      - name: Verify IMAP credentials
+        run: |
+          python3 - <<'PY'
+          import imaplib
+          import os
+
+          for username in ("test@example.test", "test"):
+              try:
+                  client = imaplib.IMAP4("127.0.0.1", 3143)
+                  client.login(username, "test")
+                  client.logout()
+                  with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env:
+                      env.write(f"CBS_E2E_USERNAME={username}\n")
+                  print(f"Authenticated GreenMail IMAP user: {username}")
+                  break
+              except imaplib.IMAP4.error:
+                  continue
+          else:
+              raise RuntimeError("No configured GreenMail identity could authenticate over IMAP")
+          PY
+
       - name: Run Playwright
         run: npm run test:e2e
 
