@@ -111,6 +111,9 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
 
+      - name: Test public landing site
+        run: npm run site:test
+
       - name: Start test mail stack
         run: docker compose -f tests/docker-compose.e2e.yml up -d
 

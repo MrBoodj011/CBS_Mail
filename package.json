@@ -7,7 +7,9 @@
     "check:css": "node scripts/check-css-quality.mjs",
     "css:dedupe": "node scripts/dedupe-css.mjs plugins/cybrense_skin/cybrense_ui.css plugins/cybrense_skin/cybrense_labels.css plugins/cybrense_skin/cybrense_mobile.css plugins/cybrense_skin/cybrense_compact.css plugins/cybrense_skin/cybrense_login.css",
     "test:e2e": "playwright test",
-    "test:e2e:headed": "playwright test --headed"
+    "test:e2e:headed": "playwright test --headed",
+    "site:serve": "node scripts/serve-site.mjs",
+    "site:test": "playwright test --config=playwright.site.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.61.1",

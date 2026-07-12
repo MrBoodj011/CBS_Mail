@@ -24,6 +24,8 @@
 <p align="center">
   <a href="#why-cbs-mail">Why</a>
   |
+  <a href="#project-website">Website</a>
+  |
   <a href="#features">Features</a>
   |
   <a href="#quick-start">Quick Start</a>
@@ -38,6 +40,30 @@
 </p>
 
 ---
+
+## Project Website
+
+The repository includes the responsive public CBS Mail landing site in
+[`site/`](site/). It uses real desktop and mobile product captures and documents
+the Roundcube foundation, features, Docker setup, architecture, and contribution
+workflow.
+
+Run it locally:
+
+```bash
+npm ci
+npm run site:serve
+```
+
+Then open <http://127.0.0.1:4173/>. The dedicated Playwright suite validates the
+site at desktop, tablet, and mobile widths:
+
+```bash
+npm run site:test
+```
+
+The production Nginx example is available at
+[`deploy/nginx-cbsmail-site.conf.example`](deploy/nginx-cbsmail-site.conf.example).
 
 ## Why CBS Mail
 

@@ -72,11 +72,17 @@ for (const file of [
   "Dockerfile",
   "deploy/backup.sh",
   "deploy/check-health.sh",
+  "deploy/nginx-cbsmail-site.conf.example",
   "docs/MAIL_SERVER_ADMIN.md",
   "plugins/cybrense_skin/cybrense_skin.php",
   "plugins/cybrense_skin/cybrense_label_store.php",
   "plugins/cybrense_skin/cybrense_tokens.css",
-  "plugins/cybrense_skin/cybrense_ui.js"
+  "plugins/cybrense_skin/cybrense_ui.js",
+  "site/index.html",
+  "site/styles.css",
+  "site/site.js",
+  "site/assets/product-desktop.png",
+  "site/assets/product-mobile.png"
 ]) {
   requireFile(file);
 }
@@ -88,6 +94,9 @@ requireFile("tests/fixtures/config.inc.php");
 requireFile("package.json");
 requireFile("package-lock.json");
 requireFile("playwright.config.js");
+requireFile("playwright.site.config.js");
+requireFile("scripts/serve-site.mjs");
+requireFile("tests/site/site.spec.js");
 requireFile("scripts/dedupe-css.mjs");
 requireFile("scripts/check-css-quality.mjs");
 
