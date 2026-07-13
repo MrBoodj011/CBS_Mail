@@ -20,6 +20,11 @@
     touch-action: manipulation !important;
   }
 
+  html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced:focus-visible > td.cybrense-subject-cell {
+    outline: 3px solid rgba(16, 111, 255, 0.45);
+    outline-offset: -3px;
+  }
+
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-extra-cell,
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-date-source-cell {
     display: none !important;
@@ -136,7 +141,7 @@
     grid-row: 1 !important;
     align-self: center !important;
     justify-self: end !important;
-    max-width: 34px !important;
+    min-width: 58px !important;
     overflow: hidden !important;
     text-align: right !important;
     text-overflow: ellipsis !important;
@@ -157,13 +162,13 @@
 
 @media screen and (max-width: 480px) {
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell {
-    grid-template-columns: 38px 8px minmax(0, 1fr) 30px !important;
+    grid-template-columns: 38px 8px minmax(0, 1fr) minmax(58px, max-content) !important;
     padding: 10px 10px !important;
   }
 
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.date,
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.cybrense-row-date {
-    display: none !important;
+    display: block !important;
   }
 
   html:not(.iframe) body.task-mail.cybrense-ui-ready #messagelist tr.cybrense-row-enhanced > td.cybrense-subject-cell > span.subject,

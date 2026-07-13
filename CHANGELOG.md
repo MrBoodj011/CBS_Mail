@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Improved mobile message cards with persistent dates, keyboard-open support, and visible focus states.
+- Hardened mobile one-tap navigation to open the full message route reliably in browsers and PWA mode.
+- Made list label rendering and bulk assignment mailbox-aware to prevent cross-mailbox label mix-ups.
+- Added live label status announcements and accessible pressed states for label filters.
 - Added official Roundcube browser notifications with per-account settings.
 - Added an opt-in ManageSieve integration path for filters and vacation replies.
 - Added a privacy-safe offline PWA fallback that never caches mail content.

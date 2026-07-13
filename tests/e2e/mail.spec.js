@@ -35,6 +35,11 @@ test("mail shell stays inside the viewport", async ({ page }, testInfo) => {
     await expect(page.locator("body")).not.toHaveClass(/cybrense-mobile-(menu|sidebar)-open/);
     const menuRight = await page.locator("#layout-menu").evaluate((node) => node.getBoundingClientRect().right);
     expect(menuRight).toBeLessThanOrEqual(0);
+
+    const firstDate = page.locator("#messagelist tr.cybrense-row-enhanced span.cybrense-row-date").first();
+    if (await firstDate.count()) {
+      await expect(firstDate).toBeVisible();
+    }
   }
 });
 
@@ -99,5 +104,24 @@ test("one label click persists without browser storage", async ({ page }, testIn
     "aria-pressed",
     wasAssigned ? "false" : "true"
   );
+  await expectNoPageOverflow(page);
+});
+
+test("a mobile email tap opens the full message route", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile"), "Mobile-only interaction");
+
+  await login(page);
+
+  const row = page.locator("#messagelist tr").filter({ has: page.locator("td") }).first();
+  const uid = await row.getAttribute("id");
+  const navigation = page.waitForURL(/_action=show/);
+
+  await row.click();
+  await navigation;
+
+  await expect(page.locator("body.task-mail.action-show")).toBeVisible();
+  await expect(page.locator("#message-header")).toBeVisible();
+  expect(page.url()).toContain("_uid=");
+  expect(uid).toMatch(/^rcmrow/);
   await expectNoPageOverflow(page);
 });

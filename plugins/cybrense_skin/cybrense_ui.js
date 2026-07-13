@@ -780,11 +780,35 @@
   }
 
   function messageKey(uid) {
-    return messageMailbox(uid) + "|" + String(uid);
+    return messageKeyFor(uid, messageMailbox(uid));
   }
 
   function messageKeyFor(uid, mailbox) {
-    return (mailbox || messageMailbox(uid)) + "|" + String(uid);
+    var normalizedUid = String(uid || "").trim();
+    var normalizedMailbox = String(mailbox || messageMailbox(uid) || "INBOX").trim();
+
+    return normalizedMailbox + "|" + normalizedUid;
+  }
+
+  function rowMailbox(row) {
+    var mailbox;
+
+    if (row) {
+      mailbox = row.getAttribute("data-mailbox") ||
+        row.getAttribute("data-mbox") ||
+        row.getAttribute("data-folder");
+      if (mailbox) {
+        return String(mailbox).trim();
+      }
+    }
+
+    return row ? messageMailbox(rowUid(row)) : messageMailbox("");
+  }
+
+  function listMessageKey(uid) {
+    var row = rowForUid(uid);
+
+    return messageKeyFor(uid, rowMailbox(row));
   }
 
   function currentMessageInfo() {
@@ -931,7 +955,7 @@
 
   function selectedRowsHaveLabel(uids, labelId, store) {
     return uids.length > 0 && uids.every(function (uid) {
-      return normalizeLabelList(store.messages[messageKey(uid)]).indexOf(labelId) !== -1;
+      return normalizeLabelList(store.messages[listMessageKey(uid)]).indexOf(labelId) !== -1;
     });
   }
 
@@ -959,7 +983,7 @@
     var remove = selectedRowsHaveLabel(uids, labelId, store);
 
     uids.forEach(function (uid) {
-      var key = messageKey(uid);
+      var key = listMessageKey(uid);
       var labels = normalizeLabelList(store.messages[key]);
 
       if (remove) {
@@ -1771,7 +1795,7 @@
   function renderRowAssignedLabels(row, store) {
     var uid = rowUid(row);
     var subjectCell = rowSubjectCell(row);
-    var labels = uid ? normalizeLabelList(store.messages[messageKey(uid)]) : [];
+    var labels = uid ? normalizeLabelList(store.messages[messageKeyFor(uid, rowMailbox(row))]) : [];
     var signature = labels.join("|");
     var old = subjectCell && subjectCell.querySelector(".cybrense-assigned-labels");
 
@@ -1818,7 +1842,7 @@
 
   function applyRowLabelFilter(row, store) {
     var uid = rowUid(row);
-    var labels = uid ? normalizeLabelList(store.messages[messageKey(uid)]) : [];
+    var labels = uid ? normalizeLabelList(store.messages[messageKeyFor(uid, rowMailbox(row))]) : [];
     var hidden = !!activeLabelFilter && labels.indexOf(activeLabelFilter) === -1;
 
     if (row.classList.contains("cybrense-label-hidden") !== hidden) {
@@ -2078,6 +2102,18 @@
       return;
     }
 
+    // The mobile layout has no reliable preview pane. Navigate to the real
+    // message route so a single tap always opens the email, including in PWA
+    // standalone mode and on browsers that do not expose show_message().
+    if (isMobileMailLayout()) {
+      url = "?_task=mail&_action=show&_uid=" + encodeURIComponent(uid);
+      if (mbox) {
+        url += "&_mbox=" + encodeURIComponent(mbox);
+      }
+      window.location.href = url;
+      return;
+    }
+
     if (
       window.rcmail.message_list &&
       typeof window.rcmail.message_list.select === "function"
@@ -2203,6 +2239,19 @@
     list.addEventListener("click", function (event) {
       openFromEvent(event, shouldOpenMobileRow(event));
     }, true);
+
+    list.addEventListener("keydown", function (event) {
+      var row;
+
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+
+      row = shouldOpenMobileRow(event);
+      if (row) {
+        openFromEvent(event, row);
+      }
+    }, true);
   }
 
   function isMobileMailLayout() {
@@ -2310,8 +2359,10 @@
       var labelId = button.getAttribute("data-label-id");
       var count = counts[labelId] || 0;
       var counter = button.querySelector(".cybrense-label-count");
+      var active = activeLabelFilter === labelId;
 
-      button.classList.toggle("active", activeLabelFilter === labelId);
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
 
       if (counter) {
         counter.textContent = count ? String(count) : "";
@@ -2341,6 +2392,16 @@
 
       if (!subjectCell) {
         return;
+      }
+
+      if (isCompactAppLayout()) {
+        row.setAttribute("tabindex", "0");
+        row.setAttribute("role", "link");
+        row.setAttribute("aria-label", "Ouvrir le message: " + text);
+      } else {
+        row.removeAttribute("tabindex");
+        row.removeAttribute("role");
+        row.removeAttribute("aria-label");
       }
 
       var service = serviceFromText(text.toLowerCase());
@@ -2815,7 +2876,7 @@
       existing.innerHTML = [
         '<div class="cybrense-message-labels-top">',
         '<div class="cybrense-message-labels-title">Etiquettes</div>',
-        '<span class="cybrense-label-assign-button is-status" role="status">Etiquettes (0)</span>',
+        '<span class="cybrense-label-assign-button is-status" role="status" aria-live="polite">Etiquettes (0)</span>',
         '</div>',
         '<div class="cybrense-message-labels-list"></div>'
       ].join("");
