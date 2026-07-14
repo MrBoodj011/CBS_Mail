@@ -11859,6 +11859,27 @@ html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-heade
   max-width: none !important;
 }
 
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-headers .input-group {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-headers .recipient-input input,
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-headers .recipient-input textarea {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
 html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-headers input,
 html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-headers select,
 html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-headers textarea,

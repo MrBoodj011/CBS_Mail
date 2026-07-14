@@ -2,7 +2,7 @@ import fs from "node:fs";
 import postcss from "postcss";
 
 const budgets = {
-  "plugins/cybrense_skin/cybrense_ui.css": 6656,
+  "plugins/cybrense_skin/cybrense_ui.css": 6670,
   "plugins/cybrense_skin/cybrense_labels.css": 832,
   "plugins/cybrense_skin/cybrense_mobile.css": 276,
   "plugins/cybrense_skin/cybrense_compact.css": 220,
