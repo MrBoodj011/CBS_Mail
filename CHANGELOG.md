@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Fixed compose layout sizing so the editor form spans the available content area without an inner collapsed scrollbar.
 - Improved mobile message cards with persistent dates, keyboard-open support, and visible focus states.
 - Hardened mobile one-tap navigation to open the full message route reliably in browsers and PWA mode.
 - Made list label rendering and bulk assignment mailbox-aware to prevent cross-mailbox label mix-ups.

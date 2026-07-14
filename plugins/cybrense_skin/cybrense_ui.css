@@ -13128,6 +13128,44 @@ html:not(.iframe) body.cybrense-ui-ready #taskmenu .special-buttons a.logout {
   }
 }
 
+/* The compose head object opens the form that contains the headers and editor.
+ * Keep that form spanning the content area so it cannot collapse into the first grid row. */
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > form.formcontent,
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > form.scroller {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  width: min(1040px, 100%) !important;
+  max-width: 1040px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: visible !important;
+}
+
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > .formbuttons {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+}
+
+@media screen and (max-width: 720px) {
+  html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > form.formcontent,
+  html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > form.scroller {
+    grid-row: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > .formbuttons {
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
 /* Final message-view toolbar: match the clean standalone list toolbar. */
 html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header {
   height: 56px !important;
