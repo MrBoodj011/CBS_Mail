@@ -13221,6 +13221,27 @@ html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-conte
   margin-top: 0 !important;
 }
 
+/* Keep the options panel readable: labels start on the left and controls
+ * stay aligned to one clean right edge. */
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options,
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options .form-group.row {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options .col-form-label,
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options label {
+  width: 100% !important;
+  justify-self: stretch !important;
+  text-align: left !important;
+}
+
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-options .col-6 {
+  justify-self: end !important;
+  justify-content: flex-end !important;
+}
+
 /* Keep the compose actions visually centered in the header while leaving the
  * navigation button and title anchored to the start of the bar. */
 html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #layout-content > .header {
