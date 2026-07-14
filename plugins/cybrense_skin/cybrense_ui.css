@@ -13221,6 +13221,22 @@ html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-conte
   margin-top: 0 !important;
 }
 
+/* Keep the compose actions visually centered in the header while leaving the
+ * navigation button and title anchored to the start of the bar. */
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #layout-content > .header {
+  position: relative !important;
+  justify-content: flex-start !important;
+}
+
+html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #layout-content > .header #messagetoolbar {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2 !important;
+}
+
 @media screen and (max-width: 720px) {
   html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content {
     gap: 12px !important;
@@ -13242,6 +13258,12 @@ html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-conte
 
   html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #compose-content > form #composebodycontainer {
     min-height: 320px !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-compose.cybrense-ui-ready #layout-content > .header #messagetoolbar {
+    position: static !important;
+    margin-left: auto !important;
+    transform: none !important;
   }
 }
 
