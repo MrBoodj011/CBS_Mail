@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://github.com/Cybrense-IT-Services/CBS_Mail"><img alt="CBS Mail" src="https://img.shields.io/badge/Project-CBS%20Mail-1b7cff?style=for-the-badge"></a>
-  <a href="https://github.com/MrBoodj011"><img alt="Creator" src="https://img.shields.io/badge/Creator-MrBoodj011-061d3a?style=for-the-badge"></a>
+  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail/graphs/contributors"><img alt="CBS Team" src="https://img.shields.io/badge/Creator-CBS%20Team-061d3a?style=for-the-badge"></a>
   <a href="https://github.com/Cybrense-IT-Services"><img alt="Cybrense IT Services" src="https://img.shields.io/badge/Cybrense-IT%20Services-13b981?style=for-the-badge"></a>
 </p>
 
