@@ -19,7 +19,9 @@
     }
 
     var layout = document.querySelector("#layout");
-    var width = layout ? layout.getBoundingClientRect().width : window.innerWidth;
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    var layoutWidth = layout ? layout.getBoundingClientRect().width : viewportWidth;
+    var width = viewportWidth ? Math.min(layoutWidth || viewportWidth, viewportWidth) : layoutWidth;
     var content = document.querySelector("#layout-content");
     var contentWidth = content ? content.getBoundingClientRect().width : width;
     var list = document.querySelector("#layout-list");
@@ -333,10 +335,13 @@
   }
 
   function isCompactAppLayout() {
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+
     return (
       document.body &&
       (document.body.classList.contains("cybrense-ui-phone") ||
-        document.body.classList.contains("cybrense-ui-narrow"))
+        document.body.classList.contains("cybrense-ui-narrow") ||
+        viewportWidth <= 1180)
     );
   }
 
@@ -2087,7 +2092,7 @@
     var opened = false;
     var url;
 
-    if (!uid || !window.rcmail) {
+    if (!uid) {
       return;
     }
 
@@ -2097,7 +2102,7 @@
     }
 
     mbox = messageMailbox(uid);
-    if (mbox && window.rcmail.env && mbox === window.rcmail.env.drafts_mailbox && typeof window.rcmail.open_compose_step === "function") {
+    if (mbox && window.rcmail && window.rcmail.env && mbox === window.rcmail.env.drafts_mailbox && typeof window.rcmail.open_compose_step === "function") {
       window.rcmail.open_compose_step({ _draft_uid: uid, _mbox: mbox });
       return;
     }
@@ -2110,7 +2115,7 @@
       if (mbox) {
         url += "&_mbox=" + encodeURIComponent(mbox);
       }
-      window.location.href = url;
+      window.location.assign(url);
       return;
     }
 
@@ -2142,7 +2147,7 @@
     if (mbox) {
       url += "&_mbox=" + encodeURIComponent(mbox);
     }
-    window.location.href = url;
+    window.location.assign(url);
   }
 
   function isMobileRowOpenControl(event, row) {
@@ -2173,7 +2178,7 @@
     function shouldOpenMobileRow(event) {
       var row;
 
-      if (!document.body.classList.contains("cybrense-ui-phone") && !document.body.classList.contains("cybrense-ui-narrow")) {
+      if (!isCompactAppLayout()) {
         return null;
       }
 
@@ -2234,6 +2239,25 @@
 
       pointerRow = null;
       openFromEvent(event, row);
+    }, true);
+
+    // Older mobile WebViews can expose touch events without a usable pointer
+    // sequence. Keep the same one-tap behavior for those browsers.
+    list.addEventListener("touchend", function (event) {
+      var row;
+
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      row = shouldOpenMobileRow(event);
+      if (row) {
+        openFromEvent(event, row);
+      }
+    }, true);
+
+    list.addEventListener("touchcancel", function () {
+      pointerRow = null;
     }, true);
 
     list.addEventListener("click", function (event) {

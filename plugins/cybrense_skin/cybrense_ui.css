@@ -4,6 +4,59 @@
 /* Final message-view toolbar: match the clean standalone list toolbar. */
 
 @media screen and (max-width: 720px) {
+  /* The message template owns its actions in #messagetoolbar. Keep that
+   * real container inside the phone header instead of styling only legacy
+   * top-level toolbar containers. */
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 64px) !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-flow: row nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar > a,
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar > .dropbutton > a {
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    flex: 0 0 34px !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar > .dropbutton {
+    flex: 0 0 auto !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+  }
+
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar > .spacer,
+  html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header #messagetoolbar > .dropbutton > a.dropdown {
+    flex: 0 0 8px !important;
+    width: 8px !important;
+    min-width: 8px !important;
+    max-width: 8px !important;
+  }
+
   html:not(.iframe) body.task-mail.action-show.cybrense-ui-ready #layout-content > .header {
     height: 54px !important;
     min-height: 54px !important;
