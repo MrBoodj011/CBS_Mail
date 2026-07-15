@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail">
+  <a href="https://cbsmail.cybrense.com/">
     <img src="https://raw.githubusercontent.com/MrBoodj011/CBS_Mail/main/assets/cbs-mail-header.png" alt="CBS Mail - Roundcube-based webmail UI" width="100%">
   </a>
 </p>
@@ -15,6 +15,7 @@
   <a href="https://cbsmail.cybrense.com/"><img alt="CBS Mail website" src="https://img.shields.io/badge/Website-CBS%20Mail-13b981?style=for-the-badge"></a>
   <a href="https://github.com/Cybrense-IT-Services/CBS_Mail/graphs/contributors"><img alt="CBS Team" src="https://img.shields.io/badge/Creator-CBS%20Team-061d3a?style=for-the-badge"></a>
   <a href="https://github.com/Cybrense-IT-Services"><img alt="Cybrense IT Services" src="https://img.shields.io/badge/Cybrense-IT%20Services-13b981?style=for-the-badge"></a>
+  <a href="https://github.com/roundcube/roundcubemail"><img alt="Built on Roundcube" src="https://img.shields.io/badge/Upstream-Roundcube-0b72ff?style=for-the-badge"></a>
 </p>
 
 <p align="center">
@@ -22,7 +23,7 @@
   &nbsp;|&nbsp;
   <a href="#product-preview">Preview</a>
   &nbsp;|&nbsp;
-  <a href="#what-i-built">My Work</a>
+  <a href="#my-contributions">My Contributions</a>
   &nbsp;|&nbsp;
   <a href="#technology">Technology</a>
   &nbsp;|&nbsp;
@@ -33,15 +34,16 @@
 
 ## About CBS Mail
 
-**CBS Mail** is a modern, mobile-ready Roundcube webmail experience with a
-custom Cybrense/CBS interface, plugin layer, PWA support, Docker deployment,
+**CBS Mail** is a modern, mobile-ready webmail experience developed by the
+**CBS Team** at [Cybrense IT Services](https://github.com/Cybrense-IT-Services)
+and built on [Roundcube](https://github.com/roundcube/roundcubemail). It combines
+a custom Cybrense/CBS interface, plugin layer, PWA support, Docker deployment,
 and synchronized per-user label management.
 
-I created and developed the project in my personal GitHub space before moving
-the main source repository to the
-[Cybrense IT Services organization](https://github.com/Cybrense-IT-Services).
-This repository presents the project, my work, and my public contribution
-history.
+The official source lives in
+[Cybrense-IT-Services/CBS_Mail](https://github.com/Cybrense-IT-Services/CBS_Mail).
+This personal showcase keeps the product visuals and the public contributions
+authored by [MrBoodj011](https://github.com/MrBoodj011) easy to discover.
 
 ## Product Preview
 
@@ -57,14 +59,16 @@ history.
 </p>
 
 <p align="center">
-  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail"><strong>Open the main CBS Mail repository</strong></a>
+  <a href="https://cbsmail.cybrense.com/"><strong>Open the live website</strong></a>
   &nbsp;|&nbsp;
-  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail/commits/main/?author=MrBoodj011">View my commits</a>
+  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail">View the official source</a>
+  &nbsp;|&nbsp;
+  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail/graphs/contributors">Meet the contributors</a>
 </p>
 
-## What I Built
+## My Contributions
 
-| Area | My work on CBS Mail |
+| Area | Contribution highlights |
 | --- | --- |
 | **Interface** | Custom Cybrense/CBS visual system across login, mail, compose, contacts, and settings. |
 | **Responsive UI** | Desktop, tablet, and mobile layouts designed for an app-like webmail experience. |
@@ -89,9 +93,9 @@ history.
 
 ## Contribution History
 
-I am the creator and primary contributor to CBS Mail. The public commit history
-keeps the authored work and project evolution visible after the source moved to
-the Cybrense IT Services organization.
+[MrBoodj011](https://github.com/MrBoodj011) contributed to CBS Mail as part of
+the **CBS Team**. The official repository preserves the authored commits and the
+public evolution of the project.
 
 <p align="center">
   <a href="https://github.com/Cybrense-IT-Services/CBS_Mail/commits/main/?author=MrBoodj011"><strong>View commits authored by MrBoodj011</strong></a>
@@ -99,12 +103,22 @@ the Cybrense IT Services organization.
   <a href="https://github.com/Cybrense-IT-Services/CBS_Mail/graphs/contributors">View contributors</a>
 </p>
 
+## Official Links
+
+- [Live CBS Mail website](https://cbsmail.cybrense.com/)
+- [Official source repository](https://github.com/Cybrense-IT-Services/CBS_Mail)
+- [Issues and feature requests](https://github.com/Cybrense-IT-Services/CBS_Mail/issues)
+- [Releases](https://github.com/Cybrense-IT-Services/CBS_Mail/releases)
+- [Roundcube upstream](https://github.com/roundcube/roundcubemail)
+
 ---
 
 <p align="center">
-  <a href="https://github.com/MrBoodj011">MrBoodj011</a>
+  <a href="https://cbsmail.cybrense.com/">CBS Mail</a>
+  &nbsp;|&nbsp;
+  <a href="https://github.com/Cybrense-IT-Services/CBS_Mail">Official Source</a>
   &nbsp;|&nbsp;
   <a href="https://github.com/Cybrense-IT-Services">Cybrense IT Services</a>
   &nbsp;|&nbsp;
-  <a href="https://cybrense.com/">cybrense.com</a>
+  <a href="https://github.com/MrBoodj011">MrBoodj011</a>
 </p>
