@@ -28,6 +28,7 @@
 - Added dependency auditing, shared design tokens, CSS quality budgets, and removed exact duplicate override blocks.
 - Hardened phone message opening for touch-only browsers and kept the message toolbar inside the mobile viewport.
 - Fixed mobile recipient chips so long contact names wrap cleanly instead of being clipped.
+- Reworked the mobile message view so its toolbar stays on one row and sender metadata remains left-aligned beside the avatar in standalone and iframe views.
 - Made message labels deterministic: one tap/click now adds or removes exactly one label.
 - Fixed label filters so non-matching virtualized message rows are actually removed from view.
 - Fixed Docker/config environment mismatches and persisted SQLite under the mounted `./db` directory.

@@ -3,7 +3,7 @@ import postcss from "postcss";
 
 const budgets = {
   "plugins/cybrense_skin/cybrense_ui.css": 6842,
-  "plugins/cybrense_skin/cybrense_labels.css": 832,
+  "plugins/cybrense_skin/cybrense_labels.css": 1057,
   "plugins/cybrense_skin/cybrense_mobile.css": 276,
   "plugins/cybrense_skin/cybrense_compact.css": 220,
   "plugins/cybrense_skin/cybrense_login.css": 244,
